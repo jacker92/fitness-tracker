@@ -76,6 +76,12 @@ namespace FitnessTrackerApi
             // custom jwt auth middleware
             app.UseMiddleware<JwtMiddleware>();
 
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

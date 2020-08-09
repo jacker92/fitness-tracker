@@ -33,6 +33,10 @@ namespace FitnessTrackerApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegistrationRequest model)
         {
+            System.Console.WriteLine($"Name: {model.Name}");
+            System.Console.WriteLine($"Email: {model.Email}");
+            System.Console.WriteLine($"Password: {model.Password}");
+
             var response = await _userService.RegisterUser(model);
 
             if (response == null)

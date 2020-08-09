@@ -13,6 +13,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",
     "@types/validator": "^13.1.0",
+    "dotenv": "^8.2.0",
     "oidc-client": "^1.10.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

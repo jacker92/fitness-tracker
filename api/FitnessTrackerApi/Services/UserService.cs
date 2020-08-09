@@ -79,12 +79,15 @@ namespace FitnessTrackerApi.Services
 
                 return new RegistrationResponse
                 {
-                    ErrorMessage = $"Error registerring user: {ex.Message}";
+                    ErrorMessage = "Unable to save user"
                 };
             }
             catch (Exception ex)
             {
-
+                return new RegistrationResponse
+                {
+                    ErrorMessage = $"Error registerring user: {ex.Message}"
+                };
             }
         }
 
