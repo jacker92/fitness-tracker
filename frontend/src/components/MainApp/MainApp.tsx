@@ -44,6 +44,7 @@ const MainApp = (props: { children: any; }) => {
     const logoutUser = () => {
         window.localStorage.removeItem('__fittracker_token__');
         setCurrentUser(null);
+        window.location.assign('/');
     };
 
     return (
