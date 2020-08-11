@@ -12,23 +12,23 @@ const ErrorBar = styled.div`
   background: hsl(0, 90%, 81%);
   margin: 30px auto;
   display: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
 `;
 
 const ErrorMessage = (props: { error: string }) => {
-  const { error } = props;
+    const { error } = props;
 
-  return (
-    <ErrorBar style={error !== '' && error !== null ? { display: 'block' } : {}}>{error}</ErrorBar>
-  );
+    return (
+        <ErrorBar style={error !== '' && error !== null ? { display: 'block' } : {}}>{error}</ErrorBar>
+    );
 };
 
 ErrorMessage.defaultProps = {
-  error: '',
+    error: '',
 };
 
 ErrorMessage.propTypes = {
-  error: PropTypes.string,
+    error: PropTypes.string,
 };
 
 export { ErrorMessage };

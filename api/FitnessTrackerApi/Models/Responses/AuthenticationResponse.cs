@@ -1,19 +1,19 @@
+using System.Text.Json.Serialization;
+
 namespace FitnessTrackerApi.Models.Responses
 {
     public class AuthenticationResponse : BaseResponse
     {
+        [JsonPropertyName("user_id")]
         public string UserID { get; set; }
+
+        [JsonPropertyName("name")]
         public string Name { get; set; }
+
+        [JsonPropertyName("email")]
         public string Email { get; set; }
+
+        [JsonPropertyName("token")]
         public string Token { get; set; }
-
-
-        public AuthenticationResponse(User user, string token)
-        {
-            UserID = user.Id;
-            Name = user.Name;
-            Email = user.Email;
-            Token = token;
-        }
     }
 }

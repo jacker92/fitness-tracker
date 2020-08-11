@@ -8,13 +8,20 @@ function logout() {
 async function client(endpoint, { data, ...customConfig } = {}) {
     const token = window.localStorage.getItem(localStorageKey);
 
+    const headers = {};
+
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    if (data) {
+        headers['Content-Type'] = 'application/json';
+    }
+
     const config = {
         method: data ? 'POST' : 'GET',
         body: data ? JSON.stringify(data) : undefined,
-        headers: {
-            Authorization: token ? `Bearer ${token}` : undefined,
-            'Content-Type': data ? 'application/json' : undefined,
-        },
+        headers,
         ...customConfig,
     };
 

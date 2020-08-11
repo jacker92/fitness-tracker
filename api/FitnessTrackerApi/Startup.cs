@@ -3,12 +3,16 @@ using FitnessTrackerApi.Helpers;
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Repositories;
 using FitnessTrackerApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 namespace FitnessTrackerApi
 {
     public class Startup
@@ -27,6 +31,8 @@ namespace FitnessTrackerApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddDbContext<FitnessDbContext>(options =>
                 options
                     .UseSqlServer(Configuration.GetConnectionString("FitnessTracker")));
@@ -73,14 +79,14 @@ namespace FitnessTrackerApi
             // app.UseIdentityServer();
             app.UseAuthorization();
 
-            // custom jwt auth middleware
-            app.UseMiddleware<JwtMiddleware>();
-
             // global cors policy
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+
+            // custom jwt auth middleware
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
