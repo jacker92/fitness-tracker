@@ -1,11 +1,14 @@
 import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { Form } from '../Form/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AppContext } from '../AppContext/AppContext';
 
-const Login = () => {
+const Login = (props: { redirectUrl: string }) => {
+    const { redirectUrl } = props;
+
     // eslint-disable-next-line no-unused-vars
     const [message, setMessage] = useState('');
     const [email, setEmail] = useState('');
@@ -23,6 +26,7 @@ const Login = () => {
                 if (data.error_message === '') {
                     setMessage('');
                     loginUser(data.token);
+                    window.location.assign(redirectUrl);
                 } else {
                     setMessage(data.error_message);
                 }
@@ -89,6 +93,14 @@ const Login = () => {
             </Form>
         </>
     );
+};
+
+Login.defaultProps = {
+    redirectUrl: '/',
+};
+
+Login.propTypes = {
+    redirectUrl: PropTypes.string,
 };
 
 export { Login };

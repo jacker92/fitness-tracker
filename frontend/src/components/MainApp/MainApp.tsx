@@ -31,7 +31,6 @@ const MainApp = (props: { children: any; }) => {
 
         jwt.verify(token, process.env.REACT_APP_FT_JWT_SECRET, (err, decoded) => {
             if (err) {
-                console.log({ err });
                 setCurrentUser(null);
                 return;
             }

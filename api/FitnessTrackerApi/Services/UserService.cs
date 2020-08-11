@@ -104,9 +104,8 @@ namespace FitnessTrackerApi.Services
 
                     if (result.Succeeded)
                     {
-                        Console.WriteLine("Successfully logged in the user, the password matches");
                         var token = generateJwtToken(user);
-                        Console.WriteLine("Token Generated");
+
                         return new AuthenticationResponse
                         {
                             UserID = user.Id,
@@ -147,6 +146,7 @@ namespace FitnessTrackerApi.Services
 
         private string generateJwtToken(User user)
         {
+            Console.WriteLine("IN GENERATEJWTTOKEN");
             var claims = new[] {
                 new Claim("id", user.Id),
                 new Claim("name", user.Name),
