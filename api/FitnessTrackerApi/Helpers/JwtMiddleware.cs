@@ -25,13 +25,13 @@ namespace FitnessTrackerApi.Helpers
 
             if (token != null)
             {
-                attachUserToContext(context, userService, token);
+                await attachUserToContext(context, userService, token);
             }
 
             await _next(context);
         }
 
-        private async void attachUserToContext(HttpContext context, IUserService userService, string token)
+        private async Task attachUserToContext(HttpContext context, IUserService userService, string token)
         {
             try
             {

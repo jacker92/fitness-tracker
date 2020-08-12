@@ -34,7 +34,8 @@ namespace FitnessTrackerApi.Services
                 {
                     Name = model.Name,
                     Email = model.Email,
-                    UserName = model.Email
+                    UserName = model.Email,
+                    MeasurementSystem = MeasurementSystem.US
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -44,24 +45,7 @@ namespace FitnessTrackerApi.Services
                     var dailyTarget = new DailyTarget
                     {
                         UserID = user.Id,
-                        User = user,
-                        EnableCalorieTarget = false,
-                        CalorieTarget = 0,
-                        EnableProteinTarget = false,
-                        ProteinTarget = 0,
-                        ProteinPercentage = 0.35M,
-                        EnableCarbohydratesTarget = false,
-                        CarbohydratesTarget = 0,
-                        CarbohydratePercentage = 0.35M,
-                        EnableFatTarget = false,
-                        FatTarget = 0,
-                        FatPercentage = 0.3M,
-                        EnableSugarTarget = false,
-                        SugarTarget = 0,
-                        EnableActiveMinuteTarget = false,
-                        ActiveMintueTarget = 0,
-                        EnableCaloriesBurnedTarget = false,
-                        CaloriesBurnedTarget = 0
+                        User = user
                     };
 
                     await _dailyTargetRepository.Add(dailyTarget);
@@ -79,32 +63,62 @@ namespace FitnessTrackerApi.Services
 
                 return new RegistrationResponse
                 {
-                    ErrorMessage = $"Error registerring user: {ex.Message}";
+                    ErrorMessage = "Unable to save user"
                 };
             }
             catch (Exception ex)
             {
-
+                return new RegistrationResponse
+                {
+                    ErrorMessage = $"Error registerring user: {ex.Message}"
+                };
             }
         }
 
         public async Task<AuthenticationResponse> Authenticate(AuthenticationRequest model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null)
+            try
             {
-                await _signInManager.SignOutAsync();
+                var user = await _userManager.FindByEmailAsync(model.Email);
 
-                var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-
-                if (result.Succeeded)
+                if (user != null)
                 {
-                    var token = generateJwtToken(user);
-                    return new AuthenticationResponse(user, token);
+                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+
+                    if (result.Succeeded)
+                    {
+                        var token = generateJwtToken(user);
+
+                        return new AuthenticationResponse
+                        {
+                            UserID = user.Id,
+                            Name = user.Name,
+                            Email = user.Email,
+                            Token = token
+                        };
+                    }
+                    else
+                    {
+                        return new AuthenticationResponse
+                        {
+                            ErrorMessage = "Invalid email or password"
+                        };
+                    }
                 }
+
+                return new AuthenticationResponse
+                {
+                    ErrorMessage = "Error authenticating user"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new AuthenticationResponse
+                {
+                    ErrorMessage = $"Error authenticating user: {ex.Message}"
+                };
             }
 
-            return null;
         }
 
         public async Task<User> GetById(string id)
@@ -115,11 +129,18 @@ namespace FitnessTrackerApi.Services
 
         private string generateJwtToken(User user)
         {
+            Console.WriteLine("IN GENERATEJWTTOKEN");
+            var claims = new[] {
+                new Claim("id", user.Id),
+                new Claim("name", user.Name),
+                new Claim("email", user.Email)
+            };
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Utilities.AppSettings.JwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

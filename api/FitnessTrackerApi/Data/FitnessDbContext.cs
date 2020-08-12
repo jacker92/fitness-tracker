@@ -42,7 +42,7 @@ namespace FitnessTrackerApi.Data
             modelBuilder.Entity<DailyTarget>()
                 .HasOne(dt => dt.User)
                 .WithOne(u => u.DailyTarget)
-                .HasForeignKey<User>(u => u.DailyTargetID);
+                .HasForeignKey<DailyTarget>(dt => dt.UserID);
 
             modelBuilder.Entity<Food>()
                 .HasOne(f => f.User)

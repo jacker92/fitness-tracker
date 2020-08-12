@@ -2,6 +2,7 @@ using FitnessTrackerApi.Services;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FitnessTrackerApi.Controllers
@@ -22,12 +23,13 @@ namespace FitnessTrackerApi.Controllers
         {
             var response = await _userService.Authenticate(model);
 
-            if (response == null)
+            if (response.ErrorMessage != "")
             {
-                return BadRequest(new { message = "Invalid email or password" });
+                return BadRequest(new { message = response.ErrorMessage });
             }
 
-            return Ok(response);
+            // TODO: Figure out why I need to serialize the response
+            return Ok(JsonSerializer.Serialize(response));
         }
 
         [HttpPost("register")]
@@ -35,12 +37,13 @@ namespace FitnessTrackerApi.Controllers
         {
             var response = await _userService.RegisterUser(model);
 
-            if (response == null)
+            if (response.ErrorMessage != "")
             {
-                return BadRequest(new { message = "Error registerring user" });
+                return BadRequest(new { message = response.ErrorMessage });
             }
 
-            return Ok(Response);
+            // TODO: Figure out why I need to serialize the response
+            return Ok(JsonSerializer.Serialize(response));
         }
     }
 }
