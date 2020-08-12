@@ -3,7 +3,6 @@ const localStorageKey = '__fittracker_token__';
 
 function logout() {
     window.localStorage.removeItem(localStorageKey);
-    window.location.assign('/');
 }
 
 async function client(endpoint, { data, ...customConfig } = {}) {

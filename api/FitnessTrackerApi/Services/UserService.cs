@@ -45,24 +45,7 @@ namespace FitnessTrackerApi.Services
                     var dailyTarget = new DailyTarget
                     {
                         UserID = user.Id,
-                        User = user,
-                        EnableCalorieTarget = false,
-                        CalorieTarget = 0,
-                        EnableProteinTarget = false,
-                        ProteinTarget = 0,
-                        ProteinPercentage = 0.35M,
-                        EnableCarbohydratesTarget = false,
-                        CarbohydratesTarget = 0,
-                        CarbohydratePercentage = 0.35M,
-                        EnableFatTarget = false,
-                        FatTarget = 0,
-                        FatPercentage = 0.3M,
-                        EnableSugarTarget = false,
-                        SugarTarget = 0,
-                        EnableActiveMinuteTarget = false,
-                        ActiveMintueTarget = 0,
-                        EnableCaloriesBurnedTarget = false,
-                        CaloriesBurnedTarget = 0
+                        User = user
                     };
 
                     await _dailyTargetRepository.Add(dailyTarget);
