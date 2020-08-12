@@ -21,8 +21,8 @@ const MainApp = (props: { children: any; }) => {
         });
     }
 
-    // eslint-disable-next-line no-unused-vars
     const [currentUser, setCurrentUser] = useState(user);
+    const [userMenuVisible, setUserMenuVisible] = useState(false);
 
     const { children } = props;
 
@@ -47,8 +47,15 @@ const MainApp = (props: { children: any; }) => {
         window.location.assign('/');
     };
 
+    const toggleUserMenu = () => {
+        setUserMenuVisible(!userMenuVisible);
+    };
+
     return (
-        <AppContext.Provider value={{ currentUser, loginUser, logoutUser }}>
+        <AppContext.Provider value={{
+            currentUser, loginUser, logoutUser, toggleUserMenu, userMenuVisible,
+        }}
+        >
             {children}
         </AppContext.Provider>
     );

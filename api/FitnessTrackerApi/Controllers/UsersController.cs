@@ -19,9 +19,9 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate(AuthenticationRequest model)
+        public async Task<IActionResult> Authenticate(AuthenticationRequest req)
         {
-            var response = await _userService.Authenticate(model);
+            var response = await _userService.Authenticate(req);
 
             if (response.ErrorMessage != "")
             {
@@ -33,9 +33,9 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegistrationRequest model)
+        public async Task<IActionResult> Register(RegistrationRequest req)
         {
-            var response = await _userService.RegisterUser(model);
+            var response = await _userService.RegisterUser(req);
 
             if (response.ErrorMessage != "")
             {
@@ -43,6 +43,25 @@ namespace FitnessTrackerApi.Controllers
             }
 
             // TODO: Figure out why I need to serialize the response
+            return Ok(JsonSerializer.Serialize(response));
+        }
+
+        [Authorize]
+        [HttpGet("getuser")]
+        public async Task<IActionResult> GetUser(string UserID)
+        {
+            var user = await _userService.GetUserRecord(UserID);
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "Unable to retrieve user record" });
+            }
+
+            var response = new UserResponse
+            {
+                User = user
+            };
+
             return Ok(JsonSerializer.Serialize(response));
         }
     }

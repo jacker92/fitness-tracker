@@ -28,6 +28,8 @@ namespace FitnessTrackerApi.Data
 
         public DbSet<UserMetric> UserMetrics { get; set; }
 
+        public DbSet<UserTrackedMetric> UserTrackedMetrics { get; set;
+        }
         public FitnessDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
@@ -96,6 +98,16 @@ namespace FitnessTrackerApi.Data
                 .HasOne(um => um.User)
                 .WithMany(u => u.Metrics)
                 .HasForeignKey(um => um.UserID);
+
+            modelBuilder.Entity<UserTrackedMetric>()
+                .HasOne(utm => utm.User)
+                .WithOne()
+                .HasForeignKey<UserTrackedMetric>(utm => utm.UserID);
+
+            modelBuilder.Entity<UserTrackedMetric>()
+                .HasOne(utm => utm.Metric)
+                .WithOne()
+                .HasForeignKey<UserTrackedMetric>(utm => utm.MetricID);
         }
     }
 }

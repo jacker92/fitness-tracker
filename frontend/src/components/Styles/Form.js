@@ -4,6 +4,10 @@ const Form = styled.form`
   width: 300px;
   margin: 20px auto;
 
+  &.autowidth {
+    width: 100%;
+  }
+
   fieldset {
     border: none;
     margin:0;
@@ -27,6 +31,22 @@ const Form = styled.form`
         width: 300px;
         font-size: 1.2rem;
       }
+
+      select {
+        margin-top: 7px;
+        border: 1px solid hsl(0, 0%, 19%);
+        padding: 8px;
+        display: block;
+        width: 300px;
+        font-size: 1.2rem;
+      }
+
+      select.react-datepicker__month-select,
+      select.react-datepicker__year-select {
+        width: auto;
+        padding:4px;
+        font-size:1rem;
+      }
     }
 
     label.errored {
@@ -40,7 +60,7 @@ const Form = styled.form`
   }
 
   input[type="submit"],
-  button {
+  button[type="submit"] {
     background: hsl(0, 0%, 19%);
     color: hsl(0,0%,100%);
     padding: 8px 12px;

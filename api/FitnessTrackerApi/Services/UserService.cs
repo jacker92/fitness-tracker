@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -127,9 +128,20 @@ namespace FitnessTrackerApi.Services
             return user;
         }
 
+        public async Task<User> GetUserRecord(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                user.DailyTarget = _dailyTargetRepository.Get(r => r.UserID == user.Id).FirstOrDefault();
+            }
+
+            return user;
+        }
+
         private string generateJwtToken(User user)
         {
-            Console.WriteLine("IN GENERATEJWTTOKEN");
             var claims = new[] {
                 new Claim("id", user.Id),
                 new Claim("name", user.Name),

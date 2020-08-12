@@ -10,9 +10,7 @@ namespace FitnessTrackerApi.Services
     {
         Task <RegistrationResponse> RegisterUser(RegistrationRequest model);
         Task<AuthenticationResponse> Authenticate(AuthenticationRequest model);
-
-        // IEnumerable<User> GetAll();
-
         Task<User> GetById(string id);
+        Task<User> GetUserRecord(string id);
     }
 }

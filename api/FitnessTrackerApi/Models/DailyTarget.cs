@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace FitnessTrackerApi.Models
 {
@@ -8,6 +9,7 @@ namespace FitnessTrackerApi.Models
 
         public string UserID { get; set; }
 
+        [JsonIgnore]
         public virtual User User { get; set; }
 
         public bool EnableCalorieTarget { get; set; } = false;

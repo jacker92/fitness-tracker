@@ -14,9 +14,9 @@ async function client(endpoint, { data, ...customConfig } = {}) {
         headers.Authorization = `Bearer ${token}`;
     }
 
-    if (data) {
-        headers['Content-Type'] = 'application/json';
-    }
+    // if (data) {
+    headers['Content-Type'] = 'application/json';
+    // }
 
     const config = {
         method: data ? 'POST' : 'GET',

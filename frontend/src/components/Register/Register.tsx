@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { client } from '../../lib/client';
-import { Form } from '../Form/Form';
+import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AppContext } from '../AppContext/AppContext';

@@ -47,6 +47,9 @@ namespace FitnessTrackerApi.Models
         public bool ManuallyCalculateTargets { get; set; }
 
         [PersonalData]
-        public List<Metric> MetricsTracked { get; set; }
+        public string Avatar { get; set; }
+
+        [PersonalData]
+        public CaloriesBurnedOffset CaloriesBurnedSetting { get; set; } = CaloriesBurnedOffset.Ignore;
     }
 }

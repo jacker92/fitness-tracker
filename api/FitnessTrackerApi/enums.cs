@@ -15,4 +15,10 @@ namespace FitnessTrackerApi
         US = 1,
         Metric = 2
     }
+
+    public enum CaloriesBurnedOffset
+    {
+        Ignore = 0,
+        Balance = 1
+    }
 }
