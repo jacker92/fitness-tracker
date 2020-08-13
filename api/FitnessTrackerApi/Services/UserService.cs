@@ -27,19 +27,19 @@ namespace FitnessTrackerApi.Services
             _dailyTargetRepository = dailyTargetRepo;
         }
 
-        public async Task<RegistrationResponse> RegisterUser(RegistrationRequest model)
+        public async Task<RegistrationResponse> RegisterUser(RegistrationRequest request)
         {
             try
             {
                 var user = new User
                 {
-                    Name = model.Name,
-                    Email = model.Email,
-                    UserName = model.Email,
+                    Name = request.Name,
+                    Email = request.Email,
+                    UserName = request.Email,
                     MeasurementSystem = MeasurementSystem.US
                 };
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, request.Password);
 
                 if (result.Succeeded)
                 {
@@ -76,15 +76,15 @@ namespace FitnessTrackerApi.Services
             }
         }
 
-        public async Task<AuthenticationResponse> Authenticate(AuthenticationRequest model)
+        public async Task<AuthenticationResponse> Authenticate(AuthenticationRequest request)
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(request.Email);
 
                 if (user != null)
                 {
-                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                    var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
                     if (result.Succeeded)
                     {
@@ -138,6 +138,39 @@ namespace FitnessTrackerApi.Services
             }
 
             return user;
+        }
+
+        public async Task<UpdateProfileResponse> UpdateUserProfile(User user, UpdateProfileRequest request)
+        {
+            try
+            {
+                user.Email = request.Email;
+                user.UserName = request.Email;
+                user.Name = request.Name;
+                user.Height = request.Height;
+                user.Birthday = request.Birthday;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return new UpdateProfileResponse();
+                }
+
+                return new UpdateProfileResponse
+                {
+                    Successful = false,
+                    ErrorMessage = "Unable to update profile"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new UpdateProfileResponse
+                {
+                    Successful = false,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         private string generateJwtToken(User user)

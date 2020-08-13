@@ -1,4 +1,5 @@
 using FitnessTrackerApi.Services;
+using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,9 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate(AuthenticationRequest req)
+        public async Task<IActionResult> Authenticate(AuthenticationRequest request)
         {
-            var response = await _userService.Authenticate(req);
+            var response = await _userService.Authenticate(request);
 
             if (response.ErrorMessage != "")
             {
@@ -33,9 +34,9 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegistrationRequest req)
+        public async Task<IActionResult> Register(RegistrationRequest request)
         {
-            var response = await _userService.RegisterUser(req);
+            var response = await _userService.RegisterUser(request);
 
             if (response.ErrorMessage != "")
             {
@@ -48,9 +49,10 @@ namespace FitnessTrackerApi.Controllers
 
         [Authorize]
         [HttpGet("getuser")]
-        public async Task<IActionResult> GetUser(string UserID)
+        public async Task<IActionResult> GetUser()
         {
-            var user = await _userService.GetUserRecord(UserID);
+            var contextUser = (User)HttpContext.Items["User"];
+            var user = await _userService.GetUserRecord(contextUser.Id);
 
             if (user == null)
             {
@@ -62,6 +64,29 @@ namespace FitnessTrackerApi.Controllers
                 User = user
             };
 
+            return Ok(JsonSerializer.Serialize(response));
+        }
+
+        [Authorize]
+        [HttpPost("updateprofile")]
+        public async Task<IActionResult> UpdateUserProfile(UpdateProfileRequest request)
+        {
+            System.Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(request));
+            var user = (User)HttpContext.Items["User"];
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "Unable to retrieve user" });
+            }
+
+            var response = await _userService.UpdateUserProfile(user, request);
+
+            if (response.ErrorMessage != "")
+            {
+                return BadRequest(new { message = response.ErrorMessage });
+            }
+
+            // TODO: Figure out why I need to serialize the response
             return Ok(JsonSerializer.Serialize(response));
         }
     }

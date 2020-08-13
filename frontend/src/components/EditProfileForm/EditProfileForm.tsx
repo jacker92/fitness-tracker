@@ -15,6 +15,7 @@ import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { AppContext } from '../AppContext/AppContext';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 
@@ -23,6 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 const EditProfileForm = () => {
     const [status, setStatus] = useState('initialized');
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const [name, setName] = useState('');
     const [nameError] = useState('');
     const [email, setEmail] = useState('');
@@ -37,13 +39,47 @@ const EditProfileForm = () => {
     const { currentUser } = useContext(AppContext);
 
     useEffect(() => {
-        client(`users/getuser?UserID=${currentUser.id}`).then(
+        client('users/getuser').then(
             (data) => {
-                setName(data.user.Name);
-                setEmail(data.user.Email);
-                setMeasurementSystem(data.user.MeasurementSystem);
+                if (data.successful) {
+                    setName(data.user.Name);
+                    setEmail(data.user.Email);
+                    setMeasurementSystem(data.user.MeasurementSystem);
 
-                setStatus('loaded');
+                    setStatus('loaded');
+                } else {
+                    setErrorMessage(data.error);
+                    setStatus('errored');
+                }
+            },
+            (error) => {
+                if (typeof error === 'string') {
+                    setErrorMessage(error);
+                } else if (typeof error.message === 'string') {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('An error has occurred');
+                }
+                setStatus('errored');
+            },
+        );
+    }, [currentUser.id]);
+
+    const saveProfile = async () => {
+        setErrorMessage('');
+        setSuccessMessage('');
+
+        client('users/updateprofile', {
+            data: {
+                Name: name, Email: email, MeasurementSystem: measurementSystem, Birthday: birthday, Height: height,
+            },
+        }).then(
+            (data) => {
+                if (data.successful) {
+                    setSuccessMessage('Profile updated successfully');
+                } else {
+                    setErrorMessage(data.error);
+                }
             },
             (error) => {
                 if (typeof error === 'string') {
@@ -55,36 +91,12 @@ const EditProfileForm = () => {
                 }
             },
         );
-    }, [currentUser.id]);
-
-    const saveProfile = async () => {
-        // setMessage('');
-
-        // client('users/authenticate', { data: { Email: email, Password: password } }).then(
-        //     (data) => {
-        //         if (data.error_message === '') {
-        //             setMessage('');
-        //             loginUser(data.token);
-        //             window.location.assign(redirectUrl);
-        //         } else {
-        //             setMessage(data.error_message);
-        //         }
-        //     },
-        //     (error) => {
-        //         if (typeof error === 'string') {
-        //             setMessage(error);
-        //         } else if (typeof error.message === 'string') {
-        //             setMessage(error.message);
-        //         } else {
-        //             setMessage('An error has occurred');
-        //         }
-        //     },
-        // );
     };
 
     return (
         <>
             <ErrorMessage error={errorMessage} />
+            <SuccessMessage message={successMessage} />
 
             {status === 'initialized' && (<LoadingBox />)}
 
@@ -151,7 +163,8 @@ const EditProfileForm = () => {
                                     name="birthday"
                                     id="birthday"
                                     selected={birthday}
-                                    onChange={(date:Date) => {
+                                    onChange={(date:Date, e:any) => {
+                                        e.preventDefault();
                                         setBirthday(date);
                                     }}
                                     closeOnScroll

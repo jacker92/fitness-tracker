@@ -23,12 +23,12 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
 
         client('users/authenticate', { data: { Email: email, Password: password } }).then(
             (data) => {
-                if (data.error_message === '') {
+                if (data.successful) {
                     setErrorMessage('');
                     loginUser(data.token);
                     window.location.assign(redirectUrl);
                 } else {
-                    setErrorMessage(data.error_message);
+                    setErrorMessage(data.error);
                 }
             },
             (error) => {

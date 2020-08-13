@@ -8,9 +8,10 @@ namespace FitnessTrackerApi.Services
 {
     public interface IUserService
     {
-        Task <RegistrationResponse> RegisterUser(RegistrationRequest model);
-        Task<AuthenticationResponse> Authenticate(AuthenticationRequest model);
+        Task<RegistrationResponse> RegisterUser(RegistrationRequest req);
+        Task<AuthenticationResponse> Authenticate(AuthenticationRequest req);
         Task<User> GetById(string id);
         Task<User> GetUserRecord(string id);
+        Task<UpdateProfileResponse> UpdateUserProfile(User user, UpdateProfileRequest req);
     }
 }

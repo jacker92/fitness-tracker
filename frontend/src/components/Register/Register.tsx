@@ -32,8 +32,12 @@ const Register = () => {
         // const resp = client('/users/register', { Name: name, Email: email, Password: password})
         client('users/register', { data: { Name: name, Email: email, Password: password } }).then(
             (data) => {
-                setMessage('');
-                loginUser(data.token);
+                if (data.successful) {
+                    setMessage('');
+                    loginUser(data.token);
+                } else {
+                    setMessage(data.error);
+                }
             },
             (error) => {
                 if (typeof error === 'string') {
