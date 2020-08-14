@@ -255,6 +255,28 @@ const EditProfileForm = () => {
                             />
                         </div>
 
+                        <label htmlFor="avatar">
+                            Avatar
+                            <input
+                                type="file"
+                                id="avatar"
+                                name="avatar"
+                                onChange={(e) => {
+
+                                }}
+                            />
+                            {/* {user.data. && (
+                                <div className="image-preview">
+                                    <img src={image} alt="Upload Preview" />
+                                </div>
+                            )}
+                            {!image && (
+                                <div className="image-preview">
+                                    <img src={image} alt={name} />
+                                </div>
+                            )} */}
+                        </label>
+
                         <div className="form-field">
                             <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>Save Changes</button>
                         </div>
