@@ -26,7 +26,7 @@ const EditProfileForm = () => {
     const [birthdayError] = useState('');
     const [height, setHeight] = useState('');
     const [heightError, setHeightError] = useState('');
-    // eslint-disable-next-line no-unused-vars
+    const [avatar, setAvatar] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
 
     const { currentUser } = useContext(AppContext);
@@ -45,6 +45,10 @@ const EditProfileForm = () => {
 
                     if (data.user.Height > 0) {
                         setHeight(data.user.Height);
+                    }
+
+                    if (data.user.Avatar !== '' && data.user.Avatar !== null) {
+                        setAvatar(data.user.Avatar);
                     }
 
                     setStatus('loaded');
@@ -97,7 +101,11 @@ const EditProfileForm = () => {
         if (validate()) {
             client('users/updateprofile', {
                 data: {
-                    Name: name, Email: email, MeasurementSystem: measurementSystem, Birthday: birthday, Height: parseInt(height, 10),
+                    Name: name,
+                    Email: email,
+                    MeasurementSystem: measurementSystem,
+                    Birthday: birthday,
+                    Height: parseInt(height, 10),
                 },
             }).then(
                 (data) => {
@@ -148,12 +156,16 @@ const EditProfileForm = () => {
         }
     };
 
+    const uploadImage = (e: any) => {
+        e.preventDefault();
+    };
+
     return (
         <>
             <ErrorMessage error={errorMessage} />
             <SuccessMessage message={successMessage} />
 
-            {status === 'initialized' && (<LoadingBox />)}
+            {status === 'initialized' && <LoadingBox />}
 
             {(status === 'loaded' || status === 'saving') && (
                 <Form
@@ -205,7 +217,10 @@ const EditProfileForm = () => {
                                 name="measurementsystem"
                                 label="Measurement System"
                                 value={measurementSystem}
-                                valueList={[{ value: 1, text: 'US' }, { value: 2, text: 'Metric' }]}
+                                valueList={[
+                                    { value: 1, text: 'US' },
+                                    { value: 2, text: 'Metric' },
+                                ]}
                                 error={measurementSystemError}
                                 requiredField
                                 includeBlank={false}
@@ -224,7 +239,7 @@ const EditProfileForm = () => {
                                     name="birthday"
                                     id="birthday"
                                     selected={birthday}
-                                    onChange={(date:Date, e:any) => {
+                                    onChange={(date: Date, e: any) => {
                                         e.preventDefault();
                                         setBirthday(date);
                                     }}
@@ -257,28 +272,23 @@ const EditProfileForm = () => {
 
                         <label htmlFor="avatar">
                             Avatar
-                            <input
-                                type="file"
-                                id="avatar"
-                                name="avatar"
-                                onChange={(e) => {
-
-                                }}
-                            />
-                            {/* {user.data. && (
+                            {avatar !== '' && (
                                 <div className="image-preview">
-                                    <img src={image} alt="Upload Preview" />
+                                    <img src={avatar} alt="Upload Preview" />
                                 </div>
                             )}
-                            {!image && (
+                            {avatar !== '' && (
                                 <div className="image-preview">
-                                    <img src={image} alt={name} />
+                                    <img src={avatar} alt={name} />
                                 </div>
-                            )} */}
+                            )}
+                            <input type="file" id="avatar" name="avatar" onChange={(e) => { uploadImage(e); }} />
                         </label>
 
                         <div className="form-field">
-                            <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>Save Changes</button>
+                            <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>
+                                Save Changes
+                            </button>
                         </div>
                     </fieldset>
                 </Form>
