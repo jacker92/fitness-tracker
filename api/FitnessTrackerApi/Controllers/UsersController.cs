@@ -68,10 +68,17 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [Authorize]
+        [HttpGet("checkemail")]
+        public async Task<IActionResult> CheckUserEmail(string userId, string email)
+        {
+            var response = await _userService.CheckEmail(userId, email);
+            return Ok(JsonSerializer.Serialize(response));
+        }
+
+        [Authorize]
         [HttpPost("updateprofile")]
         public async Task<IActionResult> UpdateUserProfile(UpdateProfileRequest request)
         {
-            System.Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(request));
             var user = (User)HttpContext.Items["User"];
 
             if (user == null)

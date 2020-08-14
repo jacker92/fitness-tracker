@@ -14,6 +14,8 @@ const AccountPage = styled.div`
     div.content {
         grid-column-start:2;
         grid-column-end:2;
+        border-left: 1px solid hsl(0, 0%, 19%);
+        padding-left: 25px;
 
         h1 {
             margin: 0 0 25px 0;

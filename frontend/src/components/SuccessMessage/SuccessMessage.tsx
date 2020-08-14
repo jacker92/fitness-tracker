@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 const SuccessBar = styled.div`
   width: 400px;
-  border: 1px solid hsl(140, 100%, 15%);
+  border: 1px solid hsl(134,61%,21%);
   border-radius: 6px;
   padding: 10px;
-  color: hsl(140, 100%, 15%);
+  color: hsl(134,61%,21%);
   font-weight: 600;
-  background: hsl(105, 100%, 80%);
+  background: hsl(134,41%,88%);
   margin: 30px auto;
   display: none;
   font-size: 1rem;

@@ -71,6 +71,12 @@ const Form = styled.form`
     &:hover {
       background: hsl(0, 0%, 13%)
     }
+
+    &:disabled {
+      background:hsl(0, 0%, 73%);
+      color:hsl(0, 0%, 37%);
+      border-color:hsl(0, 0%, 37%);
+    }
   }
 `;
 

@@ -12,6 +12,7 @@ namespace FitnessTrackerApi.Services
         Task<AuthenticationResponse> Authenticate(AuthenticationRequest req);
         Task<User> GetById(string id);
         Task<User> GetUserRecord(string id);
+        Task<CheckEmailResponse> CheckEmail(string id, string email);
         Task<UpdateProfileResponse> UpdateUserProfile(User user, UpdateProfileRequest req);
     }
 }

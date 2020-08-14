@@ -16,7 +16,7 @@ function useClickOutside(ref, visibleState, toggleFunction) {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [ref, visibleState]);
+    }, [ref, visibleState, toggleFunction]);
 }
 
 export { useClickOutside };

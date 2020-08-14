@@ -1,16 +1,7 @@
-/**
- * Fields:
- * Name
- * Email
- * Measurement System
- * Birthday
- * Height
- * Avatar
- */
-
 import React, { useState, useEffect, useContext } from 'react';
 import DatePicker from 'react-datepicker';
 import { client } from '../../lib/client';
+import { FormValidator } from '../../lib/FormValidator';
 import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
@@ -26,15 +17,17 @@ const EditProfileForm = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [name, setName] = useState('');
-    const [nameError] = useState('');
+    const [nameError, setNameError] = useState('');
     const [email, setEmail] = useState('');
-    const [emailError] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [measurementSystem, setMeasurementSystem] = useState(1);
     const [measurementSystemError] = useState('');
     const [birthday, setBirthday] = useState(new Date());
     const [birthdayError] = useState('');
     const [height, setHeight] = useState('');
-    const [heightError] = useState('');
+    const [heightError, setHeightError] = useState('');
+    // eslint-disable-next-line no-unused-vars
+    const [saveDisabled, setSaveDisabled] = useState(false);
 
     const { currentUser } = useContext(AppContext);
 
@@ -45,6 +38,14 @@ const EditProfileForm = () => {
                     setName(data.user.Name);
                     setEmail(data.user.Email);
                     setMeasurementSystem(data.user.MeasurementSystem);
+
+                    if (data.user.Birthday.substring(0, 4) !== '0001') {
+                        setBirthday(new Date(data.user.Birthday));
+                    }
+
+                    if (data.user.Height > 0) {
+                        setHeight(data.user.Height);
+                    }
 
                     setStatus('loaded');
                 } else {
@@ -65,13 +66,38 @@ const EditProfileForm = () => {
         );
     }, [currentUser.id]);
 
-    const saveProfile = async () => {
+    useEffect(() => {
+        if (emailError === '' && heightError === '' && birthdayError === '' && nameError === '') {
+            setSaveDisabled(false);
+        } else {
+            setSaveDisabled(true);
+        }
+    }, [emailError, heightError, birthdayError, nameError]);
+
+    // const validate = () => {
+    // let isValid = true;
+
+    // if (name.trim() === '') {
+    //     isValid = false;
+    //     setNameError('Name is required');
+    // }
+
+    // if (FormValidator.validateNumeric(height)) {
+    //     isValid = false;
+    //     setHeightError('Height must be numeric');
+    // }
+
+    // return isValid;
+    // };
+
+    const saveProfile = () => {
         setErrorMessage('');
         setSuccessMessage('');
 
+        // if (validate()) {
         client('users/updateprofile', {
             data: {
-                Name: name, Email: email, MeasurementSystem: measurementSystem, Birthday: birthday, Height: height,
+                Name: name, Email: email, MeasurementSystem: measurementSystem, Birthday: birthday, Height: parseInt(height, 10),
             },
         }).then(
             (data) => {
@@ -91,6 +117,35 @@ const EditProfileForm = () => {
                 }
             },
         );
+        // } else {
+        //    setErrorMessage('Please correct the validation errors');
+        // }
+    };
+
+    const checkEmail = (enteredEmail: string) => {
+        if (!FormValidator.validateEmail(enteredEmail)) {
+            setEmailError('Valid email address required');
+        } else {
+            client(`users/checkemail?userId=${currentUser.id}&email=${enteredEmail}`).then(
+                (data) => {
+                    if (data.successful) {
+                        if (!data.valid) {
+                            setEmailError('Email is already in use');
+                        }
+                    }
+                },
+                (error) => {
+                    if (typeof error === 'string') {
+                        setErrorMessage(error);
+                    } else if (typeof error.message === 'string') {
+                        setErrorMessage(error.message);
+                    } else {
+                        setErrorMessage('An error has occurred');
+                    }
+                    setStatus('errored');
+                },
+            );
+        }
     };
 
     return (
@@ -121,6 +176,9 @@ const EditProfileForm = () => {
                                 onChange={(e: any) => {
                                     setName(e.target.value);
                                 }}
+                                onErrorChange={(error: string) => {
+                                    setNameError(error);
+                                }}
                             />
                         </div>
 
@@ -131,9 +189,12 @@ const EditProfileForm = () => {
                                 label="Email"
                                 value={email}
                                 error={emailError}
-                                validationRule="email"
                                 onChange={(e: any) => {
                                     setEmail(e.target.value);
+                                }}
+                                validate={(e: any) => {
+                                    e.preventDefault();
+                                    checkEmail(e.target.value);
                                 }}
                             />
                         </div>
@@ -188,11 +249,14 @@ const EditProfileForm = () => {
                                 onChange={(e: any) => {
                                     setHeight(e.target.value);
                                 }}
+                                onErrorChange={(error: string) => {
+                                    setHeightError(error);
+                                }}
                             />
                         </div>
 
                         <div className="form-field">
-                            <button type="submit">Save Changes</button>
+                            <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>Save Changes</button>
                         </div>
                     </fieldset>
                 </Form>

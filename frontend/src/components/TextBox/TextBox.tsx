@@ -3,7 +3,7 @@ import PropTypes, { number } from 'prop-types';
 import { FormValidator } from '../../lib/FormValidator';
 
 // eslint-disable-next-line max-len
-const TextBox = (props: {name: string, label: string, type: string, value: any, id: string, error: string, success: string, onChange: Function, validationRule: string, validate: Function, validationArgs: { min: number, max: number }, showErrorMessage: boolean, doesErrorContainHtml: boolean, showSuccessMessage: boolean}) => {
+const TextBox = (props: {name: string, label: string, type: string, value: any, id: string, error: string, success: string, onChange: Function, validationRule: string, validate: Function, validationArgs: { min: number, max: number }, showErrorMessage: boolean, doesErrorContainHtml: boolean, showSuccessMessage: boolean, onErrorChange: Function}) => {
     const {
         error,
         success,
@@ -18,6 +18,7 @@ const TextBox = (props: {name: string, label: string, type: string, value: any, 
         showErrorMessage,
         showSuccessMessage,
         doesErrorContainHtml,
+        onErrorChange,
     } = props;
 
     const [errorMessage, setErrorMessage] = useState(error);
@@ -25,10 +26,16 @@ const TextBox = (props: {name: string, label: string, type: string, value: any, 
     const [fieldValue, setFieldValue] = useState(value);
 
     useEffect(() => {
-        setErrorMessage(props.error);
-        setSuccessMessage(props.success);
-        setFieldValue(props.value);
-    }, [props]);
+        setErrorMessage(error);
+        setSuccessMessage(success);
+        setFieldValue(value);
+    }, [error, success, value]);
+
+    useEffect(() => {
+        if (onErrorChange) {
+            onErrorChange(errorMessage);
+        }
+    }, [errorMessage, onErrorChange]);
 
     const validateField = (val: string, rule: string, args: {min: number, max: number}) => {
         let validationResult = { valid: true, message: '' };
@@ -133,6 +140,7 @@ TextBox.defaultProps = {
     validate: null,
     validationArgs: {},
     value: '',
+    onErrorChange: null,
 };
 
 TextBox.propTypes = {
@@ -156,6 +164,7 @@ TextBox.propTypes = {
     showErrorMessage: PropTypes.bool,
     doesErrorContainHtml: PropTypes.bool,
     showSuccessMessage: PropTypes.bool,
+    onErrorChange: PropTypes.func,
 };
 
 export { TextBox };

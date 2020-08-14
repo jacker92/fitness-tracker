@@ -140,6 +140,25 @@ namespace FitnessTrackerApi.Services
             return user;
         }
 
+        public async Task<CheckEmailResponse> CheckEmail(string id, string email)
+        {
+            var response = new CheckEmailResponse();
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return response;
+            }
+
+            if (user.Id != id)
+            {
+                response.Valid = false;
+            }
+
+            return response;
+        }
+
         public async Task<UpdateProfileResponse> UpdateUserProfile(User user, UpdateProfileRequest request)
         {
             try
