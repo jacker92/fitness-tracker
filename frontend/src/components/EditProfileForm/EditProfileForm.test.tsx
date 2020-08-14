@@ -100,4 +100,31 @@ describe('<EditProfileForm />', () => {
         const inchesHeightField = screen.queryByLabelText('Height (inches)');
         expect(inchesHeightField).not.toBeInTheDocument();
     });
+
+    test('it updates the profile successfully', async () => {
+        render(
+            <AppContext.Provider value={{
+                currentUser: { id: '123', name: 'Tester', email: 'test@test.com' },
+                loginUser: null,
+                logoutUser: null,
+                toggleUserMenu: null,
+                userMenuVisible: false,
+            }}
+            >
+                <EditProfileForm />
+            </AppContext.Provider>,
+        );
+
+        const heightField = await screen.findByLabelText(/Height/) as HTMLElement;
+        const saveButton = screen.getByRole('button', { name: /Save Changes/i }) as HTMLButtonElement;
+
+        await act(async () => {
+            await userEvent.clear(heightField);
+            await userEvent.type(heightField, '70');
+
+            await userEvent.click(saveButton);
+        });
+
+        await screen.findByText(/Profile updated successfully/);
+    });
 });

@@ -12,6 +12,11 @@ const handlers = [
             Height: 60,
         },
     }))),
+
+    rest.post('*/users/updateprofile', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+    }))),
 ];
 
 export { handlers };

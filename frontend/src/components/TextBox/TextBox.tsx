@@ -2,8 +2,22 @@ import React, { useState, useEffect } from 'react';
 import PropTypes, { number } from 'prop-types';
 import { FormValidator } from '../../lib/FormValidator';
 
-// eslint-disable-next-line max-len
-const TextBox = (props: {name: string, label: string, type: string, value: any, id: string, error: string, success: string, onChange: Function, validationRule: string, validate: Function, validationArgs: { min: number, max: number }, showErrorMessage: boolean, doesErrorContainHtml: boolean, showSuccessMessage: boolean, onErrorChange: Function}) => {
+const TextBox = (props: {
+    name: string,
+    label: string,
+    type: string,
+    value: any,
+    id: string,
+    error: string,
+    success: string,
+    onChange: Function,
+    validationRule: string,
+    validate: Function,
+    validationArgs: { min: number, max: number },
+    showErrorMessage: boolean,
+    doesErrorContainHtml: boolean,
+    showSuccessMessage: boolean,
+    onErrorChange: Function}) => {
     const {
         error,
         success,
@@ -26,61 +40,51 @@ const TextBox = (props: {name: string, label: string, type: string, value: any, 
     const [fieldValue, setFieldValue] = useState(value);
 
     useEffect(() => {
+        setFieldValue(value);
         setErrorMessage(error);
         setSuccessMessage(success);
-        setFieldValue(value);
-    }, [error, success, value]);
-
-    useEffect(() => {
-        if (onErrorChange) {
-            onErrorChange(errorMessage);
-        }
-    }, [errorMessage, onErrorChange]);
+    }, [value, error, success]);
 
     const validateField = (val: string, rule: string, args: {min: number, max: number}) => {
         let validationResult = { valid: true, message: '' };
+        let validationError = '';
 
         switch (rule.toLowerCase()) {
             case 'email':
-                if (FormValidator.validateEmail(val)) {
-                    setErrorMessage('');
-                } else {
-                    setErrorMessage('Valid email address required');
+                if (!FormValidator.validateEmail(val)) {
+                    validationError = 'Valid email address required';
                 }
                 break;
 
             case 'notempty':
-                if (FormValidator.validateNotEmpty(val)) {
-                    setErrorMessage('');
-                } else {
-                    setErrorMessage(`${label}  is required`);
+                if (!FormValidator.validateNotEmpty(val)) {
+                    validationError = `${label} is required`;
                 }
                 break;
 
             case 'setlength':
                 validationResult = FormValidator.validateSetLength(val, label, args.min, args.max);
-                setErrorMessage(validationResult.message);
+                validationError = validationResult.message;
                 break;
 
             case 'numeric':
-                if (FormValidator.validateNumeric(val)) {
-                    setErrorMessage('');
-                } else {
-                    setErrorMessage(`${label} must be numeric`);
+                if (!FormValidator.validateNumeric(val)) {
+                    validationError = `${label} must be numeric`;
                 }
                 break;
 
             case 'requirednumeric':
-                if (FormValidator.validateRequiredNumeric(val)) {
-                    setErrorMessage('');
-                } else {
-                    setErrorMessage(`${label}  is required`);
+                if (!FormValidator.validateRequiredNumeric(val)) {
+                    validationError = `${label} is required`;
                 }
                 break;
 
             default:
-                setErrorMessage('');
                 break;
+        }
+
+        if (onErrorChange) {
+            onErrorChange(validationError);
         }
     };
 

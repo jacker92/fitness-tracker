@@ -74,52 +74,52 @@ const EditProfileForm = () => {
         }
     }, [emailError, heightError, birthdayError, nameError]);
 
-    // const validate = () => {
-    // let isValid = true;
+    const validate = () => {
+        let isValid = true;
 
-    // if (name.trim() === '') {
-    //     isValid = false;
-    //     setNameError('Name is required');
-    // }
+        if (!FormValidator.validateNotEmpty(name)) {
+            isValid = false;
+            setNameError('Name is required');
+        }
 
-    // if (FormValidator.validateNumeric(height)) {
-    //     isValid = false;
-    //     setHeightError('Height must be numeric');
-    // }
+        if (!FormValidator.validateNumeric(height)) {
+            isValid = false;
+            setHeightError('Height must be numeric');
+        }
 
-    // return isValid;
-    // };
+        return isValid;
+    };
 
     const saveProfile = () => {
         setErrorMessage('');
         setSuccessMessage('');
 
-        // if (validate()) {
-        client('users/updateprofile', {
-            data: {
-                Name: name, Email: email, MeasurementSystem: measurementSystem, Birthday: birthday, Height: parseInt(height, 10),
-            },
-        }).then(
-            (data) => {
-                if (data.successful) {
-                    setSuccessMessage('Profile updated successfully');
-                } else {
-                    setErrorMessage(data.error);
-                }
-            },
-            (error) => {
-                if (typeof error === 'string') {
-                    setErrorMessage(error);
-                } else if (typeof error.message === 'string') {
-                    setErrorMessage(error.message);
-                } else {
-                    setErrorMessage('An error has occurred');
-                }
-            },
-        );
-        // } else {
-        //    setErrorMessage('Please correct the validation errors');
-        // }
+        if (validate()) {
+            client('users/updateprofile', {
+                data: {
+                    Name: name, Email: email, MeasurementSystem: measurementSystem, Birthday: birthday, Height: parseInt(height, 10),
+                },
+            }).then(
+                (data) => {
+                    if (data.successful) {
+                        setSuccessMessage('Profile updated successfully');
+                    } else {
+                        setErrorMessage(data.error);
+                    }
+                },
+                (error) => {
+                    if (typeof error === 'string') {
+                        setErrorMessage(error);
+                    } else if (typeof error.message === 'string') {
+                        setErrorMessage(error.message);
+                    } else {
+                        setErrorMessage('An error has occurred');
+                    }
+                },
+            );
+        } else {
+            setErrorMessage('Please correct the validation errors');
+        }
     };
 
     const checkEmail = (enteredEmail: string) => {
