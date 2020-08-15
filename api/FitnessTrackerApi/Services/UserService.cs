@@ -195,7 +195,7 @@ namespace FitnessTrackerApi.Services
             }
         }
 
-        public async Task<ImageUploadResponse> UpdateAvatar(User user, ImageUploadRequest request)
+        public async Task<ImageUploadResponse> UpdateAvatar(User user, AvatarUploadRequest request)
         {
             try
             {
@@ -224,7 +224,7 @@ namespace FitnessTrackerApi.Services
                 {
                     return new ImageUploadResponse
                     {
-                        Image = Convert.ToBase64String(imageData)
+                        Image = GetUserAvatar(user)
                     };
                 }
 
@@ -248,6 +248,29 @@ namespace FitnessTrackerApi.Services
         {
             string path = Path.Combine(_hostEnvironment.ContentRootPath, $"Uploads/avatars/{user.Id}.jpg");
             return Utilities.ConvertImageToBase64(path);
+        }
+
+        public async Task<BaseResponse> RemoveAvatar(User user)
+        {
+            string path = Path.Combine(_hostEnvironment.ContentRootPath, $"Uploads/avatars/{user.Id}.jpg");
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+
+            user.Avatar = "";
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return new BaseResponse();
+            }
+
+            return new BaseResponse
+            {
+                Successful = false,
+                ErrorMessage = "Unable to delete avatar"
+            };
         }
 
         private string generateJwtToken(User user)

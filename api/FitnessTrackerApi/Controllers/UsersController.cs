@@ -100,7 +100,7 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [HttpPost("uploadavatar")]
-        public async Task<IActionResult> CreateImage([FromForm] ImageUploadRequest request)
+        public async Task<IActionResult> UploadAvatar([FromForm] AvatarUploadRequest request)
         {
             try
             {
@@ -111,7 +111,6 @@ namespace FitnessTrackerApi.Controllers
                     return BadRequest(new { message = "Unable to retrieve user" });
                 }
 
-                // todo: check image is an image
                 var response = await _userService.UpdateAvatar(user, request);
 
                 // TODO: Figure out why I need to serialize the response
@@ -138,6 +137,22 @@ namespace FitnessTrackerApi.Controllers
             {
                 Image = _userService.GetUserAvatar(user)
             };
+
+            return Ok(JsonSerializer.Serialize(response));
+        }
+
+        [Authorize]
+        [HttpGet("removeavatar")]
+        public async Task<IActionResult> RemoveAvatar()
+        {
+            var user = (User)HttpContext.Items["User"];
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "Unable to retrieve user" });
+            }
+
+            var response = await _userService.RemoveAvatar(user);
 
             return Ok(JsonSerializer.Serialize(response));
         }

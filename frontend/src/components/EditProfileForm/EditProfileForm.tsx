@@ -204,6 +204,29 @@ const EditProfileForm = () => {
                     setErrorMessage(error);
                 } else if (typeof error.message === 'string') {
                     setErrorMessage(error.message);
+                } else if (error.errors.Image[0]) {
+                    setErrorMessage(error.errors.Image[0]);
+                } else {
+                    setErrorMessage('An error has occurred');
+                }
+            },
+        );
+    };
+
+    const removeAvatar = () => {
+        client('users/removeavatar').then(
+            (data) => {
+                if (data.successful) {
+                    setAvatar('');
+                } else {
+                    setErrorMessage(data.error);
+                }
+            },
+            (error) => {
+                if (typeof error === 'string') {
+                    setErrorMessage(error);
+                } else if (typeof error.message === 'string') {
+                    setErrorMessage(error.message);
                 } else {
                     setErrorMessage('An error has occurred');
                 }
@@ -327,18 +350,24 @@ const EditProfileForm = () => {
                                 {avatar !== '' && (
                                     <div className="image-preview">
                                         <img src={avatar} alt={name} />
+                                        <div className="remove-avatar">
+                                            <button type="button" onClick={removeAvatar}>
+                                                Remove Avatar
+                                            </button>
+                                        </div>
                                     </div>
                                 )}
                                 <div className="upload-field">
                                     <div className="button-wrap">
                                         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                                         <label className="button" htmlFor="avatar">
-                                            Choose Image
+                                            {avatar === '' ? 'Choose Image' : 'Replace Avatar'}
                                         </label>
                                         <input
                                             type="file"
                                             id="avatar"
                                             name="avatar"
+                                            accept="image/*"
                                             onChange={(e) => {
                                                 uploadImage(e);
                                             }}

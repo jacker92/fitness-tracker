@@ -93,7 +93,7 @@ const Form = styled.form`
       top: 7px;
       left: 38px;
       font-size: 0.9rem;
-      color: hsl(0, 0%, 19%);;
+      color: transparent;
     }
 
     .button-wrap {
@@ -123,6 +123,22 @@ const Form = styled.form`
 
       img {
         max-width:300px;
+      }
+
+      .remove-avatar {
+        margin:10px 0 0 0;
+
+        button {
+          background: hsl(0, 0%, 19%);
+          color: hsl(0,0%,100%);
+          padding: 4px 8px;
+          border: 1px solid hsl(0, 0%, 7%);
+          font-size: 1.05rem;
+          border-radius: 3px;
+          display: inline-block;
+          cursor: pointer;
+          font-weight: normal;
+        }
       }
     }
   }
