@@ -3,10 +3,11 @@ using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
 using FitnessTrackerApi.Repositories;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -18,12 +19,14 @@ namespace FitnessTrackerApi.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IHostEnvironment _hostEnvironment;
         private readonly IRepository<DailyTarget> _dailyTargetRepository;
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IRepository<DailyTarget> dailyTargetRepo)
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IHostEnvironment hostEnvironment, IRepository<DailyTarget> dailyTargetRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _hostEnvironment = hostEnvironment;
             _dailyTargetRepository = dailyTargetRepo;
         }
 
@@ -190,6 +193,61 @@ namespace FitnessTrackerApi.Services
                     ErrorMessage = ex.Message
                 };
             }
+        }
+
+        public async Task<ImageUploadResponse> UpdateAvatar(User user, ImageUploadRequest request)
+        {
+            try
+            {
+                string path = Path.Combine(_hostEnvironment.ContentRootPath, $"Uploads/avatars/{user.Id}.jpg");
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+
+                byte[] imageData = await Utilities.SaveImage(request.Image, path);
+
+                if (imageData == null || imageData.Length == 0)
+                {
+                    return new ImageUploadResponse
+                    {
+                        Successful = false,
+                        ErrorMessage = "Unable to upload image"
+                    };
+                }
+
+                user.Avatar = $"/Uploads/avatars/{user.Id}.jpg";
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return new ImageUploadResponse
+                    {
+                        Image = Convert.ToBase64String(imageData)
+                    };
+                }
+
+                return new ImageUploadResponse
+                {
+                    Successful = false,
+                    ErrorMessage = "Unable to update avatar"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ImageUploadResponse
+                {
+                    Successful = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
+        public string GetUserAvatar(User user)
+        {
+            string path = Path.Combine(_hostEnvironment.ContentRootPath, $"Uploads/avatars/{user.Id}.jpg");
+            return Utilities.ConvertImageToBase64(path);
         }
 
         private string generateJwtToken(User user)

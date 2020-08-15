@@ -5,7 +5,9 @@ function logout() {
     window.localStorage.removeItem(localStorageKey);
 }
 
-async function client(endpoint, { data, ...customConfig } = {}) {
+async function client(endpoint, {
+    data, contentType = 'application/json', fileUpload = false, ...customConfig
+} = {}) {
     const token = window.localStorage.getItem(localStorageKey);
 
     const headers = {};
@@ -14,11 +16,18 @@ async function client(endpoint, { data, ...customConfig } = {}) {
         headers.Authorization = `Bearer ${token}`;
     }
 
-    headers['Content-Type'] = 'application/json';
+    if (contentType !== null) {
+        headers['Content-Type'] = contentType;
+    }
+
+    let body;
+    if (data) {
+        body = (fileUpload ? data : JSON.stringify(data));
+    }
 
     const config = {
         method: data ? 'POST' : 'GET',
-        body: data ? JSON.stringify(data) : undefined,
+        body,
         headers,
         ...customConfig,
     };

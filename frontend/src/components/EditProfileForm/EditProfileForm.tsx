@@ -31,6 +31,30 @@ const EditProfileForm = () => {
 
     const { currentUser } = useContext(AppContext);
 
+    const getUserAvatar = () => {
+        client('users/getavatar').then(
+            (data) => {
+                if (data.successful) {
+                    setAvatar(`data:image/png;base64,${data.image}`);
+                    setStatus('loaded');
+                } else {
+                    setErrorMessage(data.error);
+                    setStatus('errored');
+                }
+            },
+            (error) => {
+                if (typeof error === 'string') {
+                    setErrorMessage(error);
+                } else if (typeof error.message === 'string') {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('An error has occurred');
+                }
+                setStatus('errored');
+            },
+        );
+    };
+
     useEffect(() => {
         client('users/getuser').then(
             (data) => {
@@ -48,10 +72,10 @@ const EditProfileForm = () => {
                     }
 
                     if (data.user.Avatar !== '' && data.user.Avatar !== null) {
-                        setAvatar(data.user.Avatar);
+                        getUserAvatar();
+                    } else {
+                        setStatus('loaded');
                     }
-
-                    setStatus('loaded');
                 } else {
                     setErrorMessage(data.error);
                     setStatus('errored');
@@ -158,6 +182,33 @@ const EditProfileForm = () => {
 
     const uploadImage = (e: any) => {
         e.preventDefault();
+
+        setErrorMessage('');
+        setSuccessMessage('');
+
+        const { files } = e.target;
+        const formData = new FormData();
+        formData.append('Image', files[0]);
+
+        client('users/uploadavatar', { data: formData, contentType: null, fileUpload: true }).then(
+            (data) => {
+                if (data.successful) {
+                    setSuccessMessage('Avatar uploaded successfully');
+                    setAvatar(`data:image/png;base64,${data.image}`);
+                } else {
+                    setErrorMessage(data.error);
+                }
+            },
+            (error) => {
+                if (typeof error === 'string') {
+                    setErrorMessage(error);
+                } else if (typeof error.message === 'string') {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('An error has occurred');
+                }
+            },
+        );
     };
 
     return (
@@ -270,20 +321,32 @@ const EditProfileForm = () => {
                             />
                         </div>
 
-                        <label htmlFor="avatar">
-                            Avatar
-                            {avatar !== '' && (
-                                <div className="image-preview">
-                                    <img src={avatar} alt="Upload Preview" />
+                        <div className="form-field-upload">
+                            <label htmlFor="avatar">
+                                Avatar
+                                {avatar !== '' && (
+                                    <div className="image-preview">
+                                        <img src={avatar} alt={name} />
+                                    </div>
+                                )}
+                                <div className="upload-field">
+                                    <div className="button-wrap">
+                                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                                        <label className="button" htmlFor="avatar">
+                                            Choose Image
+                                        </label>
+                                        <input
+                                            type="file"
+                                            id="avatar"
+                                            name="avatar"
+                                            onChange={(e) => {
+                                                uploadImage(e);
+                                            }}
+                                        />
+                                    </div>
                                 </div>
-                            )}
-                            {avatar !== '' && (
-                                <div className="image-preview">
-                                    <img src={avatar} alt={name} />
-                                </div>
-                            )}
-                            <input type="file" id="avatar" name="avatar" onChange={(e) => { uploadImage(e); }} />
-                        </label>
+                            </label>
+                        </div>
 
                         <div className="form-field">
                             <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>

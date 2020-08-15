@@ -78,6 +78,54 @@ const Form = styled.form`
       border-color:hsl(0, 0%, 37%);
     }
   }
+
+  .form-field-upload {
+    .upload-field {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    input[type="file"] {
+      position: absolute;
+      z-index: -1;
+      top: 7px;
+      left: 38px;
+      font-size: 0.9rem;
+      color: hsl(0, 0%, 19%);;
+    }
+
+    .button-wrap {
+      position: relative;
+    }
+
+    label.button {
+      background: hsl(0, 0%, 19%);
+      color: hsl(0,0%,100%);
+      padding: 4px 8px;
+      border: 1px solid hsl(0, 0%, 7%);
+      font-size: 1.05rem;
+      border-radius: 3px;
+      display: inline-block;
+      cursor: pointer;
+      font-weight: normal;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      font-size: 1.2rem;
+    }
+
+    .image-preview {
+      margin:25px 0;
+
+      img {
+        max-width:300px;
+      }
+    }
+  }
 `;
 
 export { Form };

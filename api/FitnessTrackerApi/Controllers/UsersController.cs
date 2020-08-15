@@ -3,7 +3,6 @@ using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Text.Json;
@@ -16,12 +15,10 @@ namespace FitnessTrackerApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IHostEnvironment _hostEnvironment;
 
-        public UsersController(IUserService userService, IHostEnvironment hostEnvironment)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-            _hostEnvironment = hostEnvironment;
         }
 
         [HttpPost("authenticate")]
@@ -115,27 +112,34 @@ namespace FitnessTrackerApi.Controllers
                 }
 
                 // todo: check image is an image
+                var response = await _userService.UpdateAvatar(user, request);
 
-                string path = Path.Combine(_hostEnvironment.ContentRootPath, $"Uploads/avatars/{user.Id}.jpg");
-
-                if (System.IO.File.Exists(path))
-                {
-                    System.IO.File.Delete(path);
-                }
-
-                byte[] imageData = await Utilities.SaveImage(request.Image, path);
-
-                if (imageData == null || imageData.Length == 0)
-                {
-                    return BadRequest(new { message = "Unable to upload image" });
-                }
-
-                return File(imageData, "image/jpeg");
+                // TODO: Figure out why I need to serialize the response
+                return Ok(JsonSerializer.Serialize(response));
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = $"Error uploading image: {ex.Message}" });
             }
+        }
+
+        [Authorize]
+        [HttpGet("getavatar")]
+        public IActionResult GetAvatar()
+        {
+            var user = (User)HttpContext.Items["User"];
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "Unable to retrieve user" });
+            }
+
+            var response = new ImageUploadResponse
+            {
+                Image = _userService.GetUserAvatar(user)
+            };
+
+            return Ok(JsonSerializer.Serialize(response));
         }
     }
 }
