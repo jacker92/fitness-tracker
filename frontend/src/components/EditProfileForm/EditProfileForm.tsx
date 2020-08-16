@@ -214,10 +214,14 @@ const EditProfileForm = () => {
     };
 
     const removeAvatar = () => {
-        client('users/removeavatar').then(
+        setErrorMessage('');
+        setSuccessMessage('');
+
+        client('users/removeavatar', { data: {} }).then(
             (data) => {
                 if (data.successful) {
                     setAvatar('');
+                    setSuccessMessage('Avatar removed successfully');
                 } else {
                     setErrorMessage(data.error);
                 }

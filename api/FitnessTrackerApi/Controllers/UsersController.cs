@@ -142,7 +142,7 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("removeavatar")]
+        [HttpPost("removeavatar")]
         public async Task<IActionResult> RemoveAvatar()
         {
             var user = (User)HttpContext.Items["User"];
