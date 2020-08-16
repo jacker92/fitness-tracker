@@ -156,5 +156,34 @@ namespace FitnessTrackerApi.Controllers
 
             return Ok(JsonSerializer.Serialize(response));
         }
+
+        [Authorize]
+        [HttpPost("updateactivitysettings")]
+        public async Task<IActionResult> UpdateActivitySettings(UpdateActivitySettingsRequest request)
+        {
+            try
+            {
+                var user = (User)HttpContext.Items["User"];
+
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user" });
+                }
+
+                var response = await _userService.UpdateActivitySettings(user, request);
+
+                if (response.ErrorMessage != "")
+                {
+                    return BadRequest(new { message = response.ErrorMessage });
+                }
+
+                // TODO: Figure out why I need to serialize the response
+                return Ok(JsonSerializer.Serialize(response));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

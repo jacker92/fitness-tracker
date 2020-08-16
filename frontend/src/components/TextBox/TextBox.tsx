@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { number } from 'prop-types';
+import PropTypes from 'prop-types';
 import { FormValidator } from '../../lib/FormValidator';
 
 const TextBox = (props: {
@@ -162,8 +162,8 @@ TextBox.propTypes = {
     validationRule: PropTypes.string,
     validate: PropTypes.func,
     validationArgs: PropTypes.shape({
-        min: number,
-        max: number,
+        min: PropTypes.number,
+        max: PropTypes.number,
     }),
     showErrorMessage: PropTypes.bool,
     doesErrorContainHtml: PropTypes.bool,

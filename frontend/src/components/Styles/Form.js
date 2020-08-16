@@ -47,6 +47,13 @@ const Form = styled.form`
         padding:4px;
         font-size:1rem;
       }
+
+      input[type="checkbox"] {
+        margin-right: 10px;
+        vertical-align: bottom;
+        position: relative;
+        top: -3px;
+      }
     }
 
     label.errored {

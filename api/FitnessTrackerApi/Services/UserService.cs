@@ -273,6 +273,47 @@ namespace FitnessTrackerApi.Services
             };
         }
 
+        public async Task<UpdateActivitySettingsResponse> UpdateActivitySettings(User user, UpdateActivitySettingsRequest request)
+        {
+            try
+            {
+                if (user != null)
+                {
+                    user.DailyTarget = _dailyTargetRepository.Get(r => r.UserID == user.Id).FirstOrDefault();
+                }
+
+                user.CaloriesBurnedSetting = request.CaloriesBurnedSetting;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    user.DailyTarget.EnableActiveMinuteTarget = request.EnableActiveMinuteTarget;
+                    user.DailyTarget.ActiveMintueTarget = request.ActiveMintueTarget;
+                    user.DailyTarget.EnableCaloriesBurnedTarget = request.EnableCaloriesBurnedTarget;
+                    user.DailyTarget.CaloriesBurnedTarget = request.CaloriesBurnedTarget;
+
+                    await _dailyTargetRepository.Update(user.DailyTarget);
+
+                    return new UpdateActivitySettingsResponse();
+                }
+
+                return new UpdateActivitySettingsResponse
+                {
+                    Successful = false,
+                    ErrorMessage = "Unable to update activity settings"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new UpdateActivitySettingsResponse
+                {
+                    Successful = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
         private string generateJwtToken(User user)
         {
             var claims = new[] {
