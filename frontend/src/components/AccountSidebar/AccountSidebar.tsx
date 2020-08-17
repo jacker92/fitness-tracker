@@ -71,6 +71,34 @@ const AccountSidebar = (props: { activePage: string }) => {
                     <a href="/account/settings">Account Settings</a>
                 )}
             </li>
+            <li className={activePage === 'metrics' ? 'active' : ''}>
+                {activePage === 'metrics' ? (
+                    <>Metrics</>
+                ) : (
+                    <a href="/account/metrics">Metrics</a>
+                )}
+            </li>
+            <li className={activePage === 'activities' ? 'active' : ''}>
+                {activePage === 'activities' ? (
+                    <>Custom Activities</>
+                ) : (
+                    <a href="/account/activities">Custom Activities</a>
+                )}
+            </li>
+            <li className={activePage === 'downloaddata' ? 'active' : ''}>
+                {activePage === 'downloaddata' ? (
+                    <>Download Your Data</>
+                ) : (
+                    <a href="/account/download">Download Your Data</a>
+                )}
+            </li>
+            <li className={activePage === 'deleteaccount' ? 'active' : ''}>
+                {activePage === 'deleteaccount' ? (
+                    <>Delete Account</>
+                ) : (
+                    <a href="/account/delete-account">Delete Account</a>
+                )}
+            </li>
         </SidebarList>
     );
 };
