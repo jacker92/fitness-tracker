@@ -11,10 +11,22 @@ const handlers = [
             Birthday: '1/1/1900',
             Height: 60,
             Avatar: null,
+            CaloriesBurnedSetting: 0,
+            DailyTarget: {
+                EnableActiveMinuteTarget: false,
+                ActiveMintueTarget: 30,
+                EnableCaloriesBurnedTarget: false,
+                CaloriesBurnedTarget: 300,
+            },
         },
     }))),
 
     rest.post('*/users/updateprofile', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+    }))),
+
+    rest.post('*/users/updateactivitysettings', (req, res, ctx) => res(ctx.json({
         successful: true,
         error: '',
     }))),

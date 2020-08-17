@@ -82,13 +82,6 @@ const EditActivitySettingsForm = () => {
         setSuccessMessage('');
 
         if (validate()) {
-            console.log({
-                CaloriesBurnedSetting: caloriesBurnedSetting,
-                EnableActiveMinuteTarget: enableActiveMinuteTarget,
-                ActiveMintueTarget: activeMinuteTarget,
-                EnableCaloriesBurnedTarget: enableCaloriesBurnedTarget,
-                CaloriesBurnedTarget: caloriesBurnedTarget,
-            });
             client('users/updateactivitysettings', {
                 data: {
                     CaloriesBurnedSetting: caloriesBurnedSetting,
@@ -168,7 +161,11 @@ const EditActivitySettingsForm = () => {
                             />
                         </div>
 
-                        <div className="form-field" style={enableActiveMinuteTarget ? { display: 'block' } : { display: 'none' }}>
+                        <div
+                            className="form-field"
+                            data-testid="activeminutetarget-div"
+                            style={enableActiveMinuteTarget ? { display: 'block' } : { display: 'none' }}
+                        >
                             <TextBox
                                 id="activeminutetarget"
                                 name="activeminutetarget"
@@ -177,8 +174,12 @@ const EditActivitySettingsForm = () => {
                                 error={activeMinuteTargetError}
                                 validationRule="numeric"
                                 onChange={(e: any) => {
-                                    if (!Number.isNaN(e.target.value)) {
-                                        setActiveMinuteTarget(parseInt(e.target.value, 10));
+                                    if (e.target.value !== '') {
+                                        if (!Number.isNaN(e.target.value)) {
+                                            setActiveMinuteTarget(parseInt(e.target.value, 10));
+                                        }
+                                    } else {
+                                        setActiveMinuteTarget(0);
                                     }
                                 }}
                                 onErrorChange={(error: string) => {
@@ -200,7 +201,11 @@ const EditActivitySettingsForm = () => {
                             />
                         </div>
 
-                        <div className="form-field" style={enableCaloriesBurnedTarget ? { display: 'block' } : { display: 'none' }}>
+                        <div
+                            className="form-field"
+                            data-testid="caloriesburnedtarget-div"
+                            style={enableCaloriesBurnedTarget ? { display: 'block' } : { display: 'none' }}
+                        >
                             <TextBox
                                 id="caloriesburnedtarget"
                                 name="caloriesburnedtarget"
@@ -209,8 +214,12 @@ const EditActivitySettingsForm = () => {
                                 error={caloriesBurnedTargetError}
                                 validationRule="numeric"
                                 onChange={(e: any) => {
-                                    if (!Number.isNaN(e.target.value)) {
-                                        setCaloriesBurnedTarget(parseInt(e.target.value, 10));
+                                    if (e.target.value !== '') {
+                                        if (!Number.isNaN(e.target.value)) {
+                                            setCaloriesBurnedTarget(parseInt(e.target.value, 10));
+                                        }
+                                    } else {
+                                        setCaloriesBurnedTarget(0);
                                     }
                                 }}
                                 onErrorChange={(error: string) => {
