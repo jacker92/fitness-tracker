@@ -44,12 +44,17 @@ namespace FitnessTrackerApi.Models
         public decimal Height { get; set; }
 
         [PersonalData]
-        public bool ManuallyCalculateTargets { get; set; }
-
-        [PersonalData]
         public string Avatar { get; set; }
 
         [PersonalData]
         public CaloriesBurnedOffset CaloriesBurnedSetting { get; set; } = CaloriesBurnedOffset.Ignore;
+
+        [PersonalData]
+        [NotMapped]
+        public decimal Weight { get; set; }
+
+        [PersonalData]
+        [NotMapped]
+        public decimal BodyFatPercentage { get; set; }
     }
 }

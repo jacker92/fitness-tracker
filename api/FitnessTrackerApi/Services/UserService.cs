@@ -21,13 +21,15 @@ namespace FitnessTrackerApi.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IHostEnvironment _hostEnvironment;
         private readonly IRepository<DailyTarget> _dailyTargetRepository;
+        private readonly IRepository<UserMetric> _userMetricRepository;
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IHostEnvironment hostEnvironment, IRepository<DailyTarget> dailyTargetRepo)
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IHostEnvironment hostEnvironment, IRepository<DailyTarget> dailyTargetRepo, IRepository<UserMetric> userMetricRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _hostEnvironment = hostEnvironment;
             _dailyTargetRepository = dailyTargetRepo;
+            _userMetricRepository = userMetricRepo;
         }
 
         public async Task<RegistrationResponse> RegisterUser(RegistrationRequest request)
@@ -138,6 +140,18 @@ namespace FitnessTrackerApi.Services
             if (user != null)
             {
                 user.DailyTarget = _dailyTargetRepository.Get(r => r.UserID == user.Id).FirstOrDefault();
+
+                var latestWeight = _userMetricRepository.Get(um => um.UserID == user.Id && um.MetricID == (int)SystemMetrics.Weight).OrderByDescending(um => um.DateTimeRecorded).FirstOrDefault();
+                if (latestWeight != null)
+                {
+                    user.Weight = decimal.Parse(latestWeight.Measurement);
+                }
+
+                var latestBodyFat = _userMetricRepository.Get(um => um.UserID == user.Id && um.MetricID == (int)SystemMetrics.BodyFatPercentage).OrderByDescending(um => um.DateTimeRecorded).FirstOrDefault();
+                if (latestBodyFat != null)
+                {
+                    user.BodyFatPercentage = decimal.Parse(latestBodyFat.Measurement);
+                }
             }
 
             return user;

@@ -12,6 +12,8 @@ namespace FitnessTrackerApi.Models
         [JsonIgnore]
         public virtual User User { get; set; }
 
+        public MacroTargetMode MacroTargetMode { get; set; } = MacroTargetMode.Off;
+
         public bool EnableCalorieTarget { get; set; } = false;
 
         [Column(TypeName = "decimal(18,4)")]
@@ -40,11 +42,6 @@ namespace FitnessTrackerApi.Models
 
         [Column(TypeName = "decimal(18,4)")]
         public decimal FatTarget { get; set; } = 0;
-
-        public bool EnableSugarTarget { get; set; } = false;
-
-        [Column(TypeName = "decimal(18,4)")]
-        public decimal SugarTarget { get; set; } = 0;
 
         public bool EnableActiveMinuteTarget { get; set; } = false;
 

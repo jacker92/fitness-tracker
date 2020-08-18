@@ -4,14 +4,16 @@ using FitnessTrackerApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FitnessTrackerApi.Migrations
 {
     [DbContext(typeof(FitnessDbContext))]
-    partial class FitnessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200818001940_UpdateDietTargets")]
+    partial class UpdateDietTargets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,6 +67,9 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<decimal>("CarbohydratesTarget")
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<int>("DietTargetMode")
+                        .HasColumnType("int");
+
                     b.Property<bool>("EnableActiveMinuteTarget")
                         .HasColumnType("bit");
 
@@ -88,9 +93,6 @@ namespace FitnessTrackerApi.Migrations
 
                     b.Property<decimal>("FatTarget")
                         .HasColumnType("decimal(18,4)");
-
-                    b.Property<int>("MacroTargetMode")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("ProteinPercentage")
                         .HasColumnType("decimal(18,4)");

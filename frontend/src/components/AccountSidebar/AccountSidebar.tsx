@@ -50,6 +50,13 @@ const AccountSidebar = (props: { activePage: string }) => {
                     <a href="/account/profile">Profile</a>
                 )}
             </li>
+            <li className={activePage === 'account' ? 'active' : ''}>
+                {activePage === 'account' ? (
+                    <>Account Settings</>
+                ) : (
+                    <a href="/account/settings">Account Settings</a>
+                )}
+            </li>
             <li className={activePage === 'activity' ? 'active' : ''}>
                 {activePage === 'activity' ? (
                     <>Activity Settings</>
@@ -62,13 +69,6 @@ const AccountSidebar = (props: { activePage: string }) => {
                     <>Diet Settings</>
                 ) : (
                     <a href="/account/diet">Diet Settings</a>
-                )}
-            </li>
-            <li className={activePage === 'account' ? 'active' : ''}>
-                {activePage === 'account' ? (
-                    <>Account Settings</>
-                ) : (
-                    <a href="/account/settings">Account Settings</a>
                 )}
             </li>
             <li className={activePage === 'metrics' ? 'active' : ''}>

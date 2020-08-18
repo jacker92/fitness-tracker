@@ -217,25 +217,28 @@ const EditProfileForm = () => {
         setErrorMessage('');
         setSuccessMessage('');
 
-        client('users/removeavatar', { data: {} }).then(
-            (data) => {
-                if (data.successful) {
-                    setAvatar('');
-                    setSuccessMessage('Avatar removed successfully');
-                } else {
-                    setErrorMessage(data.error);
-                }
-            },
-            (error) => {
-                if (typeof error === 'string') {
-                    setErrorMessage(error);
-                } else if (typeof error.message === 'string') {
-                    setErrorMessage(error.message);
-                } else {
-                    setErrorMessage('An error has occurred');
-                }
-            },
-        );
+        // eslint-disable-next-line no-alert
+        if (window.confirm('Are you sure you want to remove your avatar?')) {
+            client('users/removeavatar', { data: {} }).then(
+                (data) => {
+                    if (data.successful) {
+                        setAvatar('');
+                        setSuccessMessage('Avatar removed successfully');
+                    } else {
+                        setErrorMessage(data.error);
+                    }
+                },
+                (error) => {
+                    if (typeof error === 'string') {
+                        setErrorMessage(error);
+                    } else if (typeof error.message === 'string') {
+                        setErrorMessage(error.message);
+                    } else {
+                        setErrorMessage('An error has occurred');
+                    }
+                },
+            );
+        }
     };
 
     return (

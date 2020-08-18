@@ -21,4 +21,17 @@ namespace FitnessTrackerApi
         Ignore = 0,
         Balance = 1
     }
+
+    public enum MacroTargetMode
+    {
+        Off = 0,
+        Percentage = 1,
+        Manual = 2
+    }
+
+    public enum SystemMetrics
+    {
+        Weight = -1,
+        BodyFatPercentage = -2
+    }
 }
