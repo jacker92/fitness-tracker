@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {
+    useState, useEffect, useContext, useCallback,
+} from 'react';
 import { client } from '../../lib/client';
-import { FormValidator } from '../../lib/FormValidator';
+// import { FormValidator } from '../../lib/FormValidator';
+import { Utilities } from '../../lib/Utilities';
 import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
@@ -21,11 +24,21 @@ const EditDietSettingsForm = () => {
     const [caloriesTargetError, setCaloriesTargetError] = useState('');
     const [enableProteinPercentage, setEnableProteinPercentage] = useState(false);
     const [proteinPercentage, setProteinPercentage] = useState(35);
+    const [proteinPercentageGrams, setProteinPercentageGrams] = useState(0);
     const [enableCarbsPercentage, setEnableCarbsPercentage] = useState(false);
     const [carbsPercentage, setCarbsPercentage] = useState(35);
+    const [carbsPercentageGrams, setCarbsPercentageGrams] = useState(0);
     const [enableFatPercentage, setEnableFatPercentage] = useState(false);
     const [fatPercentage, setFatPercentage] = useState(30);
+    const [fatPercentageGrams, setFatPercentageGrams] = useState(0);
+    const [enableProteinGrams, setEnableProteinGrams] = useState(false);
+    const [proteinGrams, setProteinGrams] = useState(175);
+    const [enableCarbsGrams, setEnableCarbsGrams] = useState(false);
+    const [carbsGrams, setCarbsGrams] = useState(175);
+    const [enableFatGrams, setEnableFatGrams] = useState(false);
+    const [fatGrams, setFatGrams] = useState(67);
     const [percentagesError, setPercentagesError] = useState('');
+    const [manualMacrosError, setManualMacrosError] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
 
     const { currentUser } = useContext(AppContext);
@@ -54,11 +67,12 @@ const EditDietSettingsForm = () => {
         );
     }, [currentUser.id]);
 
-    const validatePercentages = () => {
+    const validateAndCalculatePercentages = useCallback(() => {
         if (enableProteinPercentage && enableCarbsPercentage && enableFatPercentage) {
-            console.log({ sum: proteinPercentage + carbsPercentage + fatPercentage });
             if (proteinPercentage + carbsPercentage + fatPercentage !== 100) {
                 setPercentagesError('Total percentage must equal 100');
+            } else {
+                setPercentagesError('');
             }
         } else {
             let total = 0;
@@ -77,9 +91,50 @@ const EditDietSettingsForm = () => {
 
             if (total >= 100) {
                 setPercentagesError('Total percentage cannot be greater than 100');
+            } else {
+                setPercentagesError('');
             }
         }
-    };
+
+        if (percentagesError === '') {
+            setProteinPercentageGrams(Utilities.calculateProteinFromPercentage(caloriesTarget, proteinPercentage));
+            setCarbsPercentageGrams(Utilities.calculateCarbsFromPercentage(caloriesTarget, carbsPercentage));
+            setFatPercentageGrams(Utilities.calculateFatFromPercentage(caloriesTarget, fatPercentage));
+        }
+    }, [enableProteinPercentage, enableCarbsPercentage, enableFatPercentage, proteinPercentage, carbsPercentage, fatPercentage]);
+
+    useEffect(() => {
+        validateAndCalculatePercentages();
+    }, [
+        enableProteinPercentage,
+        enableCarbsPercentage,
+        enableFatPercentage,
+        proteinPercentage,
+        carbsPercentage,
+        fatPercentage,
+        validateAndCalculatePercentages,
+    ]);
+
+    const calculatePercentages = useCallback(() => {
+        // if mode is percentages, calculate the grams
+        if (macroTargetMode === 1) {
+            setProteinPercentageGrams(Utilities.calculateProteinFromPercentage(caloriesTarget, proteinPercentage));
+            setCarbsPercentageGrams(Utilities.calculateCarbsFromPercentage(caloriesTarget, carbsPercentage));
+            setFatPercentageGrams(Utilities.calculateFatFromPercentage(caloriesTarget, fatPercentage));
+        }
+    }, [enableCaloriesTarget, caloriesTarget]);
+
+    useEffect(() => {
+        calculatePercentages();
+    }, [enableCaloriesTarget, caloriesTarget, calculatePercentages]);
+
+    useEffect(() => {
+        if (percentagesError === '' && manualMacrosError === '') {
+            setSaveDisabled(false);
+        } else {
+            setSaveDisabled(true);
+        }
+    }, [percentagesError, manualMacrosError]);
 
     return (
         <>
@@ -175,14 +230,16 @@ const EditDietSettingsForm = () => {
                                     mode="PERCENT"
                                     enableProtein={enableProteinPercentage}
                                     proteinTarget={proteinPercentage}
+                                    proteinGrams={proteinPercentageGrams}
                                     enableCarbs={enableCarbsPercentage}
                                     carbsTarget={carbsPercentage}
+                                    carbGrams={carbsPercentageGrams}
                                     enableFat={enableFatPercentage}
                                     fatTarget={fatPercentage}
+                                    fatGrams={fatPercentageGrams}
                                     error={percentagesError}
                                     onEnableProteinChange={(e: any) => {
                                         setEnableProteinPercentage(e.target.checked);
-                                        validatePercentages();
                                     }}
                                     onProteinChange={(e: any) => {
                                         if (e.target.value !== '') {
@@ -192,12 +249,9 @@ const EditDietSettingsForm = () => {
                                         } else {
                                             setProteinPercentage(0);
                                         }
-
-                                        validatePercentages();
                                     }}
                                     onEnableCarbsChange={(e: any) => {
                                         setEnableCarbsPercentage(e.target.checked);
-                                        validatePercentages();
                                     }}
                                     onCarbsChange={(e: any) => {
                                         if (e.target.value !== '') {
@@ -207,12 +261,9 @@ const EditDietSettingsForm = () => {
                                         } else {
                                             setCarbsPercentage(0);
                                         }
-
-                                        validatePercentages();
                                     }}
                                     onEnableFatChange={(e: any) => {
                                         setEnableFatPercentage(e.target.checked);
-                                        validatePercentages();
                                     }}
                                     onFatChange={(e: any) => {
                                         if (e.target.value !== '') {
@@ -222,8 +273,59 @@ const EditDietSettingsForm = () => {
                                         } else {
                                             setFatPercentage(0);
                                         }
+                                    }}
+                                />
+                            </div>
 
-                                        validatePercentages();
+                            <div
+                                className="form-field"
+                                data-testid="manualfields-div"
+                                style={macroTargetMode === 2 ? { display: 'block' } : { display: 'none' }}
+                            >
+                                <MacroTargetForm
+                                    mode="MANUAL"
+                                    enableProtein={enableProteinGrams}
+                                    proteinTarget={proteinGrams}
+                                    enableCarbs={enableCarbsGrams}
+                                    carbsTarget={carbsGrams}
+                                    enableFat={enableFatGrams}
+                                    fatTarget={fatGrams}
+                                    error={manualMacrosError}
+                                    onEnableProteinChange={(e: any) => {
+                                        setEnableProteinGrams(e.target.checked);
+                                    }}
+                                    onProteinChange={(e: any) => {
+                                        if (e.target.value !== '') {
+                                            if (!Number.isNaN(e.target.value)) {
+                                                setProteinGrams(parseInt(e.target.value, 10));
+                                            }
+                                        } else {
+                                            setProteinGrams(0);
+                                        }
+                                    }}
+                                    onEnableCarbsChange={(e: any) => {
+                                        setEnableCarbsGrams(e.target.checked);
+                                    }}
+                                    onCarbsChange={(e: any) => {
+                                        if (e.target.value !== '') {
+                                            if (!Number.isNaN(e.target.value)) {
+                                                setCarbsGrams(parseInt(e.target.value, 10));
+                                            }
+                                        } else {
+                                            setCarbsGrams(0);
+                                        }
+                                    }}
+                                    onEnableFatChange={(e: any) => {
+                                        setEnableFatGrams(e.target.checked);
+                                    }}
+                                    onFatChange={(e: any) => {
+                                        if (e.target.value !== '') {
+                                            if (!Number.isNaN(e.target.value)) {
+                                                setFatGrams(parseInt(e.target.value, 10));
+                                            }
+                                        } else {
+                                            setFatGrams(0);
+                                        }
                                     }}
                                 />
                             </div>

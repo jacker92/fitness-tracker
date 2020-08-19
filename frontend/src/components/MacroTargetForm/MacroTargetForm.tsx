@@ -6,6 +6,10 @@ const MacroForm = styled.div`
     fieldset {
         margin: 25px 0;
 
+        legend {
+            font-weight: 700;
+        }
+
         div.macro-field {
             margin: 12px 0;
             height: 42px;
@@ -30,6 +34,10 @@ const MacroForm = styled.div`
                     height: 42px;
                 }
             }
+
+            .macro-target {
+                margin-left: 20px;
+            }
         }
     }
 `;
@@ -38,10 +46,13 @@ const MacroTargetForm = (props: {
     mode: string,
     enableProtein: boolean,
     proteinTarget: number,
+    proteinGrams: number,
     enableCarbs: boolean,
     carbsTarget: number,
+    carbGrams: number,
     enableFat: boolean,
     fatTarget: number,
+    fatGrams: number,
     onEnableProteinChange: Function,
     onProteinChange: Function,
     onEnableCarbsChange: Function,
@@ -54,10 +65,13 @@ const MacroTargetForm = (props: {
         mode,
         enableProtein,
         proteinTarget,
+        proteinGrams,
         enableCarbs,
         carbsTarget,
+        carbGrams,
         enableFat,
         fatTarget,
+        fatGrams,
         onEnableProteinChange,
         onProteinChange,
         onEnableCarbsChange,
@@ -111,6 +125,13 @@ const MacroTargetForm = (props: {
                             }}
                         />
                     </label>
+
+                    <div
+                        className="macro-target"
+                        style={(mode === 'PERCENT' && enableProteinTarget) ? { display: 'inline-block' } : { display: 'none' }}
+                    >
+                        {`( ${proteinGrams}g )`}
+                    </div>
                 </div>
 
                 <div className="macro-field">
@@ -140,6 +161,13 @@ const MacroTargetForm = (props: {
                             }}
                         />
                     </label>
+
+                    <div
+                        className="macro-target"
+                        style={(mode === 'PERCENT' && enableCarbsTarget) ? { display: 'inline-block' } : { display: 'none' }}
+                    >
+                        {`( ${carbGrams}g )`}
+                    </div>
                 </div>
 
                 <div className="macro-field">
@@ -169,6 +197,13 @@ const MacroTargetForm = (props: {
                             }}
                         />
                     </label>
+
+                    <div
+                        className="macro-target"
+                        style={(mode === 'PERCENT' && enableFatTarget) ? { display: 'inline-block' } : { display: 'none' }}
+                    >
+                        {`( ${fatGrams}g )`}
+                    </div>
                 </div>
 
                 <div className="error-text" style={errorMessage !== '' ? { display: 'block' } : { display: 'none' }}>
@@ -181,6 +216,9 @@ const MacroTargetForm = (props: {
 
 MacroTargetForm.defaultProps = {
     error: '',
+    proteinGrams: 0,
+    carbGrams: 0,
+    fatGrams: 0,
 };
 
 MacroTargetForm.propTypes = {
@@ -198,6 +236,9 @@ MacroTargetForm.propTypes = {
     onEnableFatChange: PropTypes.func.isRequired,
     onFatChange: PropTypes.func.isRequired,
     error: PropTypes.string,
+    proteinGrams: PropTypes.number,
+    carbGrams: PropTypes.number,
+    fatGrams: PropTypes.number,
 };
 
 export { MacroTargetForm };

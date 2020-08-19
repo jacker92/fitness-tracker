@@ -34,4 +34,13 @@ namespace FitnessTrackerApi
         Weight = -1,
         BodyFatPercentage = -2
     }
+
+    public enum ActivityLevel
+    {
+        Sedentary = 1,
+        Light = 2,
+        Moderate = 3,
+        Very = 4,
+        Extremely = 5
+    }
 }

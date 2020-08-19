@@ -50,6 +50,12 @@ namespace FitnessTrackerApi.Models
         public CaloriesBurnedOffset CaloriesBurnedSetting { get; set; } = CaloriesBurnedOffset.Ignore;
 
         [PersonalData]
+        public char Gender { get; set; }
+
+        [PersonalData]
+        public ActivityLevel ActivityLevel { get; set; }
+
+        [PersonalData]
         [NotMapped]
         public decimal Weight { get; set; }
 
