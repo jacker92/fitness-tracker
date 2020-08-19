@@ -52,7 +52,7 @@ const Form = styled.form`
         margin-right: 10px;
         vertical-align: bottom;
         position: relative;
-        top: -3px;
+        height:1.2rem;
       }
     }
 

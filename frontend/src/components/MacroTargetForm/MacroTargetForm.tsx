@@ -8,13 +8,17 @@ const MacroForm = styled.div`
 
         div.macro-field {
             margin: 12px 0;
+            height: 42px;
+            line-height: 42px;
 
             label {
                 display: inline-block;
+                line-height: 42px;
 
                 div.macro-name {
                     display: inline-block;
                     width: 200px;
+                    line-height: 42px;
                 }
 
                 input[type="text"] {
@@ -23,7 +27,7 @@ const MacroForm = styled.div`
                 }
 
                 input[type="checkbox"] {
-                    top: -10px;
+                    height: 42px;
                 }
             }
         }

@@ -21,13 +21,11 @@ const EditDietSettingsForm = () => {
     const [caloriesTargetError, setCaloriesTargetError] = useState('');
     const [enableProteinPercentage, setEnableProteinPercentage] = useState(false);
     const [proteinPercentage, setProteinPercentage] = useState(35);
-    const [proteinPercentageError, setProteinPercentageError] = useState('');
     const [enableCarbsPercentage, setEnableCarbsPercentage] = useState(false);
     const [carbsPercentage, setCarbsPercentage] = useState(35);
-    const [carbsPercentageError, setCarbsPercentageError] = useState('');
     const [enableFatPercentage, setEnableFatPercentage] = useState(false);
     const [fatPercentage, setFatPercentage] = useState(30);
-    const [fatPercentageError, setFatPercentageError] = useState('');
+    const [percentagesError, setPercentagesError] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
 
     const { currentUser } = useContext(AppContext);
@@ -55,6 +53,33 @@ const EditDietSettingsForm = () => {
             },
         );
     }, [currentUser.id]);
+
+    const validatePercentages = () => {
+        if (enableProteinPercentage && enableCarbsPercentage && enableFatPercentage) {
+            console.log({ sum: proteinPercentage + carbsPercentage + fatPercentage });
+            if (proteinPercentage + carbsPercentage + fatPercentage !== 100) {
+                setPercentagesError('Total percentage must equal 100');
+            }
+        } else {
+            let total = 0;
+
+            if (enableProteinPercentage) {
+                total += proteinPercentage;
+            }
+
+            if (enableCarbsPercentage) {
+                total += carbsPercentage;
+            }
+
+            if (enableFatPercentage) {
+                total += fatPercentage;
+            }
+
+            if (total >= 100) {
+                setPercentagesError('Total percentage cannot be greater than 100');
+            }
+        }
+    };
 
     return (
         <>
@@ -86,7 +111,13 @@ const EditDietSettingsForm = () => {
                                 requiredField
                                 includeBlank={false}
                                 onChange={(e: any) => {
-                                    setMacroTargetMode(parseInt(e.target.value, 10));
+                                    const macroMode = parseInt(e.target.value, 10);
+
+                                    if (macroMode !== 0) {
+                                        setEnableCaloriesTarget(true);
+                                    }
+
+                                    setMacroTargetMode(macroMode);
                                 }}
                             />
                         </div>
@@ -148,8 +179,10 @@ const EditDietSettingsForm = () => {
                                     carbsTarget={carbsPercentage}
                                     enableFat={enableFatPercentage}
                                     fatTarget={fatPercentage}
+                                    error={percentagesError}
                                     onEnableProteinChange={(e: any) => {
                                         setEnableProteinPercentage(e.target.checked);
+                                        validatePercentages();
                                     }}
                                     onProteinChange={(e: any) => {
                                         if (e.target.value !== '') {
@@ -159,9 +192,12 @@ const EditDietSettingsForm = () => {
                                         } else {
                                             setProteinPercentage(0);
                                         }
+
+                                        validatePercentages();
                                     }}
                                     onEnableCarbsChange={(e: any) => {
                                         setEnableCarbsPercentage(e.target.checked);
+                                        validatePercentages();
                                     }}
                                     onCarbsChange={(e: any) => {
                                         if (e.target.value !== '') {
@@ -171,9 +207,12 @@ const EditDietSettingsForm = () => {
                                         } else {
                                             setCarbsPercentage(0);
                                         }
+
+                                        validatePercentages();
                                     }}
                                     onEnableFatChange={(e: any) => {
                                         setEnableFatPercentage(e.target.checked);
+                                        validatePercentages();
                                     }}
                                     onFatChange={(e: any) => {
                                         if (e.target.value !== '') {
@@ -183,6 +222,8 @@ const EditDietSettingsForm = () => {
                                         } else {
                                             setFatPercentage(0);
                                         }
+
+                                        validatePercentages();
                                     }}
                                 />
                             </div>
