@@ -17,5 +17,11 @@ namespace FitnessTrackerApi.Models.Requests
         public DateTime Birthday { get; set; }
 
         public decimal Height { get; set; }
+
+        [Required]
+        public char Gender { get; set; }
+
+        [Required]
+        public ActivityLevel ActivityLevel { get; set; }
     }
 }

@@ -22,6 +22,8 @@ const EditProfileForm = () => {
     const [emailError, setEmailError] = useState('');
     const [measurementSystem, setMeasurementSystem] = useState(1);
     const [measurementSystemError] = useState('');
+    const [gender, setGender] = useState('M');
+    const [activityLevel, setActivityLevel] = useState(1);
     const [birthday, setBirthday] = useState(new Date());
     const [birthdayError] = useState('');
     const [height, setHeight] = useState('');
@@ -61,7 +63,9 @@ const EditProfileForm = () => {
                 if (data.successful) {
                     setName(data.user.Name);
                     setEmail(data.user.Email);
-                    setMeasurementSystem(data.user.MeasurementSystem);
+                    setMeasurementSystem(parseInt(data.user.MeasurementSystem, 10));
+                    setGender(data.user.Gender);
+                    setActivityLevel(data.user.ActivityLevel);
 
                     if (data.user.Birthday.substring(0, 4) !== '0001') {
                         setBirthday(new Date(data.user.Birthday));
@@ -130,6 +134,8 @@ const EditProfileForm = () => {
                     MeasurementSystem: measurementSystem,
                     Birthday: birthday,
                     Height: parseInt(height, 10),
+                    Gender: gender,
+                    ActivityLevel: activityLevel,
                 },
             }).then(
                 (data) => {
@@ -347,6 +353,45 @@ const EditProfileForm = () => {
                                 }}
                                 onErrorChange={(error: string) => {
                                     setHeightError(error);
+                                }}
+                            />
+                        </div>
+
+                        <div className="form-field">
+                            <SelectField
+                                id="gender"
+                                name="gender"
+                                label="Gender"
+                                value={gender}
+                                valueList={[
+                                    { value: 'M', text: 'Male' },
+                                    { value: 'F', text: 'Female' },
+                                ]}
+                                requiredField
+                                includeBlank={false}
+                                onChange={(e: any) => {
+                                    setGender(e.target.value);
+                                }}
+                            />
+                        </div>
+
+                        <div className="form-field">
+                            <SelectField
+                                id="activitylevel"
+                                name="activitylevel"
+                                label="Activity Level"
+                                value={activityLevel}
+                                valueList={[
+                                    { value: 1, text: 'Sedentary' },
+                                    { value: 2, text: 'Lightly Active' },
+                                    { value: 3, text: 'Moderately Active' },
+                                    { value: 4, text: 'Very Active' },
+                                    { value: 5, text: 'Extremely Active' },
+                                ]}
+                                requiredField
+                                includeBlank={false}
+                                onChange={(e: any) => {
+                                    setActivityLevel(parseInt(e.target.value, 10));
                                 }}
                             />
                         </div>

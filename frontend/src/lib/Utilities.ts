@@ -100,7 +100,7 @@ class Utilities {
         return bmr * activityMultiplier;
     }
 
-    static calculateCalories(tdee, multiplier) {
+    static calculateCalories(tdee: number, multiplier: number) {
         return tdee * multiplier;
     }
 }
