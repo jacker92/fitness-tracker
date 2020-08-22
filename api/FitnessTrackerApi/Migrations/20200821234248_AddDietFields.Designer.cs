@@ -4,14 +4,16 @@ using FitnessTrackerApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FitnessTrackerApi.Migrations
 {
     [DbContext(typeof(FitnessDbContext))]
-    partial class FitnessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200821234248_AddDietFields")]
+    partial class AddDietFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -315,9 +317,6 @@ namespace FitnessTrackerApi.Migrations
 
                     b.Property<int>("DietMode")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("DietPercentage")
-                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")

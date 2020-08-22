@@ -8,6 +8,8 @@ const TextBox = (props: {
     type: string,
     value: any,
     id: string,
+    disabled: boolean,
+    readonly: boolean,
     error: string,
     success: string,
     onChange: Function,
@@ -24,6 +26,8 @@ const TextBox = (props: {
         value,
         type,
         label,
+        disabled,
+        readonly,
         name, id,
         onChange,
         validate,
@@ -110,6 +114,8 @@ const TextBox = (props: {
                         validateField(e.target.value, validationRule, validationArgs);
                     }
                 }}
+                disabled={disabled}
+                readOnly={readonly}
             />
 
             {doesErrorContainHtml ? (
@@ -145,6 +151,8 @@ TextBox.defaultProps = {
     validationArgs: {},
     value: '',
     onErrorChange: null,
+    disabled: false,
+    readonly: false,
 };
 
 TextBox.propTypes = {
@@ -155,6 +163,8 @@ TextBox.propTypes = {
         PropTypes.string,
         PropTypes.number,
     ]),
+    disabled: PropTypes.bool,
+    readonly: PropTypes.bool,
     id: PropTypes.string.isRequired,
     error: PropTypes.string,
     success: PropTypes.string,

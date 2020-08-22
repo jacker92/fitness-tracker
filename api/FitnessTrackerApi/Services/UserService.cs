@@ -43,7 +43,9 @@ namespace FitnessTrackerApi.Services
                     UserName = request.Email,
                     MeasurementSystem = request.MeasurementSystem,
                     Gender = request.Gender,
-                    ActivityLevel = request.ActivityLevel
+                    Height = request.Height,
+                    ActivityLevel = request.ActivityLevel,
+                    Birthday = request.Birthday
                 };
 
                 var result = await _userManager.CreateAsync(user, request.Password);

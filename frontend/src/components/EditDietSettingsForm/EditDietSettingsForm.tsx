@@ -18,6 +18,8 @@ const EditDietSettingsForm = () => {
     const [status, setStatus] = useState('initialized');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [manuallyCalculateCalories, setManuallyCalculateCalories] = useState(false);
+    const [dietMode, setDietMode] = useState(1);
     const [macroTargetMode, setMacroTargetMode] = useState(0);
     const [enableCaloriesTarget, setEnableCaloriesTarget] = useState(false);
     const [caloriesTarget, setCaloriesTarget] = useState(0);
@@ -38,7 +40,7 @@ const EditDietSettingsForm = () => {
     const [enableFatGrams, setEnableFatGrams] = useState(false);
     const [fatGrams, setFatGrams] = useState(67);
     const [percentagesError, setPercentagesError] = useState('');
-    const [manualMacrosError, setManualMacrosError] = useState('');
+    const [manualMacrosError] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
 
     const { currentUser } = useContext(AppContext);
@@ -101,7 +103,7 @@ const EditDietSettingsForm = () => {
             setCarbsPercentageGrams(Utilities.calculateCarbsFromPercentage(caloriesTarget, carbsPercentage));
             setFatPercentageGrams(Utilities.calculateFatFromPercentage(caloriesTarget, fatPercentage));
         }
-    }, [enableProteinPercentage, enableCarbsPercentage, enableFatPercentage, proteinPercentage, carbsPercentage, fatPercentage]);
+    }, [enableProteinPercentage, enableCarbsPercentage, enableFatPercentage, proteinPercentage, carbsPercentage, fatPercentage, caloriesTarget, percentagesError]);
 
     useEffect(() => {
         validateAndCalculatePercentages();
@@ -122,11 +124,11 @@ const EditDietSettingsForm = () => {
             setCarbsPercentageGrams(Utilities.calculateCarbsFromPercentage(caloriesTarget, carbsPercentage));
             setFatPercentageGrams(Utilities.calculateFatFromPercentage(caloriesTarget, fatPercentage));
         }
-    }, [enableCaloriesTarget, caloriesTarget]);
+    }, [caloriesTarget, carbsPercentage, proteinPercentage, fatPercentage, macroTargetMode]);
 
     useEffect(() => {
         calculatePercentages();
-    }, [enableCaloriesTarget, caloriesTarget, calculatePercentages]);
+    }, [caloriesTarget, calculatePercentages]);
 
     useEffect(() => {
         if (percentagesError === '' && manualMacrosError === '') {
@@ -152,6 +154,18 @@ const EditDietSettingsForm = () => {
                     }}
                 >
                     <fieldset>
+                        <div className="form-field">
+                            <Checkbox
+                                id="manuallycalculatecalories"
+                                name="manuallycalculatecalories"
+                                label="Manually Calculate Calories"
+                                isChecked={manuallyCalculateCalories}
+                                onChange={(e: any) => {
+                                    setManuallyCalculateCalories(e.target.checked);
+                                }}
+                            />
+                        </div>
+
                         <div className="form-field">
                             <SelectField
                                 id="macrotargetmode"
@@ -202,6 +216,7 @@ const EditDietSettingsForm = () => {
                                 value={caloriesTarget}
                                 error={caloriesTargetError}
                                 validationRule="numeric"
+                                disabled={!manuallyCalculateCalories}
                                 onChange={(e: any) => {
                                     if (e.target.value !== '') {
                                         if (!Number.isNaN(e.target.value)) {

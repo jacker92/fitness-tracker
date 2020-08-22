@@ -43,4 +43,11 @@ namespace FitnessTrackerApi
         Very = 4,
         Extremely = 5
     }
+
+    public enum DietMode
+    {
+        Maintenance = 1,
+        Cut = 2,
+        Bulk = 3
+    }
 }

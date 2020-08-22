@@ -30,6 +30,7 @@ namespace FitnessTrackerApi.Models
 
         [PersonalData]
         public int DailyTargetID { get; set; }
+
         [PersonalData]
         public DailyTarget DailyTarget { get; set; }
 
@@ -54,6 +55,16 @@ namespace FitnessTrackerApi.Models
 
         [PersonalData]
         public ActivityLevel ActivityLevel { get; set; }
+
+        [PersonalData]
+        public bool ManuallyCalculateCalories { get; set; } = false;
+
+        [PersonalData]
+        public DietMode DietMode { get; set; } = DietMode.Maintenance;
+
+        [PersonalData]
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal DietPercentage { get; set; } = 0;
 
         [PersonalData]
         [NotMapped]

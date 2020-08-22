@@ -34,6 +34,7 @@ const Checkbox = (props: { isChecked: boolean, label: string, name: string, id: 
 Checkbox.defaultProps = {
     isChecked: false,
     onChange: null,
+    value: '',
 };
 
 Checkbox.propTypes = {
@@ -42,7 +43,7 @@ Checkbox.propTypes = {
     value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
-    ]).isRequired,
+    ]),
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func,
     isChecked: PropTypes.bool,
