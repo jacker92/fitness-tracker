@@ -57,7 +57,7 @@ namespace FitnessTrackerApi.Models
         public ActivityLevel ActivityLevel { get; set; }
 
         [PersonalData]
-        public bool ManuallyCalculateCalories { get; set; } = false;
+        public bool ManuallyCalculateCalories { get; set; } = true;
 
         [PersonalData]
         public DietMode DietMode { get; set; } = DietMode.Maintenance;

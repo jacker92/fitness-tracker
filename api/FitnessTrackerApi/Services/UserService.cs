@@ -148,6 +148,7 @@ namespace FitnessTrackerApi.Services
                 var latestWeight = _userMetricRepository.Get(um => um.UserID == user.Id && um.MetricID == (int)SystemMetrics.Weight).OrderByDescending(um => um.DateTimeRecorded).FirstOrDefault();
                 if (latestWeight != null)
                 {
+                    Console.WriteLine($"WEIGHT: {latestWeight.Measurement}");
                     user.Weight = decimal.Parse(latestWeight.Measurement);
                 }
 

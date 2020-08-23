@@ -20,6 +20,8 @@ const EditDietSettingsForm = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [manuallyCalculateCalories, setManuallyCalculateCalories] = useState(false);
     const [dietMode, setDietMode] = useState(1);
+    const [dietPercentage, setDietPercentage] = useState(0);
+    const [dietPercentageError, setDietPercentageError] = useState('');
     const [macroTargetMode, setMacroTargetMode] = useState(0);
     const [enableCaloriesTarget, setEnableCaloriesTarget] = useState(false);
     const [caloriesTarget, setCaloriesTarget] = useState(0);
@@ -41,7 +43,9 @@ const EditDietSettingsForm = () => {
     const [fatGrams, setFatGrams] = useState(67);
     const [percentagesError, setPercentagesError] = useState('');
     const [manualMacrosError] = useState('');
+    const [weight, setWeight] = useState(0);
     const [saveDisabled, setSaveDisabled] = useState(false);
+    const [user, setUser] = useState(null);
 
     const { currentUser } = useContext(AppContext);
 
@@ -50,6 +54,12 @@ const EditDietSettingsForm = () => {
             (data) => {
                 if (data.successful) {
                     setMacroTargetMode(data.user.DailyTarget.MacroTargetMode);
+                    setManuallyCalculateCalories(data.user.ManuallyCalculateCalories);
+                    setDietMode(data.user.DietMode);
+                    setDietPercentage(data.user.DietPercentage);
+                    setWeight(data.user.Weight);
+                    setUser(data.user);
+
                     setStatus('loaded');
                 } else {
                     setErrorMessage(data.error);
@@ -138,6 +148,41 @@ const EditDietSettingsForm = () => {
         }
     }, [percentagesError, manualMacrosError]);
 
+    const calculateTDEE = useCallback(() => {
+        const bmr = Utilities.calculateBMR({
+            gender: user.Gender,
+            measurementSystem: user.MeasurementSystem,
+            weight: user.Weight,
+            height: user.Height,
+            age: user.Age,
+        });
+
+        console.log({ bmr });
+
+        const tdee = Utilities.calculateTDEE(user.Gender, bmr, user.ActivityLevel);
+
+        console.log({ tdee });
+
+        switch (dietMode) {
+            case 1:
+                setCaloriesTarget(tdee - (tdee * dietPercentage));
+                break;
+            case 2:
+                setCaloriesTarget(tdee + (tdee * dietPercentage));
+                break;
+            case 0:
+            default:
+                setCaloriesTarget(tdee);
+                break;
+        }
+    }, [user, dietMode, dietPercentage]);
+
+    useEffect(() => {
+        if (!manuallyCalculateCalories) {
+            calculateTDEE();
+        }
+    }, [user, manuallyCalculateCalories, calculateTDEE]);
+
     return (
         <>
             <ErrorMessage error={errorMessage} />
@@ -161,7 +206,62 @@ const EditDietSettingsForm = () => {
                                 label="Manually Calculate Calories"
                                 isChecked={manuallyCalculateCalories}
                                 onChange={(e: any) => {
-                                    setManuallyCalculateCalories(e.target.checked);
+                                    const doManualCalories = e.target.checked;
+                                    if (weight === 0 && !doManualCalories) {
+                                        setErrorMessage('You must enter your weight before you can automatically calculate calories');
+                                        return;
+                                    }
+
+                                    setManuallyCalculateCalories(doManualCalories);
+                                }}
+                            />
+                        </div>
+
+                        <div
+                            className="form-field"
+                            data-testid="dietmode-div"
+                            style={!manuallyCalculateCalories ? { display: 'block' } : { display: 'none' }}
+                        >
+                            <SelectField
+                                id="dietmode"
+                                name="dietmode"
+                                label="Diet Mode"
+                                value={dietMode}
+                                valueList={[
+                                    { value: 0, text: 'Maintenance' },
+                                    { value: 1, text: 'Cut' },
+                                    { value: 2, text: 'Bulk' },
+                                ]}
+                                includeBlank={false}
+                                onChange={(e: any) => {
+                                    setDietMode(parseInt(e.target.value, 10));
+                                }}
+                            />
+                        </div>
+
+                        <div
+                            className="form-field"
+                            data-testid="dietpercentage-div"
+                            style={!manuallyCalculateCalories && (dietMode !== 0) ? { display: 'block' } : { display: 'none' }}
+                        >
+                            <TextBox
+                                id="dietpercentage"
+                                name="dietpercentage"
+                                label="Diet Percentage"
+                                value={dietPercentage}
+                                error={dietPercentageError}
+                                validationRule="numeric"
+                                onChange={(e: any) => {
+                                    if (e.target.value !== '') {
+                                        if (!Number.isNaN(e.target.value)) {
+                                            setDietPercentage(parseInt(e.target.value, 10));
+                                        }
+                                    } else {
+                                        setDietPercentage(0);
+                                    }
+                                }}
+                                onErrorChange={(error: string) => {
+                                    setDietPercentageError(error);
                                 }}
                             />
                         </div>
