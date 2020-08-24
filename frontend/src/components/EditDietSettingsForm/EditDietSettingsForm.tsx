@@ -45,9 +45,39 @@ const EditDietSettingsForm = () => {
     const [manualMacrosError] = useState('');
     const [weight, setWeight] = useState(0);
     const [saveDisabled, setSaveDisabled] = useState(false);
-    const [user, setUser] = useState(null);
+
+    const [gender, setGender] = useState('');
+    const [measurementSystem, setMeasurementSystem] = useState(1);
+    const [height, setHeight] = useState(0);
+    const [age, setAge] = useState(0);
+    const [activityLevel, setActivityLevel] = useState(1);
 
     const { currentUser } = useContext(AppContext);
+
+    const calculateTDEE = useCallback(() => {
+        const bmr = Utilities.calculateBMR({
+            gender,
+            measurementSystem,
+            weight,
+            height,
+            age,
+        });
+
+        const tdee = Utilities.calculateTDEE(gender, bmr, activityLevel);
+
+        switch (dietMode) {
+            case 1:
+                setCaloriesTarget(tdee - (tdee * dietPercentage));
+                break;
+            case 2:
+                setCaloriesTarget(tdee + (tdee * dietPercentage));
+                break;
+            case 0:
+            default:
+                setCaloriesTarget(tdee);
+                break;
+        }
+    }, [gender, measurementSystem, weight, height, age, activityLevel, dietMode, dietPercentage]);
 
     useEffect(() => {
         client('users/getuser').then(
@@ -58,7 +88,14 @@ const EditDietSettingsForm = () => {
                     setDietMode(data.user.DietMode);
                     setDietPercentage(data.user.DietPercentage);
                     setWeight(data.user.Weight);
-                    setUser(data.user);
+
+                    setGender(data.user.Gender);
+                    setMeasurementSystem(data.user.MeasurementSystem);
+                    setHeight(data.user.Height);
+                    setAge(data.user.Age);
+                    setActivityLevel(data.user.ActivityLevel);
+
+                    calculateTDEE();
 
                     setStatus('loaded');
                 } else {
@@ -77,7 +114,7 @@ const EditDietSettingsForm = () => {
                 setStatus('errored');
             },
         );
-    }, [currentUser.id]);
+    }, [currentUser.id, calculateTDEE]);
 
     const validateAndCalculatePercentages = useCallback(() => {
         if (enableProteinPercentage && enableCarbsPercentage && enableFatPercentage) {
@@ -148,40 +185,11 @@ const EditDietSettingsForm = () => {
         }
     }, [percentagesError, manualMacrosError]);
 
-    const calculateTDEE = useCallback(() => {
-        const bmr = Utilities.calculateBMR({
-            gender: user.Gender,
-            measurementSystem: user.MeasurementSystem,
-            weight: user.Weight,
-            height: user.Height,
-            age: user.Age,
-        });
-
-        console.log({ bmr });
-
-        const tdee = Utilities.calculateTDEE(user.Gender, bmr, user.ActivityLevel);
-
-        console.log({ tdee });
-
-        switch (dietMode) {
-            case 1:
-                setCaloriesTarget(tdee - (tdee * dietPercentage));
-                break;
-            case 2:
-                setCaloriesTarget(tdee + (tdee * dietPercentage));
-                break;
-            case 0:
-            default:
-                setCaloriesTarget(tdee);
-                break;
-        }
-    }, [user, dietMode, dietPercentage]);
-
     useEffect(() => {
         if (!manuallyCalculateCalories) {
             calculateTDEE();
         }
-    }, [user, manuallyCalculateCalories, calculateTDEE]);
+    }, [manuallyCalculateCalories, calculateTDEE]);
 
     return (
         <>

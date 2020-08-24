@@ -2,11 +2,16 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace FitnessTrackerApi.Models
 {
     public class User : IdentityUser
     {
+        [JsonIgnore]
+        [Column(TypeName = "nvarchar(max)")]
+        public override string PasswordHash { get; set; }
+
         [PersonalData]
         public string Name { get; set; }
 
@@ -65,6 +70,25 @@ namespace FitnessTrackerApi.Models
         [PersonalData]
         [Column(TypeName = "decimal(18,4)")]
         public decimal DietPercentage { get; set; } = 0;
+
+        [PersonalData]
+        [NotMapped]
+        public int Age
+        {
+            get
+            {
+                var today = DateTime.Today;
+                var age = today.Year - Birthday.Year;
+
+                // Go back to the year the person was born in case of a leap year
+                if (Birthday.Date > today.AddYears(-age))
+                {
+                    age -= 1;
+                }
+
+                return age;
+            }
+        }
 
         [PersonalData]
         [NotMapped]

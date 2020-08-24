@@ -40,6 +40,13 @@ class Utilities {
             heightInCm = args.height * 100;
         }
 
+        console.log({
+            weight: args.weight,
+            height: args.height,
+            weightInKg,
+            heightInCm,
+        });
+
         if (args.gender === 'M') {
             return (heightInCm * 6.25) + (weightInKg * 9.99) - (args.age * 4.92) + 5;
         }
@@ -47,11 +54,11 @@ class Utilities {
         return (heightInCm * 6.25) + (weightInKg * 9.99) - (args.age * 4.92) - 161;
     }
 
-    static calculateTDEE(gender: string, bmr: number, activityLevel: string) {
+    static calculateTDEE(gender: string, bmr: number, activityLevel: number) {
         let activityMultiplier = 1;
 
         switch (activityLevel) {
-            case 'light':
+            case 1:
                 if (gender === 'M') {
                     activityMultiplier = this.TDEEMultipliers.male.light;
                 } else {
@@ -59,7 +66,7 @@ class Utilities {
                 }
                 break;
 
-            case 'moderate':
+            case 2:
                 if (gender === 'M') {
                     activityMultiplier = this.TDEEMultipliers.male.moderate;
                 } else {
@@ -67,7 +74,7 @@ class Utilities {
                 }
                 break;
 
-            case 'very':
+            case 3:
                 if (gender === 'M') {
                     activityMultiplier = this.TDEEMultipliers.male.very;
                 } else {
@@ -75,7 +82,7 @@ class Utilities {
                 }
                 break;
 
-            case 'extremely':
+            case 4:
                 if (gender === 'M') {
                     activityMultiplier = this.TDEEMultipliers.male.extremely;
                 } else {
@@ -83,7 +90,7 @@ class Utilities {
                 }
                 break;
 
-            case 'sedentary':
+            case 5:
             default:
                 if (gender === 'M') {
                     activityMultiplier = this.TDEEMultipliers.male.sedentary;
@@ -93,11 +100,12 @@ class Utilities {
                 break;
         }
 
-        if (gender === 'M') {
-            return bmr * activityMultiplier;
-        }
+        console.log({
+            BMR: bmr,
+            TDEE: Math.round(bmr * activityMultiplier),
+        });
 
-        return bmr * activityMultiplier;
+        return Math.round(bmr * activityMultiplier);
     }
 
     static calculateCalories(tdee: number, multiplier: number) {
