@@ -18,5 +18,6 @@ namespace FitnessTrackerApi.Services
         string GetUserAvatar(User user);
         Task<BaseResponse> RemoveAvatar(User user);
         Task<UpdateActivitySettingsResponse> UpdateActivitySettings(User user, UpdateActivitySettingsRequest req);
+        Task<UpdateDietSettingsResponse> UpdateDietSettings(User user, UpdateDietSettingsRequest req);
     }
 }

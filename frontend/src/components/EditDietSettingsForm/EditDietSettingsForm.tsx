@@ -13,6 +13,8 @@ import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { AppContext } from '../AppContext/AppContext';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { MacroTargetForm } from '../MacroTargetForm/MacroTargetForm';
+// eslint-disable-next-line no-unused-vars
+import { DietSettingsUpdateRequest } from '../../lib/types/dietSettingsUpdateRequest';
 
 const EditDietSettingsForm = () => {
     const [status, setStatus] = useState('initialized');
@@ -44,40 +46,10 @@ const EditDietSettingsForm = () => {
     const [percentagesError, setPercentagesError] = useState('');
     const [manualMacrosError] = useState('');
     const [weight, setWeight] = useState(0);
+    const [tdee, setTdee] = useState(0);
     const [saveDisabled, setSaveDisabled] = useState(false);
 
-    const [gender, setGender] = useState('');
-    const [measurementSystem, setMeasurementSystem] = useState(1);
-    const [height, setHeight] = useState(0);
-    const [age, setAge] = useState(0);
-    const [activityLevel, setActivityLevel] = useState(1);
-
     const { currentUser } = useContext(AppContext);
-
-    const calculateTDEE = useCallback(() => {
-        const bmr = Utilities.calculateBMR({
-            gender,
-            measurementSystem,
-            weight,
-            height,
-            age,
-        });
-
-        const tdee = Utilities.calculateTDEE(gender, bmr, activityLevel);
-
-        switch (dietMode) {
-            case 1:
-                setCaloriesTarget(tdee - (tdee * dietPercentage));
-                break;
-            case 2:
-                setCaloriesTarget(tdee + (tdee * dietPercentage));
-                break;
-            case 0:
-            default:
-                setCaloriesTarget(tdee);
-                break;
-        }
-    }, [gender, measurementSystem, weight, height, age, activityLevel, dietMode, dietPercentage]);
 
     useEffect(() => {
         client('users/getuser').then(
@@ -88,14 +60,35 @@ const EditDietSettingsForm = () => {
                     setDietMode(data.user.DietMode);
                     setDietPercentage(data.user.DietPercentage);
                     setWeight(data.user.Weight);
+                    setTdee(data.user.TDEE);
 
-                    setGender(data.user.Gender);
-                    setMeasurementSystem(data.user.MeasurementSystem);
-                    setHeight(data.user.Height);
-                    setAge(data.user.Age);
-                    setActivityLevel(data.user.ActivityLevel);
+                    setEnableCaloriesTarget(data.user.DailyTarget.EnableCalorieTarget);
+                    setCaloriesTarget(data.user.DailyTarget.CalorieTarget);
 
-                    calculateTDEE();
+                    setProteinPercentage(data.user.DailyTarget.ProteinPercentage);
+                    setCarbsPercentage(data.user.DailyTarget.CarbohydratesPercentage);
+                    setFatPercentage(data.user.DailyTarget.FatPercentage);
+                    setProteinGrams(data.user.DailyTarget.ProteinPercentage);
+                    setCarbsGrams(data.user.DailyTarget.CarbohydratesPercentage);
+                    setFatGrams(data.user.DailyTarget.FatPercentage);
+
+                    switch (data.user.DailyTarget.MacroTargetMode) {
+                        case 1: // percentages
+                            setEnableProteinPercentage(data.user.DailyTarget.EnableProteinTarget);
+                            setEnableCarbsPercentage(data.user.DailyTarget.EnableCarbohydratesTarget);
+                            setEnableFatPercentage(data.user.DailyTarget.EnableFatTarget);
+                            break;
+
+                        case 2: // manual
+                            setEnableProteinGrams(data.user.DailyTarget.EnableProteinTarget);
+                            setEnableCarbsGrams(data.user.DailyTarget.EnableCarbohydratesTarget);
+                            setEnableFatGrams(data.user.DailyTarget.EnableFatTarget);
+                            break;
+
+                        case 0:
+                        default: // off
+                            break;
+                    }
 
                     setStatus('loaded');
                 } else {
@@ -114,7 +107,7 @@ const EditDietSettingsForm = () => {
                 setStatus('errored');
             },
         );
-    }, [currentUser.id, calculateTDEE]);
+    }, [currentUser.id]);
 
     const validateAndCalculatePercentages = useCallback(() => {
         if (enableProteinPercentage && enableCarbsPercentage && enableFatPercentage) {
@@ -185,11 +178,123 @@ const EditDietSettingsForm = () => {
         }
     }, [percentagesError, manualMacrosError]);
 
-    useEffect(() => {
+    const calculateCalories = useCallback(() => {
         if (!manuallyCalculateCalories) {
-            calculateTDEE();
+            switch (dietMode) {
+                case 2: // cut
+                    setCaloriesTarget(Math.round(tdee - (tdee * (dietPercentage / 100))));
+                    break;
+
+                case 3: // bulk
+                    setCaloriesTarget(Math.round(tdee + (tdee * (dietPercentage / 100))));
+                    break;
+
+                case 1: // maintenance
+                default:
+                    setCaloriesTarget(tdee);
+                    break;
+            }
         }
-    }, [manuallyCalculateCalories, calculateTDEE]);
+    }, [manuallyCalculateCalories, dietMode, tdee, dietPercentage]);
+
+    useEffect(() => {
+        calculateCalories();
+    }, [manuallyCalculateCalories, dietMode, dietPercentage, calculateCalories]);
+
+    const validate = () => true;
+
+    const updateDietSettings = async () => {
+        let params: DietSettingsUpdateRequest;
+
+        switch (macroTargetMode) {
+            case 1: // percentages
+                params = {
+                    ManuallyCalculateCalories: manuallyCalculateCalories,
+                    MacroTargetMode: macroTargetMode,
+                    DietMode: dietMode,
+                    DietPercentage: dietPercentage,
+                    EnableCalorieTarget: enableCaloriesTarget,
+                    CalorieTarget: caloriesTarget,
+                    EnableProteinTarget: enableProteinPercentage,
+                    ProteinTarget: proteinPercentageGrams,
+                    ProteinPercentage: proteinPercentage,
+                    EnableCarbohydratesTarget: enableCarbsPercentage,
+                    CarbohydratesTarget: carbsPercentageGrams,
+                    CarbohydratesPercentage: carbsPercentage,
+                    EnableFatTarget: enableFatPercentage,
+                    FatTarget: fatPercentageGrams,
+                    FatPercentage: fatPercentage,
+                };
+                break;
+            case 2: // manual
+                params = {
+                    ManuallyCalculateCalories: manuallyCalculateCalories,
+                    MacroTargetMode: macroTargetMode,
+                    DietMode: dietMode,
+                    DietPercentage: dietPercentage,
+                    EnableCalorieTarget: enableCaloriesTarget,
+                    CalorieTarget: caloriesTarget,
+                    EnableProteinTarget: enableProteinGrams,
+                    ProteinTarget: proteinGrams,
+                    ProteinPercentage: proteinPercentage,
+                    EnableCarbohydratesTarget: enableCarbsGrams,
+                    CarbohydratesTarget: carbsGrams,
+                    CarbohydratesPercentage: carbsPercentage,
+                    EnableFatTarget: enableFatGrams,
+                    FatTarget: fatGrams,
+                    FatPercentage: fatPercentage,
+                };
+                break;
+
+            default: // off
+                params = {
+                    ManuallyCalculateCalories: manuallyCalculateCalories,
+                    MacroTargetMode: macroTargetMode,
+                    DietMode: dietMode,
+                    DietPercentage: dietPercentage,
+                    EnableCalorieTarget: false,
+                    CalorieTarget: caloriesTarget,
+                    EnableProteinTarget: false,
+                    ProteinTarget: proteinGrams,
+                    ProteinPercentage: proteinPercentage,
+                    EnableCarbohydratesTarget: false,
+                    CarbohydratesTarget: carbsGrams,
+                    CarbohydratesPercentage: carbsPercentage,
+                    EnableFatTarget: false,
+                    FatTarget: fatGrams,
+                    FatPercentage: fatPercentage,
+                };
+                break;
+        }
+
+        setErrorMessage('');
+        setSuccessMessage('');
+
+        if (validate()) {
+            client('users/updatedietsettings', {
+                data: params,
+            }).then(
+                (data) => {
+                    if (data.successful) {
+                        setSuccessMessage('Diet settings updated successfully');
+                    } else {
+                        setErrorMessage(data.error);
+                    }
+                },
+                (error) => {
+                    if (typeof error === 'string') {
+                        setErrorMessage(error);
+                    } else if (typeof error.message === 'string') {
+                        setErrorMessage(error.message);
+                    } else {
+                        setErrorMessage('An error has occurred');
+                    }
+                },
+            );
+        } else {
+            setErrorMessage('Please correct the validation errors');
+        }
+    };
 
     return (
         <>
@@ -204,6 +309,7 @@ const EditDietSettingsForm = () => {
                     method="POST"
                     onSubmit={async (e) => {
                         e.preventDefault();
+                        await updateDietSettings();
                     }}
                 >
                     <fieldset>
@@ -218,6 +324,10 @@ const EditDietSettingsForm = () => {
                                     if (weight === 0 && !doManualCalories) {
                                         setErrorMessage('You must enter your weight before you can automatically calculate calories');
                                         return;
+                                    }
+
+                                    if (!doManualCalories) {
+                                        setCaloriesTarget(tdee);
                                     }
 
                                     setManuallyCalculateCalories(doManualCalories);
@@ -236,9 +346,9 @@ const EditDietSettingsForm = () => {
                                 label="Diet Mode"
                                 value={dietMode}
                                 valueList={[
-                                    { value: 0, text: 'Maintenance' },
-                                    { value: 1, text: 'Cut' },
-                                    { value: 2, text: 'Bulk' },
+                                    { value: 1, text: 'Maintenance' },
+                                    { value: 2, text: 'Cut' },
+                                    { value: 3, text: 'Bulk' },
                                 ]}
                                 includeBlank={false}
                                 onChange={(e: any) => {
@@ -255,7 +365,7 @@ const EditDietSettingsForm = () => {
                             <TextBox
                                 id="dietpercentage"
                                 name="dietpercentage"
-                                label="Diet Percentage"
+                                label={`${dietMode === 2 ? 'Cut' : 'Bulk'} Percentage`}
                                 value={dietPercentage}
                                 error={dietPercentageError}
                                 validationRule="numeric"

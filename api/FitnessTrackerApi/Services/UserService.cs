@@ -334,6 +334,58 @@ namespace FitnessTrackerApi.Services
             }
         }
 
+        public async Task<UpdateDietSettingsResponse> UpdateDietSettings(User user, UpdateDietSettingsRequest request)
+        {
+            try
+            {
+                if (user != null)
+                {
+                    user.DailyTarget = _dailyTargetRepository.Get(r => r.UserID == user.Id).FirstOrDefault();
+                }
+
+                user.ManuallyCalculateCalories = request.ManuallyCalculateCalories;
+                user.DietMode = request.DietMode;
+                user.DietPercentage = request.DietPercentage;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    user.DailyTarget.MacroTargetMode = request.MacroTargetMode;
+                    user.DailyTarget.EnableCalorieTarget = request.EnableCalorieTarget;
+                    user.DailyTarget.CalorieTarget = request.CalorieTarget;
+                    user.DailyTarget.EnableProteinTarget = request.EnableProteinTarget;
+                    user.DailyTarget.ProteinTarget = request.ProteinTarget;
+                    user.DailyTarget.ProteinPercentage = request.ProteinPercentage;
+                    user.DailyTarget.EnableCarbohydratesTarget = request.EnableCarbohydratesTarget;
+                    user.DailyTarget.CarbohydratesTarget = request.CarbohydratesTarget;
+                    user.DailyTarget.CarbohydratesPercentage = request.CarbohydratesPercentage;
+                    user.DailyTarget.EnableFatTarget = request.EnableFatTarget;
+                    user.DailyTarget.FatTarget = request.FatTarget;
+                    user.DailyTarget.FatPercentage = request.FatPercentage;
+
+                    await _dailyTargetRepository.Update(user.DailyTarget);
+
+                    return new UpdateDietSettingsResponse();
+                }
+
+                return new UpdateDietSettingsResponse
+                {
+                    Successful = false,
+                    ErrorMessage = "Unable to update diet settings"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new UpdateDietSettingsResponse
+                {
+                    Successful = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
+        #region helper functions
         private string generateJwtToken(User user)
         {
             var claims = new[] {
@@ -354,4 +406,5 @@ namespace FitnessTrackerApi.Services
             return tokenHandler.WriteToken(token);
         }
     }
+    #endregion
 }

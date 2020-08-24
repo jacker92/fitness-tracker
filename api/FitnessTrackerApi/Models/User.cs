@@ -92,6 +92,104 @@ namespace FitnessTrackerApi.Models
 
         [PersonalData]
         [NotMapped]
+        public int BMR
+        {
+            get
+            {
+                if (Weight > 0)
+                {
+                    decimal heightCM;
+                    decimal weightKG;
+
+                    if (MeasurementSystem == MeasurementSystem.US)
+                    {
+                        heightCM = Math.Round(Height * 2.54M, 0);
+                        weightKG = Math.Round(Weight * 0.45359M, 0);
+                    }
+                    else
+                    {
+                        heightCM = Height * 100;
+                        weightKG = Weight;
+                    }
+
+                    decimal bmr = 0;
+
+                    switch (Gender)
+                    {
+                        case 'M':
+                            bmr = (heightCM * 6.25M) + (weightKG * 10) - (Age * 5) + 5;
+                            break;
+
+                        case 'F':
+                            bmr = (heightCM * 6.25M) + (weightKG * 10) - (Age * 5) - 161;
+                            break;
+                    }
+
+                    return (int)Math.Round(bmr, 0);
+                }
+
+                return 0;
+            }
+        }
+
+        [PersonalData]
+        [NotMapped]
+        public int TDEE
+        {
+            get
+            {
+                if (Weight > 0)
+                {
+                    switch (Gender)
+                    {
+                        case 'M':
+                            switch (ActivityLevel)
+                            {
+                                case ActivityLevel.Sedentary:
+                                    return (int)Math.Round(BMR * 1.2, 0);
+
+                                case ActivityLevel.Light:
+                                    return (int)Math.Round(BMR * 1.375, 0);
+
+                                case ActivityLevel.Moderate:
+                                    return (int)Math.Round(BMR * 1.55, 0);
+
+                                case ActivityLevel.Very:
+                                    return (int)Math.Round(BMR * 1.725, 0);
+
+                                case ActivityLevel.Extremely:
+                                    return (int)Math.Round(BMR * 1.9, 0);
+                            }
+                            break;
+
+                        case 'F':
+                            switch (ActivityLevel)
+                            {
+                                case ActivityLevel.Sedentary:
+                                    return (int)Math.Round(BMR * 1.1, 0);
+
+                                case ActivityLevel.Light:
+                                    return (int)Math.Round(BMR * 1.275, 0);
+
+                                case ActivityLevel.Moderate:
+                                    return (int)Math.Round(BMR * 1.35, 0);
+
+                                case ActivityLevel.Very:
+                                    return (int)Math.Round(BMR * 1.525, 0);
+
+                                case ActivityLevel.Extremely:
+                                    return (int)Math.Round(BMR * 1.7, 0);
+                            }
+                            break;
+                    }
+                }
+
+                return 0;
+            }
+        }
+
+        [PersonalData]
+        [NotMapped]
         public decimal Weight { get; set; }
 
         [PersonalData]

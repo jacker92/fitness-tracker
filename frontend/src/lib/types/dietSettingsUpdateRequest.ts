@@ -1,0 +1,17 @@
+export interface DietSettingsUpdateRequest {
+    ManuallyCalculateCalories: boolean,
+    MacroTargetMode: number,
+    DietMode: number,
+    DietPercentage: number,
+    EnableCalorieTarget: boolean,
+    CalorieTarget: number,
+    EnableProteinTarget: boolean,
+    ProteinTarget: number,
+    ProteinPercentage: number,
+    EnableCarbohydratesTarget: boolean,
+    CarbohydratesTarget: number,
+    CarbohydratesPercentage: number,
+    EnableFatTarget: boolean,
+    FatTarget: number,
+    FatPercentage: number,
+}
