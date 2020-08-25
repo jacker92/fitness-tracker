@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    render, fireEvent, act, screen, waitFor,
+    render, act, screen,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AppContext } from '../AppContext/AppContext';
@@ -75,7 +75,7 @@ describe('<EditActivitySettingsForm />', () => {
         expect(caloriesBurnedTargetField.value).toBe('300');
     });
 
-    test('it updates the profile successfully', async () => {
+    test('it updates the activity settings successfully', async () => {
         render(
             <AppContext.Provider value={{
                 currentUser: { id: '123', name: 'Tester', email: 'test@test.com' },

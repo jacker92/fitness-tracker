@@ -151,9 +151,9 @@ const MacroTargetForm = (props: {
 
                         <input
                             type="text"
-                            name={`carbs${mode}`}
-                            id={`carbs${mode}`}
-                            data-testid={`carbs${mode}`}
+                            name={`carbs_${mode}`}
+                            id={`carbs_${mode}`}
+                            data-testid={`carbs_${mode}`}
                             value={carbsTarget}
                             style={enableCarbsTarget ? { display: 'inline-block' } : { display: 'none' }}
                             onChange={(e) => {

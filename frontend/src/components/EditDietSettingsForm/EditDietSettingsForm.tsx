@@ -68,9 +68,9 @@ const EditDietSettingsForm = () => {
                     setProteinPercentage(data.user.DailyTarget.ProteinPercentage);
                     setCarbsPercentage(data.user.DailyTarget.CarbohydratesPercentage);
                     setFatPercentage(data.user.DailyTarget.FatPercentage);
-                    setProteinGrams(data.user.DailyTarget.ProteinPercentage);
-                    setCarbsGrams(data.user.DailyTarget.CarbohydratesPercentage);
-                    setFatGrams(data.user.DailyTarget.FatPercentage);
+                    setProteinGrams(data.user.DailyTarget.ProteinTarget);
+                    setCarbsGrams(data.user.DailyTarget.CarbohydratesTarget);
+                    setFatGrams(data.user.DailyTarget.FatTarget);
 
                     switch (data.user.DailyTarget.MacroTargetMode) {
                         case 1: // percentages
@@ -385,31 +385,6 @@ const EditDietSettingsForm = () => {
                         </div>
 
                         <div className="form-field">
-                            <SelectField
-                                id="macrotargetmode"
-                                name="macrotargetmode"
-                                label="Macro Target Mode"
-                                value={macroTargetMode}
-                                valueList={[
-                                    { value: 0, text: 'Off' },
-                                    { value: 1, text: 'Based Off Percentages' },
-                                    { value: 2, text: 'Manually Entered' },
-                                ]}
-                                requiredField
-                                includeBlank={false}
-                                onChange={(e: any) => {
-                                    const macroMode = parseInt(e.target.value, 10);
-
-                                    if (macroMode !== 0) {
-                                        setEnableCaloriesTarget(true);
-                                    }
-
-                                    setMacroTargetMode(macroMode);
-                                }}
-                            />
-                        </div>
-
-                        <div className="form-field">
                             <Checkbox
                                 id="enablecaloriestarget"
                                 name="enablecaloriestarget"
@@ -446,6 +421,31 @@ const EditDietSettingsForm = () => {
                                 }}
                                 onErrorChange={(error: string) => {
                                     setCaloriesTargetError(error);
+                                }}
+                            />
+                        </div>
+
+                        <div className="form-field">
+                            <SelectField
+                                id="macrotargetmode"
+                                name="macrotargetmode"
+                                label="Macro Target Mode"
+                                value={macroTargetMode}
+                                valueList={[
+                                    { value: 0, text: 'Off' },
+                                    { value: 1, text: 'Based Off Percentages' },
+                                    { value: 2, text: 'Manually Entered' },
+                                ]}
+                                requiredField
+                                includeBlank={false}
+                                onChange={(e: any) => {
+                                    const macroMode = parseInt(e.target.value, 10);
+
+                                    if (macroMode !== 0) {
+                                        setEnableCaloriesTarget(true);
+                                    }
+
+                                    setMacroTargetMode(macroMode);
                                 }}
                             />
                         </div>

@@ -110,7 +110,7 @@ const Form = styled.form`
     label.button {
       background: hsl(0, 0%, 19%);
       color: hsl(0,0%,100%);
-      padding: 4px 8px;
+      padding: 6px 12px;
       border: 1px solid hsl(0, 0%, 7%);
       font-size: 1.05rem;
       border-radius: 3px;
@@ -138,7 +138,7 @@ const Form = styled.form`
         button {
           background: hsl(0, 0%, 19%);
           color: hsl(0,0%,100%);
-          padding: 4px 8px;
+          padding: 6px 12px;
           border: 1px solid hsl(0, 0%, 7%);
           font-size: 1.05rem;
           border-radius: 3px;

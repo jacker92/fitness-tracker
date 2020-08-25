@@ -35,6 +35,12 @@ describe('<EditProfileForm />', () => {
 
         const heightField = await screen.findByLabelText(/Height/) as HTMLInputElement;
         expect(heightField.value).toBe('60');
+
+        const genderField = await screen.findByLabelText(/Gender/) as HTMLSelectElement;
+        expect(genderField.value).toBe('M');
+
+        const activityLevelField = await screen.findByLabelText(/Activity Level/) as HTMLSelectElement;
+        expect(activityLevelField.value).toBe('3');
     });
 
     test('it shows validation errors', async () => {
