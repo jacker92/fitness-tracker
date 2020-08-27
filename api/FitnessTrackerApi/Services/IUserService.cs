@@ -8,16 +8,17 @@ namespace FitnessTrackerApi.Services
 {
     public interface IUserService
     {
-        Task<RegistrationResponse> RegisterUser(RegistrationRequest req);
-        Task<AuthenticationResponse> Authenticate(AuthenticationRequest req);
+        Task<RegistrationResponse> RegisterUser(RegistrationRequest request);
+        Task<AuthenticationResponse> Authenticate(AuthenticationRequest request);
         Task<User> GetById(string id);
         Task<User> GetUserRecord(string id);
         Task<CheckEmailResponse> CheckEmail(string id, string email);
-        Task<UpdateProfileResponse> UpdateUserProfile(User user, UpdateProfileRequest req);
-        Task<ImageUploadResponse> UpdateAvatar(User user, AvatarUploadRequest req);
+        Task<UpdateProfileResponse> UpdateUserProfile(User user, UpdateProfileRequest request);
+        Task<ImageUploadResponse> UpdateAvatar(User user, AvatarUploadRequest request);
         string GetUserAvatar(User user);
         Task<BaseResponse> RemoveAvatar(User user);
-        Task<UpdateActivitySettingsResponse> UpdateActivitySettings(User user, UpdateActivitySettingsRequest req);
-        Task<UpdateDietSettingsResponse> UpdateDietSettings(User user, UpdateDietSettingsRequest req);
+        Task<UpdateActivitySettingsResponse> UpdateActivitySettings(User user, UpdateActivitySettingsRequest request);
+        Task<UpdateDietSettingsResponse> UpdateDietSettings(User user, UpdateDietSettingsRequest request);
+        Task<ChangePasswordResponse> ChangePassword(User user, ChangePasswordRequest request);
     }
 }

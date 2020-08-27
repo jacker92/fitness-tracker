@@ -385,6 +385,52 @@ namespace FitnessTrackerApi.Services
             }
         }
 
+        public async Task<ChangePasswordResponse> ChangePassword(User user, ChangePasswordRequest request)
+        {
+            try
+            {
+                var validationResult = request.Validate();
+
+                if (!validationResult.IsValid)
+                {
+                    return new ChangePasswordResponse
+                    {
+                        Successful = false,
+                        ErrorMessage = validationResult.Message
+                    };
+                }
+
+                var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    return new ChangePasswordResponse();
+                }
+                else if (result.Errors.Count() > 0)
+                {
+                    return new ChangePasswordResponse
+                    {
+                        Successful = false,
+                        ErrorMessage = result.Errors.First().Description
+                    };
+                }
+
+                return new ChangePasswordResponse
+                {
+                    Successful = false,
+                    ErrorMessage = "Unable to change password"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ChangePasswordResponse
+                {
+                    Successful = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
         #region helper functions
         private string generateJwtToken(User user)
         {

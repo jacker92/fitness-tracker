@@ -89,6 +89,14 @@ class FormValidator {
             };
         }
 
+        const containsUpper = /[A-Z]/.test(value1);
+        if (!containsUpper) {
+            return {
+                valid: false,
+                message: 'Password must contain at least one capital letter',
+            };
+        }
+
         return {
             valid: true,
             message: '',

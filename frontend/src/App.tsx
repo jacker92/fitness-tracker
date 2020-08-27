@@ -7,6 +7,7 @@ import { Register } from './components/Register/Register';
 import { ProfileSettings } from './components/ProfileSettings/ProfileSettings';
 import { ActivitySettings } from './components/ActivitySettings/ActivitySettings';
 import { DietSettings } from './components/DietSettings/DietSettings';
+import { AccountSettings } from './components/AccountSettings/AccountSettings';
 
 const Home = () => (
     <>
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/login" exact component={Login} />
                     <Route path="/register" exact component={Register} />
                     <Route path="/account/profile" component={ProfileSettings} />
+                    <Route path="/account/settings" component={AccountSettings} />
                     <Route path="/account/activity" component={ActivitySettings} />
                     <Route path="/account/diet" component={DietSettings} />
                 </main>
