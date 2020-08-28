@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { client } from '../../lib/client';
 import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { FormValidator } from '../../lib/FormValidator';
+import { AppContext } from '../AppContext/AppContext';
 
 const ChangePasswordForm = () => {
     const [currentPassword, setCurrentPassword] = useState('');
@@ -16,6 +17,8 @@ const ChangePasswordForm = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
+
+    const { setLoadingOverlayVisible } = useContext(AppContext);
 
     const validateForm = () => {
         let isValid = true;
@@ -35,6 +38,8 @@ const ChangePasswordForm = () => {
     };
 
     const changePassword = async () => {
+        setLoadingOverlayVisible(true);
+
         setErrorMessage('');
         setSuccessMessage('');
 
@@ -47,6 +52,7 @@ const ChangePasswordForm = () => {
                 },
             }).then(
                 (data) => {
+                    setLoadingOverlayVisible(false);
                     if (data.successful) {
                         setCurrentPassword('');
                         setNewPassword('');
@@ -57,6 +63,7 @@ const ChangePasswordForm = () => {
                     }
                 },
                 (error) => {
+                    setLoadingOverlayVisible(false);
                     if (typeof error === 'string') {
                         setErrorMessage(error);
                     } else if (typeof error.message === 'string') {

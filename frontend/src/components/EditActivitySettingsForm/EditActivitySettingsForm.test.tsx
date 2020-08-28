@@ -15,6 +15,8 @@ describe('<EditActivitySettingsForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
+                setLoadingOverlayVisible: null,
+                loadingOverlayVisible: false,
             }}
             >
                 <EditActivitySettingsForm />
@@ -45,6 +47,8 @@ describe('<EditActivitySettingsForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
+                setLoadingOverlayVisible: null,
+                loadingOverlayVisible: false,
             }}
             >
                 <EditActivitySettingsForm />
@@ -83,6 +87,8 @@ describe('<EditActivitySettingsForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
+                setLoadingOverlayVisible: null,
+                loadingOverlayVisible: false,
             }}
             >
                 <EditActivitySettingsForm />

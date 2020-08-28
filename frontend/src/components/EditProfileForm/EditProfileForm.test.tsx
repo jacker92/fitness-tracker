@@ -15,6 +15,8 @@ describe('<EditProfileForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
+                setLoadingOverlayVisible: null,
+                loadingOverlayVisible: false,
             }}
             >
                 <EditProfileForm />
@@ -51,6 +53,8 @@ describe('<EditProfileForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
+                setLoadingOverlayVisible: null,
+                loadingOverlayVisible: false,
             }}
             >
                 <EditProfileForm />
@@ -89,6 +93,8 @@ describe('<EditProfileForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
+                setLoadingOverlayVisible: null,
+                loadingOverlayVisible: false,
             }}
             >
                 <EditProfileForm />
@@ -115,6 +121,8 @@ describe('<EditProfileForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
+                setLoadingOverlayVisible: null,
+                loadingOverlayVisible: false,
             }}
             >
                 <EditProfileForm />
