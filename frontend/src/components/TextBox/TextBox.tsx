@@ -126,12 +126,12 @@ const TextBox = (props: {
                     dangerouslySetInnerHTML={{ __html: errorMessage }}
                 />
             ) : (
-                <div className="error-text" style={showErrorMessage && errorMessage !== '' ? { display: 'block' } : {}}>
+                <div className="error-text" style={showErrorMessage && errorMessage !== '' ? { display: 'block' } : { display: 'none' }}>
                     {errorMessage}
                 </div>
             )}
 
-            <div className="success-text" style={showSuccessMessage && successMessage !== '' ? { display: 'block' } : {}}>
+            <div className="success-text" style={showSuccessMessage && successMessage !== '' ? { display: 'block' } : { display: 'none' }}>
                 {successMessage}
             </div>
         </label>

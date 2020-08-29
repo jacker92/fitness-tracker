@@ -54,6 +54,11 @@ const handlers = [
         successful: true,
         error: '',
     }))),
+
+    rest.post('*/users/changepassword', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+    }))),
 ];
 
 export { handlers };

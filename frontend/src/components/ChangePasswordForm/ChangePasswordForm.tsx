@@ -76,6 +76,32 @@ const ChangePasswordForm = () => {
         }
     };
 
+    const validate = (fieldId: string, value: string) => {
+        const { valid: passwordsValid, message } = FormValidator.validatePassword(newPassword, confirmNewPassword);
+
+        // eslint-disable-next-line default-case
+        switch (fieldId) {
+            case 'currentpassword':
+                if (!FormValidator.validateNotEmpty(value)) {
+                    setCurrentPasswordError('Current password is required');
+                } else {
+                    setCurrentPasswordError('');
+                }
+                break;
+
+            case 'newpassword':
+            case 'confirmnewpassword':
+                if (!passwordsValid) {
+                    setNewPasswordError(message);
+                    setConfirmNewPasswordError(message);
+                } else {
+                    setNewPasswordError('');
+                    setConfirmNewPasswordError('');
+                }
+                break;
+        }
+    };
+
     useEffect(() => {
         if (currentPasswordError === '' && newPasswordError === '' && confirmNewPasswordError === '') {
             setSaveDisabled(false);
@@ -114,6 +140,10 @@ const ChangePasswordForm = () => {
                             onErrorChange={(error: string) => {
                                 setCurrentPasswordError(error);
                             }}
+                            validate={(e: any) => {
+                                e.persist();
+                                validate('currentpassword', e.target.value);
+                            }}
                         />
                     </div>
 
@@ -132,6 +162,10 @@ const ChangePasswordForm = () => {
                             onErrorChange={(error: string) => {
                                 setNewPasswordError(error);
                             }}
+                            validate={(e: any) => {
+                                e.persist();
+                                validate('newpassword', e.target.value);
+                            }}
                         />
                     </div>
 
@@ -148,6 +182,10 @@ const ChangePasswordForm = () => {
                             }}
                             onErrorChange={(error: string) => {
                                 setConfirmNewPasswordError(error);
+                            }}
+                            validate={(e: any) => {
+                                e.persist();
+                                validate('confirmnewpassword', e.target.value);
                             }}
                         />
                     </div>
