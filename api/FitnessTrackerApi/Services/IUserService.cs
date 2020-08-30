@@ -20,5 +20,6 @@ namespace FitnessTrackerApi.Services
         Task<UpdateActivitySettingsResponse> UpdateActivitySettings(User user, UpdateActivitySettingsRequest request);
         Task<UpdateDietSettingsResponse> UpdateDietSettings(User user, UpdateDietSettingsRequest request);
         Task<ChangePasswordResponse> ChangePassword(User user, ChangePasswordRequest request);
+        UserMetricsResponse GetUserTrackedMetrics(User user);
     }
 }

@@ -85,6 +85,13 @@ const AccountSidebar = (props: { activePage: string }) => {
                     <a href="/account/activities">Custom Activities</a>
                 )}
             </li>
+            <li className={activePage === 'gear' ? 'active' : ''}>
+                {activePage === 'activitgearies' ? (
+                    <>Gear</>
+                ) : (
+                    <a href="/account/gear">Gear</a>
+                )}
+            </li>
             <li className={activePage === 'downloaddata' ? 'active' : ''}>
                 {activePage === 'downloaddata' ? (
                     <>Download Your Data</>

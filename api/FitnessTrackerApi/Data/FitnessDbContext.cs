@@ -28,7 +28,9 @@ namespace FitnessTrackerApi.Data
 
         public DbSet<UserMetric> UserMetrics { get; set; }
 
-        public DbSet<UserTrackedMetric> UserTrackedMetrics { get; set;
+        public DbSet<UserTrackedMetric> UserTrackedMetrics
+        {
+            get; set;
         }
         public FitnessDbContext(
             DbContextOptions options,
@@ -101,13 +103,13 @@ namespace FitnessTrackerApi.Data
 
             modelBuilder.Entity<UserTrackedMetric>()
                 .HasOne(utm => utm.User)
-                .WithOne()
-                .HasForeignKey<UserTrackedMetric>(utm => utm.UserID);
+                .WithMany(u => u.TrackedMetrics)
+                .HasForeignKey(utm => utm.UserID);
 
             modelBuilder.Entity<UserTrackedMetric>()
                 .HasOne(utm => utm.Metric)
-                .WithOne()
-                .HasForeignKey<UserTrackedMetric>(utm => utm.MetricID);
+                .WithMany()
+                .HasForeignKey(utm => utm.MetricID);
         }
     }
 }

@@ -221,8 +221,6 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-
-
                 var user = (User)HttpContext.Items["User"];
 
                 if (user == null)
@@ -231,6 +229,35 @@ namespace FitnessTrackerApi.Controllers
                 }
 
                 var response = await _userService.ChangePassword(user, request);
+
+                if (response.ErrorMessage != "")
+                {
+                    return BadRequest(new { message = response.ErrorMessage });
+                }
+
+                // TODO: Figure out why I need to serialize the response
+                return Ok(JsonSerializer.Serialize(response));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpGet("getusertrackedmetrics")]
+        public IActionResult GetUserTrackedMetrics()
+        {
+            try
+            {
+                var user = (User)HttpContext.Items["User"];
+
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user" });
+                }
+
+                var response = _userService.GetUserTrackedMetrics(user);
 
                 if (response.ErrorMessage != "")
                 {

@@ -8,6 +8,7 @@ import { ProfileSettings } from './components/ProfileSettings/ProfileSettings';
 import { ActivitySettings } from './components/ActivitySettings/ActivitySettings';
 import { DietSettings } from './components/DietSettings/DietSettings';
 import { AccountSettings } from './components/AccountSettings/AccountSettings';
+import { Metrics } from './components/Metrics/Metrics';
 
 const Home = () => (
     <>
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/account/settings" component={AccountSettings} />
                     <Route path="/account/activity" component={ActivitySettings} />
                     <Route path="/account/diet" component={DietSettings} />
+                    <Route path="/account/metrics" component={Metrics} />
                 </main>
             </MainApp>
         </Router>

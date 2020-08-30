@@ -4,14 +4,16 @@ using FitnessTrackerApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FitnessTrackerApi.Migrations
 {
     [DbContext(typeof(FitnessDbContext))]
-    partial class FitnessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200830190541_UserTrackedMetric_IsTracked")]
+    partial class UserTrackedMetric_IsTracked
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -470,9 +472,12 @@ namespace FitnessTrackerApi.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("MetricID");
+                    b.HasIndex("MetricID")
+                        .IsUnique();
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserID")
+                        .IsUnique()
+                        .HasFilter("[UserID] IS NOT NULL");
 
                     b.ToTable("UserTrackedMetrics");
                 });
@@ -791,14 +796,14 @@ namespace FitnessTrackerApi.Migrations
             modelBuilder.Entity("FitnessTrackerApi.Models.UserTrackedMetric", b =>
                 {
                     b.HasOne("FitnessTrackerApi.Models.Metric", "Metric")
-                        .WithMany()
-                        .HasForeignKey("MetricID")
+                        .WithOne()
+                        .HasForeignKey("FitnessTrackerApi.Models.UserTrackedMetric", "MetricID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FitnessTrackerApi.Models.User", "User")
-                        .WithMany("TrackedMetrics")
-                        .HasForeignKey("UserID");
+                        .WithOne()
+                        .HasForeignKey("FitnessTrackerApi.Models.UserTrackedMetric", "UserID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

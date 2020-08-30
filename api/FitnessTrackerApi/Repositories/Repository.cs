@@ -22,9 +22,16 @@ namespace FitnessTrackerApi.Repositories
             return _db.Set<T>().AsNoTracking();
         }
 
-        public IQueryable<T> Get(Expression<Func<T, bool>> expression)
+        public IQueryable<T> Get(Expression<Func<T, bool>> expression, Expression<Func<T, object>> include = null)
         {
-            return _db.Set<T>().Where(expression);
+            if (include == null)
+            {
+                return _db.Set<T>().Where(expression);
+            }
+            else
+            {
+                return _db.Set<T>().Where(expression).Include(include);
+            }
         }
 
         public T GetById(object id)

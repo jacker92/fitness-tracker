@@ -14,10 +14,12 @@ namespace FitnessTrackerApi.Models
 
         public int MetricID { get; set; }
 
+        [JsonIgnore]
         public virtual Metric Metric { get; set; }
 
         public string Measurement { get; set; }
 
         public DateTime DateTimeRecorded { get; set; }
+
     }
 }

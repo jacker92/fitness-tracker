@@ -9,6 +9,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,14 +23,16 @@ namespace FitnessTrackerApi.Services
         private readonly IHostEnvironment _hostEnvironment;
         private readonly IRepository<DailyTarget> _dailyTargetRepository;
         private readonly IRepository<UserMetric> _userMetricRepository;
+        private readonly IRepository<UserTrackedMetric> _userTrackedMetricRepository;
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IHostEnvironment hostEnvironment, IRepository<DailyTarget> dailyTargetRepo, IRepository<UserMetric> userMetricRepo)
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IHostEnvironment hostEnvironment, IRepository<DailyTarget> dailyTargetRepo, IRepository<UserMetric> userMetricRepo, IRepository<UserTrackedMetric> userTrackedMetricRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _hostEnvironment = hostEnvironment;
             _dailyTargetRepository = dailyTargetRepo;
             _userMetricRepository = userMetricRepo;
+            _userTrackedMetricRepository = userTrackedMetricRepo;
         }
 
         public async Task<RegistrationResponse> RegisterUser(RegistrationRequest request)
@@ -429,6 +432,26 @@ namespace FitnessTrackerApi.Services
                     ErrorMessage = ex.Message
                 };
             }
+        }
+
+        public UserMetricsResponse GetUserTrackedMetrics(User user)
+        {
+            if (user != null)
+            {
+                var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
+                                        .OrderBy(utm => utm.Metric.Name)
+                                        .ToList();
+
+                return new UserMetricsResponse
+                {
+                    Metrics = trackedMetrics
+                };
+            }
+
+            return new UserMetricsResponse
+            {
+                ErrorMessage = "Cannot find user"
+            };
         }
 
         #region helper functions

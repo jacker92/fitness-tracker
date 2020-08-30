@@ -58,6 +58,7 @@ namespace FitnessTrackerApi
             services.AddTransient<IRepository<RecipeFood>, Repository<RecipeFood>>();
             services.AddTransient<IRepository<UserActivity>, Repository<UserActivity>>();
             services.AddTransient<IRepository<UserMetric>, Repository<UserMetric>>();
+            services.AddTransient<IRepository<UserTrackedMetric>, Repository<UserTrackedMetric>>();
 
             // Services
             services.AddScoped<IUserService, UserService>();
