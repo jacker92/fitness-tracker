@@ -454,6 +454,11 @@ namespace FitnessTrackerApi.Services
             };
         }
 
+        public async Task<ToggleUserMetricTrackingResponse> UpdateUserMetricTracking(User user, ToggleUserMetricTrackingRequest request)
+        {
+            return null;
+        }
+
         #region helper functions
         private string generateJwtToken(User user)
         {

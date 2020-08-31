@@ -61,9 +61,24 @@ const Table = styled.table`
     }
 `;
 
-const Grid = (props: { columns: Array<GridColumn>, data: Array<any>, noRowsMessage: string, keyColumn: string }) => {
+const Grid = (props: {
+                columns: Array<GridColumn>,
+                data: Array<any>,
+                noRowsMessage: string,
+                keyColumn: string,
+                IDColumn: string,
+                onEdit: Function,
+                onDelete: Function,
+                onTrackChange: Function }) => {
     const {
-        columns, data, noRowsMessage, keyColumn,
+        columns,
+        data,
+        noRowsMessage,
+        keyColumn,
+        IDColumn,
+        onEdit,
+        onDelete,
+        onTrackChange,
     } = props;
 
     const [gridData] = useState(data);
@@ -87,14 +102,60 @@ const Grid = (props: { columns: Array<GridColumn>, data: Array<any>, noRowsMessa
                                     case 'EDIT':
                                         return (
                                             <td key={`row_${col.Key}`}>
-                                                {row.canEdit ? <button className="edit" type="button">Edit</button> : <></>}
+                                                {row.canEdit
+                                                    ? (
+                                                        <button
+                                                            className="edit"
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                if (typeof onEdit === 'function') {
+                                                                    onEdit(row[IDColumn]);
+                                                                }
+                                                            }}
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    ) : <></>}
+                                            </td>
+                                        );
+
+                                    case 'TRACK':
+                                        return (
+                                            <td key={`row_${col.Key}`}>
+                                                <button
+                                                    className="edit"
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        if (typeof onTrackChange === 'function') {
+                                                            onTrackChange(row[IDColumn]);
+                                                        }
+                                                    }}
+                                                >
+                                                    {row.isTracked ? 'Untrack' : 'Track'}
+                                                </button>
                                             </td>
                                         );
 
                                     case 'DELETE':
                                         return (
                                             <td key={`row_${col.Key}`}>
-                                                {row.canDelete ? <button className="delete" type="button">Delete</button> : <></>}
+                                                {row.canDelete
+                                                    ? (
+                                                        <button
+                                                            className="delete"
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                if (typeof onDelete === 'function') {
+                                                                    onDelete(row[IDColumn]);
+                                                                }
+                                                            }}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    ) : <></>}
                                             </td>
                                         );
 
@@ -121,6 +182,10 @@ Grid.defaultProps = {
     columns: [],
     data: [],
     noRowsMessage: 'No rows',
+    IDColumn: 'ID',
+    onEdit: null,
+    onDelete: null,
+    onTrackChange: null,
 };
 
 Grid.propTypes = {
@@ -130,6 +195,10 @@ Grid.propTypes = {
     data: PropTypes.array,
     noRowsMessage: PropTypes.string,
     keyColumn: PropTypes.string.isRequired,
+    IDColumn: PropTypes.string,
+    onEdit: PropTypes.func,
+    onDelete: PropTypes.func,
+    onTrackChange: PropTypes.func,
 };
 
 export { Grid };

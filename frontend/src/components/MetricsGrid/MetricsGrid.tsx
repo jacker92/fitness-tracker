@@ -28,6 +28,7 @@ const MetricsGrid = () => {
                         trackedMetrics.push({
                             ID: m.ID,
                             Name: m.Metric.Name,
+                            isTracked: m.IsTracked,
                             canDelete: !m.Metric.IsSystem,
                             canEdit: !m.Metric.IsSystem,
                         });
@@ -56,9 +57,15 @@ const MetricsGrid = () => {
     const columns: Array<GridColumn> = [
         {
             Heading: 'Name',
-            Width: '70%',
+            Width: '55%',
             ColumnId: 'Name',
             Key: 'NAME',
+        },
+        {
+            Heading: ' ',
+            Width: '15%',
+            ColumnId: 'track',
+            Key: 'TRACK',
         },
         {
             Heading: ' ',
@@ -74,6 +81,10 @@ const MetricsGrid = () => {
         },
     ];
 
+    const toggleTracking = (metricId: number) => {
+
+    };
+
     return (
         <>
             <ErrorMessage error={errorMessage} />
@@ -82,7 +93,15 @@ const MetricsGrid = () => {
             {status === 'initialized' && <LoadingBox />}
 
             {(status === 'loaded' || status === 'saving') && (
-                <Grid columns={columns} data={gridData} noRowsMessage="No Metrics Defined" keyColumn="ID" />
+                <Grid
+                    columns={columns}
+                    data={gridData}
+                    keyColumn="ID"
+                    noRowsMessage="No Metrics Defined"
+                    onTrackChange={(metricId: number) => {
+                        toggleTracking(metricId);
+                    }}
+                />
             )}
         </>
     );
