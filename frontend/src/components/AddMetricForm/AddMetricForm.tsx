@@ -9,9 +9,9 @@ import { SelectField } from '../SelectField/SelectField';
 // eslint-disable-next-line no-unused-vars
 import { Metric } from '../../lib/types/Metric';
 
-const AddMetricForm = (props: { onSuccess: Function, onError: Function, onCancel: Function, visible: boolean }) => {
+const AddMetricForm = (props: { onSuccess: Function, onError: Function, onCancel: Function }) => {
     const {
-        onSuccess, onError, onCancel, visible,
+        onSuccess, onError, onCancel,
     } = props;
 
     const [name, setName] = useState('');
@@ -19,11 +19,11 @@ const AddMetricForm = (props: { onSuccess: Function, onError: Function, onCancel
     const [units, setUnits] = useState('');
     const [type, setType] = useState(0);
     const [saveDisabled, setSaveDisabled] = useState(false);
-    const [formVisible, setFormVisible] = useState(visible);
+    // const [formVisible, setFormVisible] = useState(visible);
 
-    useEffect(() => {
-        setFormVisible(visible);
-    }, [visible]);
+    // useEffect(() => {
+    //     setFormVisible(visible);
+    // }, [visible]);
 
     useEffect(() => {
         if (nameError === '') {
@@ -81,7 +81,7 @@ const AddMetricForm = (props: { onSuccess: Function, onError: Function, onCancel
     };
 
     return (
-        <GridForm style={formVisible ? { display: 'block' } : { display: 'none' }}>
+        <GridForm>
             <h2>Add New Metric</h2>
             <Form
                 className="autowidth"
@@ -178,7 +178,6 @@ AddMetricForm.propTypes = {
     onSuccess: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    visible: PropTypes.bool.isRequired,
 };
 
 export { AddMetricForm };

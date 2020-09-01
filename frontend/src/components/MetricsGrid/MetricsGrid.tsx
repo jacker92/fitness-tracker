@@ -6,6 +6,7 @@ import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { AddMetricForm } from '../AddMetricForm/AddMetricForm';
+import { ModalWindow } from '../ModalWindow/ModalWindow';
 // eslint-disable-next-line no-unused-vars
 import { GridColumn } from '../../lib/types/GridColumn';
 // eslint-disable-next-line no-unused-vars
@@ -125,20 +126,25 @@ const MetricsGrid = () => {
 
             {(status === 'loaded' || status === 'saving') && (
                 <>
-                    <AddMetricForm
-                        onSuccess={(metrics: any) => {
-                            setAddFormVisible(false);
-                            const trackedMetrics: Array<UserTrackedMetric> = transformData(metrics);
-                            setGridData(trackedMetrics);
-                        }}
-                        onError={(error: string) => {
-                            setErrorMessage(error);
-                        }}
-                        onCancel={() => {
-                            setAddFormVisible(false);
-                        }}
+                    <ModalWindow
+                        width={460}
+                        height={490}
                         visible={addFormVisible}
-                    />
+                    >
+                        <AddMetricForm
+                            onSuccess={(metrics: any) => {
+                                setAddFormVisible(false);
+                                const trackedMetrics: Array<UserTrackedMetric> = transformData(metrics);
+                                setGridData(trackedMetrics);
+                            }}
+                            onError={(error: string) => {
+                                setErrorMessage(error);
+                            }}
+                            onCancel={() => {
+                                setAddFormVisible(false);
+                            }}
+                        />
+                    </ModalWindow>
                     <Grid
                         columns={columns}
                         data={gridData}
