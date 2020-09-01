@@ -6,8 +6,8 @@ const AppContext = React.createContext({
     logoutUser: null,
     toggleUserMenu: null,
     userMenuVisible: false,
-    setLoadingOverlayVisible: null,
-    loadingOverlayVisible: false,
+    setOverlayVisibility: null,
+    overlayVisible: false,
 });
 
 export { AppContext };

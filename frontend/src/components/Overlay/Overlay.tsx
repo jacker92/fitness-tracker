@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Overlay = styled.div`
+const OverlayDiv = styled.div`
     background: hsla(0, 0%, 71%, 0.5);
     position: absolute;
     height: 100%;
@@ -41,26 +41,34 @@ const Overlay = styled.div`
     }
 `;
 
-const LoadingOverlay = (props: { visible: boolean }) => {
-    const { visible } = props;
+const Overlay = (props: { visible: boolean, showSpinner: boolean }) => {
+    const { visible, showSpinner } = props;
 
     const [isVisible, setIsVisible] = useState(visible);
+    const [isSpinnerVisible, setIsSpinnerVisible] = useState(showSpinner);
 
     useEffect(() => {
         setIsVisible(visible);
     }, [visible]);
 
+    useEffect(() => {
+        setIsSpinnerVisible(showSpinner);
+    }, [showSpinner]);
+
     return (
-        <Overlay style={isVisible ? { display: 'block' } : { display: 'none' }}>
-            <div className="box">
-                <div className="spinner" />
-            </div>
-        </Overlay>
+        <OverlayDiv style={isVisible ? { display: 'block' } : { display: 'none' }}>
+            {isSpinnerVisible && (
+                <div className="box">
+                    <div className="spinner" />
+                </div>
+            )}
+        </OverlayDiv>
     );
 };
 
-LoadingOverlay.propTypes = {
+Overlay.propTypes = {
     visible: PropTypes.bool.isRequired,
+    showSpinner: PropTypes.bool.isRequired,
 };
 
-export { LoadingOverlay };
+export { Overlay };

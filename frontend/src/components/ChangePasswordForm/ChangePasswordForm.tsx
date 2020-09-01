@@ -18,7 +18,7 @@ const ChangePasswordForm = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
 
-    const { setLoadingOverlayVisible } = useContext(AppContext);
+    const { setOverlayVisibility } = useContext(AppContext);
 
     const validateForm = () => {
         let isValid = true;
@@ -38,7 +38,7 @@ const ChangePasswordForm = () => {
     };
 
     const changePassword = async () => {
-        setLoadingOverlayVisible(true);
+        setOverlayVisibility(true, true);
 
         setErrorMessage('');
         setSuccessMessage('');
@@ -52,7 +52,7 @@ const ChangePasswordForm = () => {
                 },
             }).then(
                 (data) => {
-                    setLoadingOverlayVisible(false);
+                    setOverlayVisibility(false, false);
                     if (data.successful) {
                         setCurrentPassword('');
                         setNewPassword('');
@@ -63,7 +63,7 @@ const ChangePasswordForm = () => {
                     }
                 },
                 (error) => {
-                    setLoadingOverlayVisible(false);
+                    setOverlayVisibility(false, false);
                     if (typeof error === 'string') {
                         setErrorMessage(error);
                     } else if (typeof error.message === 'string') {

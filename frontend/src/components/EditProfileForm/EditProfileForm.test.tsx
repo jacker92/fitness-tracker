@@ -15,8 +15,8 @@ describe('<EditProfileForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
-                setLoadingOverlayVisible: null,
-                loadingOverlayVisible: false,
+                setOverlayVisibility: null,
+                overlayVisible: false,
             }}
             >
                 <EditProfileForm />
@@ -53,8 +53,8 @@ describe('<EditProfileForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
-                setLoadingOverlayVisible: null,
-                loadingOverlayVisible: false,
+                setOverlayVisibility: null,
+                overlayVisible: false,
             }}
             >
                 <EditProfileForm />
@@ -93,8 +93,8 @@ describe('<EditProfileForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
-                setLoadingOverlayVisible: null,
-                loadingOverlayVisible: false,
+                setOverlayVisibility: null,
+                overlayVisible: false,
             }}
             >
                 <EditProfileForm />
@@ -121,8 +121,8 @@ describe('<EditProfileForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
-                setLoadingOverlayVisible: null,
-                loadingOverlayVisible: false,
+                setOverlayVisibility: jest.fn(),
+                overlayVisible: false,
             }}
             >
                 <EditProfileForm />

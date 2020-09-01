@@ -15,8 +15,8 @@ describe('<EditDietSettingsForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
-                setLoadingOverlayVisible: null,
-                loadingOverlayVisible: false,
+                setOverlayVisibility: null,
+                overlayVisible: false,
             }}
             >
                 <EditDietSettingsForm />
@@ -74,8 +74,8 @@ describe('<EditDietSettingsForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
-                setLoadingOverlayVisible: null,
-                loadingOverlayVisible: false,
+                setOverlayVisibility: null,
+                overlayVisible: false,
             }}
             >
                 <EditDietSettingsForm />
@@ -108,8 +108,8 @@ describe('<EditDietSettingsForm />', () => {
                 logoutUser: null,
                 toggleUserMenu: null,
                 userMenuVisible: false,
-                setLoadingOverlayVisible: null,
-                loadingOverlayVisible: false,
+                setOverlayVisibility: null,
+                overlayVisible: false,
             }}
             >
                 <EditDietSettingsForm />

@@ -31,7 +31,7 @@ const EditProfileForm = () => {
     const [avatar, setAvatar] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
 
-    const { currentUser } = useContext(AppContext);
+    const { currentUser, setOverlayVisibility } = useContext(AppContext);
 
     const getUserAvatar = () => {
         client('users/getavatar').then(
@@ -123,6 +123,7 @@ const EditProfileForm = () => {
     };
 
     const saveProfile = () => {
+        setOverlayVisibility(true, true);
         setErrorMessage('');
         setSuccessMessage('');
 
@@ -144,6 +145,7 @@ const EditProfileForm = () => {
                     } else {
                         setErrorMessage(data.error);
                     }
+                    setOverlayVisibility(false, false);
                 },
                 (error) => {
                     if (typeof error === 'string') {
@@ -153,10 +155,12 @@ const EditProfileForm = () => {
                     } else {
                         setErrorMessage('An error has occurred');
                     }
+                    setOverlayVisibility(false, false);
                 },
             );
         } else {
             setErrorMessage('Please correct the validation errors');
+            setOverlayVisibility(false, false);
         }
     };
 
