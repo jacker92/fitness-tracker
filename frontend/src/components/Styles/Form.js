@@ -67,13 +67,15 @@ const Form = styled.form`
   }
 
   input[type="submit"],
-  button[type="submit"] {
+  button[type="submit"],
+  button[type="button"] {
     background: hsl(0, 0%, 19%);
     color: hsl(0,0%,100%);
     padding: 8px 12px;
     border: 1px solid hsl(0, 0%, 7%);
     font-size: 1.2rem;
     border-radius: 3px;
+    margin-right: 10px;
 
     &:hover {
       background: hsl(0, 0%, 13%)

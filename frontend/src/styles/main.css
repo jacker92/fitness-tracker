@@ -50,3 +50,8 @@ textarea {
     color: hsl(0, 100%, 50%);
     margin: 10px 0;
 }
+
+.add-button {
+    text-align: right;
+    margin: 15px 0 15px 15px;
+}

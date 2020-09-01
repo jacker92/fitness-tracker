@@ -4,10 +4,10 @@ namespace FitnessTrackerApi
     {
         None = 0,
         Distance = 1,
-        Numeric = 2,
-        Percentage = 3,
-        String = 4,
-        Weight = 5
+        Weight = 2,
+        Numeric = 3,
+        Percentage = 4,
+        String = 5
     }
 
     public enum MeasurementSystem

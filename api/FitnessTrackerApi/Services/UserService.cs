@@ -22,10 +22,11 @@ namespace FitnessTrackerApi.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IHostEnvironment _hostEnvironment;
         private readonly IRepository<DailyTarget> _dailyTargetRepository;
+        private readonly IRepository<Metric> _metricRepository;
         private readonly IRepository<UserMetric> _userMetricRepository;
         private readonly IRepository<UserTrackedMetric> _userTrackedMetricRepository;
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IHostEnvironment hostEnvironment, IRepository<DailyTarget> dailyTargetRepo, IRepository<UserMetric> userMetricRepo, IRepository<UserTrackedMetric> userTrackedMetricRepo)
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IHostEnvironment hostEnvironment, IRepository<DailyTarget> dailyTargetRepo, IRepository<UserMetric> userMetricRepo, IRepository<UserTrackedMetric> userTrackedMetricRepo, IRepository<Metric> metricRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,6 +34,7 @@ namespace FitnessTrackerApi.Services
             _dailyTargetRepository = dailyTargetRepo;
             _userMetricRepository = userMetricRepo;
             _userTrackedMetricRepository = userTrackedMetricRepo;
+            _metricRepository = metricRepo;
         }
 
         public async Task<RegistrationResponse> RegisterUser(RegistrationRequest request)
@@ -456,7 +458,74 @@ namespace FitnessTrackerApi.Services
 
         public async Task<ToggleUserMetricTrackingResponse> UpdateUserMetricTracking(User user, ToggleUserMetricTrackingRequest request)
         {
-            return null;
+            if (user != null)
+            {
+                var trackedMetric = _userTrackedMetricRepository.Get(utm => utm.ID == request.UserTrackedMetricID).FirstOrDefault();
+
+                if (trackedMetric != null)
+                {
+                    trackedMetric.IsTracked = !trackedMetric.IsTracked;
+                    await _userTrackedMetricRepository.Update(trackedMetric);
+
+                    var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
+                                        .OrderBy(utm => utm.Metric.Name)
+                                        .ToList();
+
+                    return new ToggleUserMetricTrackingResponse
+                    {
+                        Metrics = trackedMetrics
+                    };
+                }
+
+                return new ToggleUserMetricTrackingResponse
+                {
+                    ErrorMessage = "Cannot find metric"
+                };
+            }
+
+            return new ToggleUserMetricTrackingResponse
+            {
+                ErrorMessage = "Cannot find user"
+            };
+        }
+
+        public async Task<AddCustomMetricResponse> AddCustomMetric(User user, AddCustomMetricRequest request)
+        {
+            if (user != null)
+            {
+                var metric = new Metric
+                {
+                    Name = request.Name,
+                    Units = request.Units,
+                    Type = request.Type,
+                    IsSystem = false
+                };
+
+                await _metricRepository.Add(metric);
+
+                var userTrackedMetric = new UserTrackedMetric
+                {
+                    UserID = user.Id,
+                    MetricID = metric.ID,
+                    IsTracked = true
+                };
+
+                await _userTrackedMetricRepository.Add(userTrackedMetric);
+
+                var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
+                                        .OrderBy(utm => utm.Metric.Name)
+                                        .ToList();
+
+                return new AddCustomMetricResponse
+                {
+                    Metrics = trackedMetrics
+                };
+            }
+
+            return new AddCustomMetricResponse
+            {
+                ErrorMessage = "Cannot find user"
+            };
         }
 
         #region helper functions
