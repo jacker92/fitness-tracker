@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
@@ -6,24 +6,56 @@ import { Form } from '../Styles/Form';
 import { GridForm } from '../Styles/GridForm';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 // eslint-disable-next-line no-unused-vars
 import { Metric } from '../../lib/types/Metric';
 
-const AddMetricForm = (props: { onSuccess: Function, onError: Function, onCancel: Function }) => {
+const MetricForm = (props: { metricId: number, onSuccess: Function, onError: Function, onCancel: Function }) => {
     const {
-        onSuccess, onError, onCancel,
+        metricId, onSuccess, onError, onCancel,
     } = props;
 
+    const [id, setId] = useState(metricId);
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState('');
     const [units, setUnits] = useState('');
     const [type, setType] = useState(0);
     const [saveDisabled, setSaveDisabled] = useState(false);
-    // const [formVisible, setFormVisible] = useState(visible);
+    const [errorMessage, setErrorMessage] = useState('');
 
-    // useEffect(() => {
-    //     setFormVisible(visible);
-    // }, [visible]);
+    const getMetricById = useCallback(async () => {
+        await client(`metrics/getmetric?id=${id}`).then(
+            (data) => {
+                if (data.successful) {
+                    setName(data.metric.Name);
+                    setUnits(data.metric.Units);
+                    setType(data.metric.Type);
+                } else {
+                    setErrorMessage(data.error);
+                }
+
+                console.log({ name, units, type });
+            },
+            (error) => {
+                if (typeof error === 'string') {
+                    setErrorMessage(error);
+                } else if (typeof error.message === 'string') {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('An error has occurred');
+                }
+            },
+        );
+    }, [id]);
+
+    useEffect(() => {
+        if (id !== metricId) {
+            setId(metricId);
+            if (metricId > 0) {
+                getMetricById();
+            }
+        }
+    }, [id, metricId, getMetricById]);
 
     useEffect(() => {
         if (nameError === '') {
@@ -83,6 +115,9 @@ const AddMetricForm = (props: { onSuccess: Function, onError: Function, onCancel
     return (
         <GridForm>
             <h2>Add New Metric</h2>
+
+            <ErrorMessage error={errorMessage} />
+
             <Form
                 className="autowidth"
                 method="POST"
@@ -91,12 +126,15 @@ const AddMetricForm = (props: { onSuccess: Function, onError: Function, onCancel
 
                     if (validate()) {
                         const metric: Metric = {
+                            id,
                             name,
                             units,
                             type,
                         };
 
-                        await addNewMetric(metric);
+                        if (id > 0) {
+                            await addNewMetric(metric);
+                        }
                     }
                 }}
             >
@@ -174,10 +212,11 @@ const AddMetricForm = (props: { onSuccess: Function, onError: Function, onCancel
     );
 };
 
-AddMetricForm.propTypes = {
+MetricForm.propTypes = {
+    metricId: PropTypes.number.isRequired,
     onSuccess: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 };
 
-export { AddMetricForm };
+export { MetricForm };

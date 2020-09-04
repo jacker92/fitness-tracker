@@ -5,7 +5,7 @@ import { AppContext } from '../AppContext/AppContext';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
-import { AddMetricForm } from '../AddMetricForm/AddMetricForm';
+import { MetricForm } from '../MetricForm/MetricForm';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 // eslint-disable-next-line no-unused-vars
 import { GridColumn } from '../../lib/types/GridColumn';
@@ -17,6 +17,7 @@ const MetricsGrid = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage] = useState('');
     const [gridData, setGridData] = useState([]);
+    const [metricId, setMetricId] = useState(0);
     const [addFormVisible, setAddFormVisible] = useState(false);
 
     const { currentUser } = useContext(AppContext);
@@ -26,7 +27,7 @@ const MetricsGrid = () => {
 
         metrics.forEach((m: any) => {
             trackedMetrics.push({
-                ID: m.ID,
+                ID: m.MetricID,
                 Name: m.Metric.Name,
                 isTracked: m.IsTracked,
                 canDelete: !m.Metric.IsSystem,
@@ -63,10 +64,10 @@ const MetricsGrid = () => {
         );
     }, [currentUser.id]);
 
-    const toggleTracking = (metricId: number) => {
+    const toggleTracking = (id: number) => {
         client('users/toggleusertrackedmetric', {
             data: {
-                userTrackedMetricId: metricId,
+                userTrackedMetricId: id,
             },
         }).then(
             (data) => {
@@ -131,7 +132,8 @@ const MetricsGrid = () => {
                         height={490}
                         visible={addFormVisible}
                     >
-                        <AddMetricForm
+                        <MetricForm
+                            metricId={metricId}
                             onSuccess={(metrics: any) => {
                                 setAddFormVisible(false);
                                 const trackedMetrics: Array<UserTrackedMetric> = transformData(metrics);
@@ -150,10 +152,15 @@ const MetricsGrid = () => {
                         data={gridData}
                         keyColumn="ID"
                         noRowsMessage="No Metrics Defined"
-                        onTrackChange={(metricId: number) => {
-                            toggleTracking(metricId);
+                        onTrackChange={(id: number) => {
+                            toggleTracking(id);
                         }}
                         onAdd={() => {
+                            setMetricId(0);
+                            setAddFormVisible(true);
+                        }}
+                        onEdit={(id: number) => {
+                            setMetricId(id);
                             setAddFormVisible(true);
                         }}
                     />

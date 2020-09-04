@@ -33,7 +33,7 @@ const ModalWindow = (props: { visible: boolean, width: number, height: number, c
             setOverlayVisibility(false, false);
             setIsVisible(visible);
         }
-    }, [visible]);
+    }, [visible, setOverlayVisibility]);
 
     return (
         <Popup
