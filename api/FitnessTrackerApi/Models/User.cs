@@ -28,7 +28,10 @@ namespace FitnessTrackerApi.Models
         public List<FoodIntake> FoodEaten { get; set; }
 
         [PersonalData]
-        public List<UserMetric> Metrics { get; set; }
+        public List<Metric> Metrics { get; set; }
+
+        [PersonalData]
+        public List<UserMetric> MetricMeasurements { get; set; }
 
         [PersonalData]
         public List<UserTrackedMetric> TrackedMetrics { get; set; }

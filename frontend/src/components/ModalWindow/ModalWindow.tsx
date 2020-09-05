@@ -9,17 +9,14 @@ const Popup = styled.div`
     background: hsl(0,0%,100%);
     box-shadow: 0 12px 24px 0 hsla(0, 0%, 0%, 0.2);
     border-radius: 4px;
-    top: 50%;
+    top: 50px;
     left: 50%;
 `;
 
-const ModalWindow = (props: { visible: boolean, width: number, height: number, children: React.ReactNode }) => {
+const ModalWindow = (props: { visible: boolean, width: number, height: any, children: React.ReactNode }) => {
     const {
         visible, width, height, children,
     } = props;
-
-    // const marginTop: number = (height / 2) * -1;
-    // const marginLeft: number = (height / 2) * -1;
 
     const { setOverlayVisibility } = useContext(AppContext);
 
@@ -38,7 +35,7 @@ const ModalWindow = (props: { visible: boolean, width: number, height: number, c
     return (
         <Popup
             style={{
-                width: `${width}px`, height: `${height}px`, display: (isVisible ? 'block' : 'none'), marginTop: `-${height / 2}px`, marginLeft: `-${width / 2}px`,
+                width: `${width}px`, height: (height === 'auto' ? 'auto' : `${height}px`), display: (isVisible ? 'block' : 'none'), marginLeft: `-${width / 2}px`,
             }}
         >
             {children}
@@ -48,12 +45,15 @@ const ModalWindow = (props: { visible: boolean, width: number, height: number, c
 
 ModalWindow.defaultProps = {
     width: 500,
-    height: 400,
+    height: 'auto',
 };
 
 ModalWindow.propTypes = {
     width: PropTypes.number,
-    height: PropTypes.number,
+    height: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]),
     visible: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
 };

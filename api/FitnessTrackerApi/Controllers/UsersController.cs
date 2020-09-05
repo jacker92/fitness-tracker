@@ -301,34 +301,5 @@ namespace FitnessTrackerApi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
-        [Authorize]
-        [HttpPost("addcustommetric")]
-        public async Task<IActionResult> AddCustomMetric(AddCustomMetricRequest request)
-        {
-            try
-            {
-                var user = (User)HttpContext.Items["User"];
-
-                if (user == null)
-                {
-                    return BadRequest(new { message = "Unable to retrieve user" });
-                }
-
-                var response = await _userService.AddCustomMetric(user, request);
-
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
     }
 }

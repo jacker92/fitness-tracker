@@ -3,7 +3,9 @@ using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
 using FitnessTrackerApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace FitnessTrackerApi.Controllers
 {
@@ -22,7 +24,6 @@ namespace FitnessTrackerApi.Controllers
         [HttpGet("getmetric")]
         public IActionResult GetMetric(int id)
         {
-            System.Console.WriteLine(id);
             if (id < 0)
             {
                 return Ok(JsonSerializer.Serialize(new GetMetricResponse
@@ -30,7 +31,7 @@ namespace FitnessTrackerApi.Controllers
                     ErrorMessage = "Metric not found"
                 }));
             }
-            System.Console.WriteLine("Valid ID...Continuing...");
+
             var metric = _metricService.GetById(id);
 
             GetMetricResponse response;
@@ -51,6 +52,93 @@ namespace FitnessTrackerApi.Controllers
             }
 
             return Ok(JsonSerializer.Serialize(response));
+        }
+
+        [Authorize]
+        [HttpPost("addmetric")]
+        public async Task<IActionResult> AddCustomMetric(AddMetricRequest request)
+        {
+            try
+            {
+                var user = (User)HttpContext.Items["User"];
+
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user" });
+                }
+
+                var response = await _metricService.AddMetric(user, request);
+
+                if (response.ErrorMessage != "")
+                {
+                    return BadRequest(new { message = response.ErrorMessage });
+                }
+
+                // TODO: Figure out why I need to serialize the response
+                return Ok(JsonSerializer.Serialize(response));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPost("updatemetric")]
+        public async Task<IActionResult> UpdateCustomMetric(UpdateMetricRequest request)
+        {
+            try
+            {
+                var user = (User)HttpContext.Items["User"];
+
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user" });
+                }
+
+                var response = await _metricService.UpdateMetric(user, request);
+
+                if (response.ErrorMessage != "")
+                {
+                    return BadRequest(new { message = response.ErrorMessage });
+                }
+
+                // TODO: Figure out why I need to serialize the response
+                return Ok(JsonSerializer.Serialize(response));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPost("deletemetric")]
+        public async Task<IActionResult> DeleteCustomMetric(DeleteMetricRequest request)
+        {
+            try
+            {
+                var user = (User)HttpContext.Items["User"];
+
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user" });
+                }
+
+                var response = await _metricService.DeleteMetric(user, request);
+
+                if (response.ErrorMessage != "")
+                {
+                    return BadRequest(new { message = response.ErrorMessage });
+                }
+
+                // TODO: Figure out why I need to serialize the response
+                return Ok(JsonSerializer.Serialize(response));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

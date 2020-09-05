@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace FitnessTrackerApi.Models.Responses
 {
-    public class AddCustomMetricResponse : BaseResponse
+    public class EditMetricResponse : BaseResponse
     {
         [JsonPropertyName("metrics")]
         public List<UserTrackedMetric> Metrics { get; set; }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
@@ -10,52 +10,26 @@ import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 // eslint-disable-next-line no-unused-vars
 import { Metric } from '../../lib/types/Metric';
 
-const MetricForm = (props: { metricId: number, onSuccess: Function, onError: Function, onCancel: Function }) => {
+const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Function }) => {
     const {
-        metricId, onSuccess, onError, onCancel,
+        metric, onSuccess, onCancel,
     } = props;
 
-    const [id, setId] = useState(metricId);
-    const [name, setName] = useState('');
+    const [id, setId] = useState(metric.id);
+    const [name, setName] = useState(metric.name);
     const [nameError, setNameError] = useState('');
-    const [units, setUnits] = useState('');
-    const [type, setType] = useState(0);
+    const [units, setUnits] = useState(metric.units);
+    const [showUnits, setShowUnits] = useState(metric.type === 3);
+    const [type, setType] = useState(metric.type);
     const [saveDisabled, setSaveDisabled] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    const getMetricById = useCallback(async () => {
-        await client(`metrics/getmetric?id=${id}`).then(
-            (data) => {
-                if (data.successful) {
-                    setName(data.metric.Name);
-                    setUnits(data.metric.Units);
-                    setType(data.metric.Type);
-                } else {
-                    setErrorMessage(data.error);
-                }
-
-                console.log({ name, units, type });
-            },
-            (error) => {
-                if (typeof error === 'string') {
-                    setErrorMessage(error);
-                } else if (typeof error.message === 'string') {
-                    setErrorMessage(error.message);
-                } else {
-                    setErrorMessage('An error has occurred');
-                }
-            },
-        );
-    }, [id]);
-
     useEffect(() => {
-        if (id !== metricId) {
-            setId(metricId);
-            if (metricId > 0) {
-                getMetricById();
-            }
-        }
-    }, [id, metricId, getMetricById]);
+        setId(metric.id);
+        setName(metric.name);
+        setUnits(metric.units);
+        setType(metric.type);
+    }, [metric]);
 
     useEffect(() => {
         if (nameError === '') {
@@ -73,12 +47,12 @@ const MetricForm = (props: { metricId: number, onSuccess: Function, onError: Fun
         setSaveDisabled(false);
     };
 
-    const addNewMetric = (metric: Metric) => {
-        client('users/addcustommetric', {
+    const addNewMetric = (newMetric: Metric) => {
+        client('metrics/addmetric', {
             data: {
-                name: metric.name,
-                type: metric.type,
-                units: metric.units,
+                name: newMetric.name,
+                type: newMetric.type,
+                units: newMetric.units,
             },
         }).then(
             (data) => {
@@ -86,16 +60,45 @@ const MetricForm = (props: { metricId: number, onSuccess: Function, onError: Fun
                     resetForm();
                     onSuccess(data.metrics);
                 } else {
-                    onError(data.error);
+                    setErrorMessage(data.error);
                 }
             },
             (error) => {
                 if (typeof error === 'string') {
-                    onError(error);
+                    setErrorMessage(error);
                 } else if (typeof error.message === 'string') {
-                    onError(error.message);
+                    setErrorMessage(error.message);
                 } else {
-                    onError('An error has occurred');
+                    setErrorMessage('An error has occurred');
+                }
+            },
+        );
+    };
+
+    const updateMetric = (updatedMetric: Metric) => {
+        client('metrics/updatemetric', {
+            data: {
+                id: updatedMetric.id,
+                name: updatedMetric.name,
+                type: updatedMetric.type,
+                units: updatedMetric.units,
+            },
+        }).then(
+            (data) => {
+                if (data.successful) {
+                    resetForm();
+                    onSuccess(data.metrics);
+                } else {
+                    setErrorMessage(data.error);
+                }
+            },
+            (error) => {
+                if (typeof error === 'string') {
+                    setErrorMessage(error);
+                } else if (typeof error.message === 'string') {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('An error has occurred');
                 }
             },
         );
@@ -125,7 +128,7 @@ const MetricForm = (props: { metricId: number, onSuccess: Function, onError: Fun
                     e.preventDefault();
 
                     if (validate()) {
-                        const metric: Metric = {
+                        const editedMetric: Metric = {
                             id,
                             name,
                             units,
@@ -133,7 +136,9 @@ const MetricForm = (props: { metricId: number, onSuccess: Function, onError: Fun
                         };
 
                         if (id > 0) {
-                            await addNewMetric(metric);
+                            await updateMetric(editedMetric);
+                        } else {
+                            await addNewMetric(editedMetric);
                         }
                     }
                 }}
@@ -156,7 +161,7 @@ const MetricForm = (props: { metricId: number, onSuccess: Function, onError: Fun
                         />
                     </div>
 
-                    <div className="form-field">
+                    <div className="form-field" style={showUnits ? { display: 'block' } : { display: 'none' }}>
                         <TextBox
                             id="units"
                             name="units"
@@ -180,19 +185,26 @@ const MetricForm = (props: { metricId: number, onSuccess: Function, onError: Fun
                                 { value: 2, text: 'Weight' },
                                 { value: 3, text: 'Numeric' },
                                 { value: 4, text: 'Percentage' },
-                                { value: 5, text: 'String' },
                             ]}
                             requiredField
                             includeBlank={false}
                             onChange={(e: any) => {
-                                setType(parseInt(e.target.value, 10));
+                                const typeVal = parseInt(e.target.value, 10);
+                                setType(typeVal);
+
+                                if (typeVal === 3) {
+                                    setShowUnits(true);
+                                } else {
+                                    setShowUnits(false);
+                                    setUnits('');
+                                }
                             }}
                         />
                     </div>
 
                     <div className="form-field">
                         <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>
-                            Add
+                            {id > 0 ? 'Update' : 'Add' }
                         </button>
 
                         <button
@@ -213,9 +225,9 @@ const MetricForm = (props: { metricId: number, onSuccess: Function, onError: Fun
 };
 
 MetricForm.propTypes = {
-    metricId: PropTypes.number.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    metric: PropTypes.object.isRequired,
     onSuccess: PropTypes.func.isRequired,
-    onError: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 };
 

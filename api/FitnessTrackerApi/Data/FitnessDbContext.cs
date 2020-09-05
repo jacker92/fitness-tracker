@@ -98,7 +98,7 @@ namespace FitnessTrackerApi.Data
 
             modelBuilder.Entity<UserMetric>()
                 .HasOne(um => um.User)
-                .WithMany(u => u.Metrics)
+                .WithMany(u => u.MetricMeasurements)
                 .HasForeignKey(um => um.UserID);
 
             modelBuilder.Entity<UserTrackedMetric>()
@@ -110,6 +110,12 @@ namespace FitnessTrackerApi.Data
                 .HasOne(utm => utm.Metric)
                 .WithMany()
                 .HasForeignKey(utm => utm.MetricID);
+
+            modelBuilder.Entity<Metric>()
+                .HasOne(m => m.User)
+                .WithMany(u => u.Metrics)
+                .HasForeignKey(m => m.UserID)
+                .IsRequired(false);
         }
     }
 }

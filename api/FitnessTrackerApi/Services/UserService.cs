@@ -489,45 +489,6 @@ namespace FitnessTrackerApi.Services
             };
         }
 
-        public async Task<AddCustomMetricResponse> AddCustomMetric(User user, AddCustomMetricRequest request)
-        {
-            if (user != null)
-            {
-                var metric = new Metric
-                {
-                    Name = request.Name,
-                    Units = request.Units,
-                    Type = request.Type,
-                    IsSystem = false
-                };
-
-                await _metricRepository.Add(metric);
-
-                var userTrackedMetric = new UserTrackedMetric
-                {
-                    UserID = user.Id,
-                    MetricID = metric.ID,
-                    IsTracked = true
-                };
-
-                await _userTrackedMetricRepository.Add(userTrackedMetric);
-
-                var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
-                                        .OrderBy(utm => utm.Metric.Name)
-                                        .ToList();
-
-                return new AddCustomMetricResponse
-                {
-                    Metrics = trackedMetrics
-                };
-            }
-
-            return new AddCustomMetricResponse
-            {
-                ErrorMessage = "Cannot find user"
-            };
-        }
-
         #region helper functions
         private string generateJwtToken(User user)
         {
