@@ -59,6 +59,18 @@ const handlers = [
         successful: true,
         error: '',
     }))),
+
+    rest.post('*/users/addmetric', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        metrics: [],
+    }))),
+
+    rest.post('*/users/updatemetric', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        metrics: [],
+    }))),
 ];
 
 export { handlers };

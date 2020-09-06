@@ -6,7 +6,7 @@ namespace FitnessTrackerApi.Models.Requests
     public class ToggleUserMetricTrackingRequest
     {
         [Required]
-        [JsonPropertyName("userTrackedMetricId")]
-        public int UserTrackedMetricID { get; set; }
+        [JsonPropertyName("metricId")]
+        public int MetricID { get; set; }
     }
 }

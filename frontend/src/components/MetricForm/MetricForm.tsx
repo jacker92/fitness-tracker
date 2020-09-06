@@ -161,7 +161,11 @@ const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Func
                         />
                     </div>
 
-                    <div className="form-field" style={showUnits ? { display: 'block' } : { display: 'none' }}>
+                    <div
+                        className="form-field"
+                        data-testid="units-div"
+                        style={showUnits ? { display: 'block' } : { display: 'none' }}
+                    >
                         <TextBox
                             id="units"
                             name="units"

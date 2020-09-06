@@ -65,6 +65,20 @@ namespace FitnessTrackerApi.Services
 
                     await _dailyTargetRepository.Add(dailyTarget);
 
+                    var systemMetrics = _metricRepository.Get(m => m.ID < 0).ToList();
+
+                    foreach (var metric in systemMetrics)
+                    {
+                        var trackedMetric = new UserTrackedMetric
+                        {
+                            UserID = user.Id,
+                            MetricID = metric.ID,
+                            IsTracked = true
+                        };
+
+                        await _userTrackedMetricRepository.Add(trackedMetric);
+                    }
+
                     var token = generateJwtToken(user);
 
                     return new RegistrationResponse
@@ -460,7 +474,7 @@ namespace FitnessTrackerApi.Services
         {
             if (user != null)
             {
-                var trackedMetric = _userTrackedMetricRepository.Get(utm => utm.ID == request.UserTrackedMetricID).FirstOrDefault();
+                var trackedMetric = _userTrackedMetricRepository.Get(utm => utm.MetricID == request.MetricID && utm.UserID == user.Id).FirstOrDefault();
 
                 if (trackedMetric != null)
                 {

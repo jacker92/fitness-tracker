@@ -100,7 +100,7 @@ const MetricsGrid = () => {
     const toggleTracking = (id: number) => {
         client('users/toggleusertrackedmetric', {
             data: {
-                userTrackedMetricId: id,
+                metricId: id,
             },
         }).then(
             (data) => {
@@ -221,7 +221,7 @@ const MetricsGrid = () => {
                             setAddFormVisible(true);
                         }}
                         onDelete={async (id: number) => {
-                            // eslint-disable-next-line no-alert
+                            // eslint-disable-next-line max-len, no-alert
                             if (window.confirm('Are you sure you want to delete this metric? All entries associated with it will be deleted as well. Untracking it will allow you to keep your data while hiding it.')) {
                                 await deleteMetric(id);
                             }
