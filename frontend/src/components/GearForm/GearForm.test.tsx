@@ -4,20 +4,20 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AppContext } from '../AppContext/AppContext';
-import { MetricForm } from './MetricForm';
+import { GearForm } from './GearForm';
 // eslint-disable-next-line no-unused-vars
-import { Metric } from '../../lib/types/Metric';
+import { Gear } from '../../lib/types/Gear';
 
-describe('<MetricForm />', () => {
-    const newMetric: Metric = {
-        id: 0, name: '', units: '', type: 0,
+describe('<GearForm />', () => {
+    const newGear: Gear = {
+        id: 0, name: '', active: true,
     };
 
-    const existingMetric: Metric = {
-        id: 1, name: 'Test Metric', units: 'light years', type: 3,
+    const existingGear: Gear = {
+        id: 1, name: 'Test Gear', active: true,
     };
 
-    test('it renders the form for a new metric', async () => {
+    test('it renders the form for a new gear', async () => {
         render(
             <AppContext.Provider value={{
                 currentUser: { id: '123', name: 'Tester', email: 'test@test.com' },
@@ -29,18 +29,12 @@ describe('<MetricForm />', () => {
                 overlayVisible: false,
             }}
             >
-                <MetricForm metric={newMetric} onSuccess={() => {}} onCancel={() => {}} />
+                <GearForm gear={newGear} onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 
         const nameField = await screen.findByLabelText(/Name/) as HTMLInputElement;
         expect(nameField.value).toBe('');
-
-        const typeField = await screen.findByLabelText(/Type/) as HTMLSelectElement;
-        expect(typeField.value).toBe('0');
-
-        const unitsDiv = await screen.findByTestId(/units-div/) as HTMLDivElement;
-        expect(unitsDiv.style.display).toEqual('none');
 
         await screen.findByRole('button', { name: /Add/i });
     });
@@ -57,21 +51,12 @@ describe('<MetricForm />', () => {
                 overlayVisible: false,
             }}
             >
-                <MetricForm metric={existingMetric} onSuccess={() => {}} onCancel={() => {}} />
+                <GearForm gear={existingGear} onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 
         const nameField = await screen.findByLabelText(/Name/) as HTMLInputElement;
-        expect(nameField.value).toBe('Test Metric');
-
-        const typeField = await screen.findByLabelText(/Type/) as HTMLSelectElement;
-        expect(typeField.value).toBe('3');
-
-        const unitsDiv = await screen.findByTestId(/units-div/) as HTMLDivElement;
-        expect(unitsDiv.style.display).toEqual('block');
-
-        const unitsField = await screen.findByLabelText(/Units/) as HTMLInputElement;
-        expect(unitsField.value).toBe('light years');
+        expect(nameField.value).toBe('Test Gear');
 
         await screen.findByRole('button', { name: /Update/i });
     });
@@ -88,7 +73,7 @@ describe('<MetricForm />', () => {
                 overlayVisible: false,
             }}
             >
-                <MetricForm metric={newMetric} onSuccess={() => {}} onCancel={() => {}} />
+                <GearForm gear={newGear} onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 
@@ -120,7 +105,7 @@ describe('<MetricForm />', () => {
                 overlayVisible: false,
             }}
             >
-                <MetricForm metric={newMetric} onSuccess={() => {}} onCancel={() => {}} />
+                <GearForm gear={newGear} onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 

@@ -76,8 +76,8 @@ const GearGrid = () => {
             (data) => {
                 if (data.successful) {
                     const selGear: Gear = {
-                        id: data.id,
-                        name: data.name,
+                        id: data.gear.id,
+                        name: data.gear.name,
                     };
                     setGear(selGear);
                 } else {
@@ -157,12 +157,14 @@ const GearGrid = () => {
             Width: '35%',
             ColumnId: 'name',
             Key: 'NAME',
+            CellStyle: { textAlign: 'left' },
         },
         {
             Heading: 'Active',
             Width: '15%',
             ColumnId: 'activeString',
             Key: 'ACTIVE',
+            CellStyle: { textAlign: 'center' },
         },
         {
             Heading: ' ',

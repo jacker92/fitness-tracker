@@ -60,13 +60,13 @@ const handlers = [
         error: '',
     }))),
 
-    rest.post('*/users/addmetric', (req, res, ctx) => res(ctx.json({
+    rest.post('*/metrics/addmetric', (req, res, ctx) => res(ctx.json({
         successful: true,
         error: '',
         metrics: [],
     }))),
 
-    rest.post('*/users/updatemetric', (req, res, ctx) => res(ctx.json({
+    rest.post('*/metrics/updatemetric', (req, res, ctx) => res(ctx.json({
         successful: true,
         error: '',
         metrics: [],
@@ -119,6 +119,35 @@ const handlers = [
                 IsTracked: true,
             },
         ],
+    }))),
+
+    rest.get('*/users/getusergear', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        gear: [
+            {
+                id: 1,
+                name: 'Running Shoe 1',
+                active: false,
+            },
+            {
+                id: 2,
+                name: 'Running Shoe 2',
+                active: true,
+            },
+        ],
+    }))),
+
+    rest.post('*/gear/addgear', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        metrics: [],
+    }))),
+
+    rest.post('*/gear/updategear', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        metrics: [],
     }))),
 ];
 

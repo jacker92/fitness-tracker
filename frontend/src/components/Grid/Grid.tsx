@@ -206,7 +206,7 @@ const Grid = (props: {
 
                                         default:
                                             return (
-                                                <td key={`row_${col.Key}`}>{row[col.ColumnId]}</td>
+                                                <td key={`row_${col.Key}`} style={col.CellStyle}>{row[col.ColumnId]}</td>
                                             );
                                     }
                                 })}
