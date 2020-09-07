@@ -71,6 +71,55 @@ const handlers = [
         error: '',
         metrics: [],
     }))),
+
+    rest.get('*/users/getusertrackedmetrics', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        metrics: [
+            {
+                ID: 1009,
+                UserID: 'TESTID',
+                MetricID: 7,
+                Metric: {
+                    ID: 7,
+                    UserID: 'TESTID',
+                    Name: 'BMI',
+                    Units: '',
+                    Type: 3,
+                    IsSystem: false,
+                },
+                IsTracked: true,
+            },
+            {
+                ID: 2,
+                UserID: 'TESTID',
+                MetricID: -2,
+                Metric: {
+                    ID: -2,
+                    UserID: null,
+                    Name: 'Body Fat Percentage',
+                    Units: null,
+                    Type: 4,
+                    IsSystem: true,
+                },
+                IsTracked: true,
+            },
+            {
+                ID: 1,
+                UserID: 'TESTID',
+                MetricID: -1,
+                Metric: {
+                    ID: -1,
+                    UserID: null,
+                    Name: 'Weight',
+                    Units: null,
+                    Type: 2,
+                    IsSystem: true,
+                },
+                IsTracked: true,
+            },
+        ],
+    }))),
 ];
 
 export { handlers };

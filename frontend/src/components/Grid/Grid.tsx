@@ -121,7 +121,7 @@ const Grid = (props: {
                 <tbody>
                     {gridData.length > 0 && (
                         gridData.map((row: any) => (
-                            <tr key={row[keyColumn]}>
+                            <tr data-testid="griddatarow" key={row[keyColumn]}>
                                 {columns.map((col: GridColumn) => {
                                     switch (col.Key) {
                                         case 'EDIT':
