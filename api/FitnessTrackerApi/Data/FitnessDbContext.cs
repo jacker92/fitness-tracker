@@ -18,6 +18,8 @@ namespace FitnessTrackerApi.Data
 
         public DbSet<FoodIntake> FoodIntakes { get; set; }
 
+        public DbSet<Gear> Gear { get; set; }
+
         public DbSet<Metric> Metrics { get; set; }
 
         public DbSet<Recipe> Recipes { get; set; }
@@ -116,6 +118,11 @@ namespace FitnessTrackerApi.Data
                 .WithMany(u => u.Metrics)
                 .HasForeignKey(m => m.UserID)
                 .IsRequired(false);
+
+            modelBuilder.Entity<Gear>()
+                .HasOne(g => g.User)
+                .WithMany(u => u.Gear)
+                .HasForeignKey(g => g.UserID);
         }
     }
 }

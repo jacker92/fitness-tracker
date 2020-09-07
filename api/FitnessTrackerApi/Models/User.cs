@@ -40,6 +40,9 @@ namespace FitnessTrackerApi.Models
         public List<Recipe> Recipes { get; set; }
 
         [PersonalData]
+        public List<Gear> Gear { get; set; }
+
+        [PersonalData]
         public int DailyTargetID { get; set; }
 
         [PersonalData]

@@ -83,6 +83,7 @@ const Grid = (props: {
                 onAdd: Function,
                 onEdit: Function,
                 onDelete: Function,
+                onToggleActive: Function,
                 onTrackChange: Function }) => {
     const {
         columns,
@@ -93,6 +94,7 @@ const Grid = (props: {
         onAdd,
         onEdit,
         onDelete,
+        onToggleActive,
         onTrackChange,
     } = props;
 
@@ -126,7 +128,7 @@ const Grid = (props: {
                                     switch (col.Key) {
                                         case 'EDIT':
                                             return (
-                                                <td key={`row_${col.Key}`}>
+                                                <td key={`row_${col.Key}`} align="center">
                                                     {row.canEdit
                                                         ? (
                                                             <button
@@ -147,7 +149,7 @@ const Grid = (props: {
 
                                         case 'TRACK':
                                             return (
-                                                <td key={`row_${col.Key}`}>
+                                                <td key={`row_${col.Key}`} align="center">
                                                     <button
                                                         className="edit"
                                                         type="button"
@@ -163,9 +165,27 @@ const Grid = (props: {
                                                 </td>
                                             );
 
+                                        case 'TOGGLEACTIVE':
+                                            return (
+                                                <td key={`row_${col.Key}`} align="center">
+                                                    <button
+                                                        className="edit"
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            if (typeof onToggleActive === 'function') {
+                                                                onToggleActive(row[IDColumn], row.active);
+                                                            }
+                                                        }}
+                                                    >
+                                                        {row.active ? 'Deactivate' : 'Activate'}
+                                                    </button>
+                                                </td>
+                                            );
+
                                         case 'DELETE':
                                             return (
-                                                <td key={`row_${col.Key}`}>
+                                                <td key={`row_${col.Key}`} align="center">
                                                     {row.canDelete
                                                         ? (
                                                             <button
@@ -213,6 +233,7 @@ Grid.defaultProps = {
     onEdit: null,
     onDelete: null,
     onTrackChange: null,
+    onToggleActive: null,
 };
 
 Grid.propTypes = {
@@ -227,6 +248,7 @@ Grid.propTypes = {
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     onTrackChange: PropTypes.func,
+    onToggleActive: PropTypes.func,
 };
 
 export { Grid };

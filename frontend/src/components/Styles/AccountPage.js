@@ -4,7 +4,7 @@ const AccountPage = styled.div`
     width: 800px;
     margin: 40px auto;
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 3fr;
 
     div.sidebar {
         grid-column-start:1;

@@ -86,7 +86,7 @@ const AccountSidebar = (props: { activePage: string }) => {
                 )}
             </li>
             <li className={activePage === 'gear' ? 'active' : ''}>
-                {activePage === 'activitgearies' ? (
+                {activePage === 'gear' ? (
                     <>Gear</>
                 ) : (
                     <a href="/account/gear">Gear</a>
