@@ -146,7 +146,7 @@ namespace FitnessTrackerApi.Services
 
                 return new AuthenticationResponse
                 {
-                    ErrorMessage = "Error authenticating user"
+                    ErrorMessage = "Invalid email or password"
                 };
             }
             catch (Exception ex)
