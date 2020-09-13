@@ -4,14 +4,16 @@ using FitnessTrackerApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FitnessTrackerApi.Migrations
 {
     [DbContext(typeof(FitnessDbContext))]
-    partial class FitnessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200913193417_RenameActivityType")]
+    partial class RenameActivityType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,12 +40,7 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Activities");
                 });
@@ -725,13 +722,6 @@ namespace FitnessTrackerApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("FitnessTrackerApi.Models.Activity", b =>
-                {
-                    b.HasOne("FitnessTrackerApi.Models.User", "User")
-                        .WithMany("CustomActivities")
-                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("FitnessTrackerApi.Models.DailyTarget", b =>

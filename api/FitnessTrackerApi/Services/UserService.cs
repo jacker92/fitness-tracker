@@ -26,6 +26,7 @@ namespace FitnessTrackerApi.Services
         private readonly IRepository<Metric> _metricRepository;
         private readonly IRepository<UserMetric> _userMetricRepository;
         private readonly IRepository<UserTrackedMetric> _userTrackedMetricRepository;
+        private readonly IRepository<Activity> _activityRepository;
 
         public UserService(UserManager<User> userManager,
                             SignInManager<User> signInManager,
@@ -34,7 +35,8 @@ namespace FitnessTrackerApi.Services
                             IRepository<UserMetric> userMetricRepo,
                             IRepository<UserTrackedMetric> userTrackedMetricRepo,
                             IRepository<Metric> metricRepo,
-                            IRepository<Gear> gearRepo)
+                            IRepository<Gear> gearRepo,
+                            IRepository<Activity> activityRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -44,6 +46,7 @@ namespace FitnessTrackerApi.Services
             _userTrackedMetricRepository = userTrackedMetricRepo;
             _metricRepository = metricRepo;
             _gearRespository = gearRepo;
+            _activityRepository = activityRepo;
         }
 
         public async Task<RegistrationResponse> RegisterUser(RegistrationRequest request)
@@ -525,6 +528,26 @@ namespace FitnessTrackerApi.Services
             }
 
             return new UserGearResponse
+            {
+                ErrorMessage = "Cannot find user"
+            };
+        }
+
+        public UserCustomActivityResponse GetUserCustomActivities(User user)
+        {
+            if (user != null)
+            {
+                var activities = _activityRepository.Get(a => a.UserID == user.Id)
+                                        .OrderBy(a => a.Name)
+                                        .ToList();
+
+                return new UserCustomActivityResponse
+                {
+                    Activities = activities
+                };
+            }
+
+            return new UserCustomActivityResponse
             {
                 ErrorMessage = "Cannot find user"
             };

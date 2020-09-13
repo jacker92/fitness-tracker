@@ -10,6 +10,7 @@ import { DietSettings } from './components/DietSettings/DietSettings';
 import { AccountSettings } from './components/AccountSettings/AccountSettings';
 import { Metrics } from './components/Metrics/Metrics';
 import { Gear } from './components/Gear/Gear';
+import { CustomActivities } from './components/CustomActivities/CustomActivities';
 
 const Home = () => (
     <>
@@ -33,6 +34,7 @@ function App() {
                     <Route path="/account/diet" component={DietSettings} />
                     <Route path="/account/metrics" component={Metrics} />
                     <Route path="/account/gear" component={Gear} />
+                    <Route path="/account/custom-activities" component={CustomActivities} />
                 </main>
             </MainApp>
         </Router>

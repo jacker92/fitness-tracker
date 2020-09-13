@@ -123,6 +123,12 @@ namespace FitnessTrackerApi.Data
                 .HasOne(g => g.User)
                 .WithMany(u => u.Gear)
                 .HasForeignKey(g => g.UserID);
+
+            modelBuilder.Entity<Activity>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.CustomActivities)
+                .HasForeignKey(a => a.UserID)
+                .IsRequired(false);
         }
     }
 }

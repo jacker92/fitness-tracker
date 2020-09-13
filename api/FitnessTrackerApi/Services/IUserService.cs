@@ -23,5 +23,6 @@ namespace FitnessTrackerApi.Services
         UserMetricsResponse GetUserTrackedMetrics(User user);
         Task<ToggleUserMetricTrackingResponse> UpdateUserMetricTracking(User user, ToggleUserMetricTrackingRequest request);
         UserGearResponse GetUserGear(User user);
+        UserCustomActivityResponse GetUserCustomActivities(User user);
     }
 }

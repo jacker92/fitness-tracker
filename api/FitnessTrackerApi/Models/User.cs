@@ -31,6 +31,9 @@ namespace FitnessTrackerApi.Models
         public List<Metric> Metrics { get; set; }
 
         [PersonalData]
+        public List<Activity> CustomActivities { get; set; }
+
+        [PersonalData]
         public List<UserMetric> MetricMeasurements { get; set; }
 
         [PersonalData]

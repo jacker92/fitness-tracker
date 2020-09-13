@@ -9,6 +9,12 @@ namespace FitnessTrackerApi
         Percentage = 4
     }
 
+    public enum ActivityMetricType
+    {
+        None = 0,
+        Distance = 1
+    }
+
     public enum MeasurementSystem
     {
         US = 1,

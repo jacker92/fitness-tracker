@@ -1,28 +1,24 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace FitnessTrackerApi.Models
+namespace FitnessTrackerApi.Models.Requests
 {
-    public class Activity
+    public class UpdateActivityRequest
     {
+        [Required]
         [JsonPropertyName("id")]
         public int ID { get; set; }
 
-        [JsonPropertyName("userId")]
-        public string UserID { get; set; }
-
-        [JsonIgnore]
-        public virtual User User { get; set; }
-
+        [Required]
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [Required]
         [JsonPropertyName("estimatedCaloriesBurnedPerMinute")]
         public int EstimatedCaloriesBurnedPerMinute { get; set; }
 
+        [Required]
         [JsonPropertyName("type")]
         public ActivityMetricType Type { get; set; }
-
-        [JsonPropertyName("isSystem")]
-        public bool IsSystem { get; set; }
     }
 }
