@@ -141,13 +141,53 @@ const handlers = [
     rest.post('*/gear/addgear', (req, res, ctx) => res(ctx.json({
         successful: true,
         error: '',
-        metrics: [],
+        gear: [],
     }))),
 
     rest.post('*/gear/updategear', (req, res, ctx) => res(ctx.json({
         successful: true,
         error: '',
-        metrics: [],
+        gear: [],
+    }))),
+
+    rest.get('*/users/getusercustomactivities', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        activities: [
+            {
+                id: 1,
+                name: 'Hockey',
+                estimatedCaloriesBurnedPerMinute: 9,
+                type: 0,
+                isSystem: false,
+            },
+            {
+                id: 2,
+                name: 'Tennis',
+                estimatedCaloriesBurnedPerMinute: 5,
+                type: 0,
+                isSystem: false,
+            },
+            {
+                id: 3,
+                name: 'Yoga',
+                estimatedCaloriesBurnedPerMinute: 5,
+                type: 0,
+                isSystem: false,
+            },
+        ],
+    }))),
+
+    rest.post('*/activities/addactivity', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        activities: [],
+    }))),
+
+    rest.post('*/activities/updateactivity', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        activities: [],
     }))),
 ];
 
