@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import DatePicker from 'react-datepicker';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
+import { Utilities } from '../../lib/Utilities';
 import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
@@ -25,8 +26,8 @@ const EditProfileForm = () => {
     const [gender, setGender] = useState('M');
     const [activityLevel, setActivityLevel] = useState(1);
     const [birthday, setBirthday] = useState(new Date());
-    const [birthdayError] = useState('');
-    const [height, setHeight] = useState('');
+    const [birthdayError, setBirthdayError] = useState('');
+    const [height, setHeight] = useState(0);
     const [heightError, setHeightError] = useState('');
     const [avatar, setAvatar] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
@@ -106,6 +107,21 @@ const EditProfileForm = () => {
         }
     }, [emailError, heightError, birthdayError, nameError]);
 
+    const validateBirthday = (dob: Date) => {
+        const age = Utilities.calculateAge(dob);
+
+        let isValid = true;
+
+        if (age < 13) {
+            setBirthdayError('You must be 13 years or older to register');
+            isValid = false;
+        } else {
+            setBirthdayError('');
+        }
+
+        return isValid;
+    };
+
     const validate = () => {
         let isValid = true;
 
@@ -114,9 +130,18 @@ const EditProfileForm = () => {
             setNameError('Name is required');
         }
 
-        if (!FormValidator.validateNumeric(height)) {
+        if (!FormValidator.validateEmail(email)) {
+            setEmailError('Valid email address required');
             isValid = false;
-            setHeightError('Height must be numeric');
+        }
+
+        if (!FormValidator.validateRequiredNumericGreaterThanZero(height)) {
+            setHeightError('Height must be numeric and greater than zero');
+            isValid = false;
+        }
+
+        if (!validateBirthday(birthday)) {
+            isValid = false;
         }
 
         return isValid;
@@ -134,7 +159,7 @@ const EditProfileForm = () => {
                     Email: email,
                     MeasurementSystem: measurementSystem,
                     Birthday: birthday,
-                    Height: parseInt(height, 10),
+                    Height: height,
                     Gender: gender,
                     ActivityLevel: activityLevel,
                 },
@@ -278,7 +303,7 @@ const EditProfileForm = () => {
                                 value={name}
                                 error={nameError}
                                 validationRule="notempty"
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setName(e.target.value);
                                 }}
                                 onErrorChange={(error: string) => {
@@ -294,10 +319,10 @@ const EditProfileForm = () => {
                                 label="Email"
                                 value={email}
                                 error={emailError}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setEmail(e.target.value);
                                 }}
-                                validate={(e: any) => {
+                                validate={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     e.preventDefault();
                                     checkEmail(e.target.value);
                                 }}
@@ -317,7 +342,7 @@ const EditProfileForm = () => {
                                 error={measurementSystemError}
                                 requiredField
                                 includeBlank={false}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                     setMeasurementSystem(parseInt(e.target.value, 10));
                                 }}
                             />
@@ -335,6 +360,7 @@ const EditProfileForm = () => {
                                     onChange={(date: Date, e: any) => {
                                         e.preventDefault();
                                         setBirthday(date);
+                                        validateBirthday(date);
                                     }}
                                     closeOnScroll
                                     maxDate={new Date()}
@@ -353,12 +379,18 @@ const EditProfileForm = () => {
                                 label={`Height (${measurementSystem === 1 ? 'inches' : 'meters'})`}
                                 value={height}
                                 error={heightError}
-                                validationRule="numeric"
-                                onChange={(e: any) => {
-                                    setHeight(e.target.value);
+                                validationRule="requiredgreaterzero"
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    if (e.target.value !== '') {
+                                        if (!Number.isNaN(e.target.value)) {
+                                            setHeight(parseInt(e.target.value, 10));
+                                        }
+                                    } else {
+                                        setHeight(0);
+                                    }
                                 }}
                                 onErrorChange={(error: string) => {
-                                    setHeightError(error);
+                                    setHeightError(error.replace(' (inches)', '').replace(' (meters)', ''));
                                 }}
                             />
                         </div>
@@ -375,7 +407,7 @@ const EditProfileForm = () => {
                                 ]}
                                 requiredField
                                 includeBlank={false}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                     setGender(e.target.value);
                                 }}
                             />
@@ -396,7 +428,7 @@ const EditProfileForm = () => {
                                 ]}
                                 requiredField
                                 includeBlank={false}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                     setActivityLevel(parseInt(e.target.value, 10));
                                 }}
                             />
