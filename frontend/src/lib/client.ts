@@ -1,3 +1,8 @@
+// eslint-disable-next-line no-unused-vars
+import { HttpHeader } from './types/HttpHeader';
+// eslint-disable-next-line no-unused-vars
+import { ClientArguments } from './types/ClientArguments';
+
 const apiUrl = process.env.REACT_APP_FT_API_URL;
 const localStorageKey = '__fittracker_token__';
 
@@ -5,12 +10,12 @@ function logout() {
     window.localStorage.removeItem(localStorageKey);
 }
 
-async function client(endpoint, {
-    data, contentType = 'application/json', fileUpload = false, ...customConfig
-} = {}) {
+async function client(endpoint: string, {
+    data = null, contentType = 'application/json', fileUpload = false, ...customConfig
+}: ClientArguments = {}) {
     const token = window.localStorage.getItem(localStorageKey);
 
-    const headers = {};
+    const headers: HttpHeader = {};
 
     if (token) {
         headers.Authorization = `Bearer ${token}`;
@@ -21,11 +26,11 @@ async function client(endpoint, {
     }
 
     let body;
-    if (data) {
+    if (data && data !== null) {
         body = (fileUpload ? data : JSON.stringify(data));
     }
 
-    const config = {
+    const config: any = {
         method: data ? 'POST' : 'GET',
         body,
         headers,
@@ -37,7 +42,7 @@ async function client(endpoint, {
             logout();
 
             // refresh the page for them
-            window.location.assign(window.location);
+            window.location.assign(window.location.toString());
 
             // eslint-disable-next-line prefer-promise-reject-errors
             return Promise.reject({ message: 'Please re-authenticate.' });
