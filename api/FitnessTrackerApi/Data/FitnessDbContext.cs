@@ -18,6 +18,8 @@ namespace FitnessTrackerApi.Data
 
         public DbSet<FoodIntake> FoodIntakes { get; set; }
 
+        public DbSet<Gear> Gear { get; set; }
+
         public DbSet<Metric> Metrics { get; set; }
 
         public DbSet<Recipe> Recipes { get; set; }
@@ -28,6 +30,10 @@ namespace FitnessTrackerApi.Data
 
         public DbSet<UserMetric> UserMetrics { get; set; }
 
+        public DbSet<UserTrackedMetric> UserTrackedMetrics
+        {
+            get; set;
+        }
         public FitnessDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
@@ -94,8 +100,35 @@ namespace FitnessTrackerApi.Data
 
             modelBuilder.Entity<UserMetric>()
                 .HasOne(um => um.User)
-                .WithMany(u => u.Metrics)
+                .WithMany(u => u.MetricMeasurements)
                 .HasForeignKey(um => um.UserID);
+
+            modelBuilder.Entity<UserTrackedMetric>()
+                .HasOne(utm => utm.User)
+                .WithMany(u => u.TrackedMetrics)
+                .HasForeignKey(utm => utm.UserID);
+
+            modelBuilder.Entity<UserTrackedMetric>()
+                .HasOne(utm => utm.Metric)
+                .WithMany()
+                .HasForeignKey(utm => utm.MetricID);
+
+            modelBuilder.Entity<Metric>()
+                .HasOne(m => m.User)
+                .WithMany(u => u.Metrics)
+                .HasForeignKey(m => m.UserID)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Gear>()
+                .HasOne(g => g.User)
+                .WithMany(u => u.Gear)
+                .HasForeignKey(g => g.UserID);
+
+            modelBuilder.Entity<Activity>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.CustomActivities)
+                .HasForeignKey(a => a.UserID)
+                .IsRequired(false);
         }
     }
 }

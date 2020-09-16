@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace FitnessTrackerApi.Models
 {
@@ -8,7 +9,10 @@ namespace FitnessTrackerApi.Models
 
         public string UserID { get; set; }
 
+        [JsonIgnore]
         public virtual User User { get; set; }
+
+        public MacroTargetMode MacroTargetMode { get; set; } = MacroTargetMode.Off;
 
         public bool EnableCalorieTarget { get; set; } = false;
 
@@ -18,7 +22,7 @@ namespace FitnessTrackerApi.Models
         public bool EnableProteinTarget { get; set; } = false;
 
         [Column(TypeName = "decimal(18,4)")]
-        public decimal ProteinPercentage { get; set; } = 0.35M;
+        public decimal ProteinPercentage { get; set; } = 35;
 
         [Column(TypeName = "decimal(18,4)")]
         public decimal ProteinTarget { get; set; } = 0;
@@ -26,7 +30,7 @@ namespace FitnessTrackerApi.Models
         public bool EnableCarbohydratesTarget { get; set; } = false;
 
         [Column(TypeName = "decimal(18,4)")]
-        public decimal CarbohydratePercentage { get; set; } = 0.35M;
+        public decimal CarbohydratesPercentage { get; set; } = 35;
 
         [Column(TypeName = "decimal(18,4)")]
         public decimal CarbohydratesTarget { get; set; } = 0;
@@ -34,15 +38,10 @@ namespace FitnessTrackerApi.Models
         public bool EnableFatTarget { get; set; } = false;
 
         [Column(TypeName = "decimal(18,4)")]
-        public decimal FatPercentage { get; set; } = 0.3M;
+        public decimal FatPercentage { get; set; } = 30;
 
         [Column(TypeName = "decimal(18,4)")]
         public decimal FatTarget { get; set; } = 0;
-
-        public bool EnableSugarTarget { get; set; } = false;
-
-        [Column(TypeName = "decimal(18,4)")]
-        public decimal SugarTarget { get; set; } = 0;
 
         public bool EnableActiveMinuteTarget { get; set; } = false;
 

@@ -2,7 +2,8 @@
     "env": {
         "browser": true,
         "commonjs": true,
-        "es2020": true
+        "es2020": true,
+        "jest": true
     },
     "extends": ["plugin:react/recommended", "airbnb"],
     "parser": "@typescript-eslint/parser",
@@ -26,7 +27,7 @@
                 "tsx": "never"
             }
         ],
-        "max-len": ["error", { "code": 150, "ignoreComments": true }],
+        "max-len": ["error", { "code": 180, "ignoreComments": true }],
         "react/react-in-jsx-scope": "off",
         "import/prefer-default-export": 0,
         // Indent with 4 spaces
@@ -36,7 +37,12 @@
         "react/jsx-indent": ["error", 4],
 
         // Indent props with 4 spaces
-        "react/jsx-indent-props": ["error", 4]
+        "react/jsx-indent-props": ["error", 4],
+
+        "import/no-extraneous-dependencies": [
+            "error",
+            { "devDependencies": ["**/*.test.js", "**/*.test.jsx", "**/*.test.ts", "**/*.test.tsx", "**/*.d.ts", "**/test/*.js"] }
+        ]
     },
     "settings": {
         "import/resolver": {

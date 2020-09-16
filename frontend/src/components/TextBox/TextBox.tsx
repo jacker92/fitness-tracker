@@ -1,15 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { number } from 'prop-types';
+import PropTypes from 'prop-types';
 import { FormValidator } from '../../lib/FormValidator';
 
-// eslint-disable-next-line max-len
-const TextBox = (props: {name: string, label: string, type: string, value: any, id: string, error: string, success: string, onChange: Function, validationRule: string, validate: Function, validationArgs: { min: number, max: number }, showErrorMessage: boolean, doesErrorContainHtml: boolean, showSuccessMessage: boolean}) => {
+const TextBox = (props: {
+    name: string,
+    label: string,
+    type: string,
+    value: any,
+    id: string,
+    disabled: boolean,
+    readonly: boolean,
+    error: string,
+    success: string,
+    onChange: Function,
+    validationRule: string,
+    validate: Function,
+    validationArgs: { min: number, max: number },
+    showErrorMessage: boolean,
+    doesErrorContainHtml: boolean,
+    showSuccessMessage: boolean,
+    onErrorChange: Function}) => {
     const {
         error,
         success,
         value,
         type,
         label,
+        disabled,
+        readonly,
         name, id,
         onChange,
         validate,
@@ -18,6 +36,7 @@ const TextBox = (props: {name: string, label: string, type: string, value: any, 
         showErrorMessage,
         showSuccessMessage,
         doesErrorContainHtml,
+        onErrorChange,
     } = props;
 
     const [errorMessage, setErrorMessage] = useState(error);
@@ -25,55 +44,51 @@ const TextBox = (props: {name: string, label: string, type: string, value: any, 
     const [fieldValue, setFieldValue] = useState(value);
 
     useEffect(() => {
-        setErrorMessage(props.error);
-        setSuccessMessage(props.success);
-        setFieldValue(props.value);
-    }, [props]);
+        setFieldValue(value);
+        setErrorMessage(error);
+        setSuccessMessage(success);
+    }, [value, error, success]);
 
     const validateField = (val: string, rule: string, args: {min: number, max: number}) => {
         let validationResult = { valid: true, message: '' };
+        let validationError = '';
 
         switch (rule.toLowerCase()) {
             case 'email':
-                if (FormValidator.validateEmail(val)) {
-                    setErrorMessage('');
-                } else {
-                    setErrorMessage('Valid email address required');
+                if (!FormValidator.validateEmail(val)) {
+                    validationError = 'Valid email address required';
                 }
                 break;
 
             case 'notempty':
-                if (FormValidator.validateNotEmpty(val)) {
-                    setErrorMessage('');
-                } else {
-                    setErrorMessage(`${label}  is required`);
+                if (!FormValidator.validateNotEmpty(val)) {
+                    validationError = `${label} is required`;
                 }
                 break;
 
             case 'setlength':
                 validationResult = FormValidator.validateSetLength(val, label, args.min, args.max);
-                setErrorMessage(validationResult.message);
+                validationError = validationResult.message;
                 break;
 
             case 'numeric':
-                if (FormValidator.validateNumeric(val)) {
-                    setErrorMessage('');
-                } else {
-                    setErrorMessage(`${label} must be numeric`);
+                if (!FormValidator.validateNumeric(val)) {
+                    validationError = `${label} must be numeric`;
                 }
                 break;
 
             case 'requirednumeric':
-                if (FormValidator.validateRequiredNumeric(val)) {
-                    setErrorMessage('');
-                } else {
-                    setErrorMessage(`${label}  is required`);
+                if (!FormValidator.validateRequiredNumeric(val)) {
+                    validationError = `${label} is required`;
                 }
                 break;
 
             default:
-                setErrorMessage('');
                 break;
+        }
+
+        if (onErrorChange) {
+            onErrorChange(validationError);
         }
     };
 
@@ -99,6 +114,8 @@ const TextBox = (props: {name: string, label: string, type: string, value: any, 
                         validateField(e.target.value, validationRule, validationArgs);
                     }
                 }}
+                disabled={disabled}
+                readOnly={readonly}
             />
 
             {doesErrorContainHtml ? (
@@ -109,12 +126,12 @@ const TextBox = (props: {name: string, label: string, type: string, value: any, 
                     dangerouslySetInnerHTML={{ __html: errorMessage }}
                 />
             ) : (
-                <div className="error-text" style={showErrorMessage && errorMessage !== '' ? { display: 'block' } : {}}>
+                <div className="error-text" style={showErrorMessage && errorMessage !== '' ? { display: 'block' } : { display: 'none' }}>
                     {errorMessage}
                 </div>
             )}
 
-            <div className="success-text" style={showSuccessMessage && successMessage !== '' ? { display: 'block' } : {}}>
+            <div className="success-text" style={showSuccessMessage && successMessage !== '' ? { display: 'block' } : { display: 'none' }}>
                 {successMessage}
             </div>
         </label>
@@ -133,6 +150,9 @@ TextBox.defaultProps = {
     validate: null,
     validationArgs: {},
     value: '',
+    onErrorChange: null,
+    disabled: false,
+    readonly: false,
 };
 
 TextBox.propTypes = {
@@ -143,6 +163,8 @@ TextBox.propTypes = {
         PropTypes.string,
         PropTypes.number,
     ]),
+    disabled: PropTypes.bool,
+    readonly: PropTypes.bool,
     id: PropTypes.string.isRequired,
     error: PropTypes.string,
     success: PropTypes.string,
@@ -150,12 +172,13 @@ TextBox.propTypes = {
     validationRule: PropTypes.string,
     validate: PropTypes.func,
     validationArgs: PropTypes.shape({
-        min: number,
-        max: number,
+        min: PropTypes.number,
+        max: PropTypes.number,
     }),
     showErrorMessage: PropTypes.bool,
     doesErrorContainHtml: PropTypes.bool,
     showSuccessMessage: PropTypes.bool,
+    onErrorChange: PropTypes.func,
 };
 
 export { TextBox };

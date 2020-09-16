@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 // eslint-disable-next-line no-unused-vars
 import { JwtToken } from '../../lib/JwtToken';
 import { AppContext } from '../AppContext/AppContext';
+import { Overlay } from '../Overlay/Overlay';
 
 const MainApp = (props: { children: any; }) => {
     const token = window.localStorage.getItem('__fittracker_token__');
@@ -21,8 +22,10 @@ const MainApp = (props: { children: any; }) => {
         });
     }
 
-    // eslint-disable-next-line no-unused-vars
     const [currentUser, setCurrentUser] = useState(user);
+    const [userMenuVisible, setUserMenuVisible] = useState(false);
+    const [overlayVisible, setOverlayVisible] = useState(false);
+    const [showOverlaySpinner, setShowOverlaySpinner] = useState(false);
 
     const { children } = props;
 
@@ -47,8 +50,27 @@ const MainApp = (props: { children: any; }) => {
         window.location.assign('/');
     };
 
+    const toggleUserMenu = () => {
+        setUserMenuVisible(!userMenuVisible);
+    };
+
+    const setOverlayVisibility = (visible: boolean, spinner: boolean) => {
+        setShowOverlaySpinner(spinner);
+        setOverlayVisible(visible);
+    };
+
     return (
-        <AppContext.Provider value={{ currentUser, loginUser, logoutUser }}>
+        <AppContext.Provider value={{
+            currentUser,
+            loginUser,
+            logoutUser,
+            toggleUserMenu,
+            userMenuVisible,
+            setOverlayVisibility,
+            overlayVisible,
+        }}
+        >
+            <Overlay visible={overlayVisible} showSpinner={showOverlaySpinner} />
             {children}
         </AppContext.Provider>
     );

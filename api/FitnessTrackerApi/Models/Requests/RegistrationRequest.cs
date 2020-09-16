@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace FitnessTrackerApi.Models.Requests
@@ -12,5 +13,20 @@ namespace FitnessTrackerApi.Models.Requests
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public MeasurementSystem MeasurementSystem { get; set; }
+
+        [Required]
+        public DateTime Birthday { get; set; }
+
+        [Required]
+        public decimal Height { get; set; }
+
+        [Required]
+        public char Gender { get; set; }
+
+        [Required]
+        public ActivityLevel ActivityLevel { get; set; }
     }
 }

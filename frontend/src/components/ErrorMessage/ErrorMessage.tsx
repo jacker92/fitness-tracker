@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 const ErrorBar = styled.div`
   width: 400px;
-  border: 1px solid hsl(0,100%,50%);
+  border: 1px solid hsl(354,61%,28%);
   border-radius: 6px;
   padding: 10px;
-  color: hsl(0,96%,36%);
+  color: hsl(354,61%,28%);
   font-weight: 600;
-  background: hsl(0, 90%, 81%);
+  background: hsl(355,70%,91%);
   margin: 30px auto;
   display: none;
   font-size: 1rem;

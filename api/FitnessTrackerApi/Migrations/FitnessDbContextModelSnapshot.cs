@@ -32,13 +32,18 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<bool>("IsSystem")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MetricType")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Activities");
                 });
@@ -59,7 +64,7 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<int>("CaloriesBurnedTarget")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("CarbohydratePercentage")
+                    b.Property<decimal>("CarbohydratesPercentage")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("CarbohydratesTarget")
@@ -83,22 +88,19 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<bool>("EnableProteinTarget")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("EnableSugarTarget")
-                        .HasColumnType("bit");
-
                     b.Property<decimal>("FatPercentage")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("FatTarget")
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<int>("MacroTargetMode")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("ProteinPercentage")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("ProteinTarget")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("SugarTarget")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("UserID")
@@ -214,6 +216,29 @@ namespace FitnessTrackerApi.Migrations
                     b.ToTable("FoodIntakes");
                 });
 
+            modelBuilder.Entity("FitnessTrackerApi.Models.Gear", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Gear");
+                });
+
             modelBuilder.Entity("FitnessTrackerApi.Models.Metric", b =>
                 {
                     b.Property<int>("ID")
@@ -233,12 +258,12 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<string>("Units")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Metrics");
                 });
@@ -302,8 +327,17 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int>("ActivityLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("CaloriesBurnedSetting")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -312,12 +346,22 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<int>("DailyTargetID")
                         .HasColumnType("int");
 
+                    b.Property<int>("DietMode")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DietPercentage")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
 
                     b.Property<decimal>("Height")
                         .HasColumnType("decimal(18,4)");
@@ -328,7 +372,7 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<bool>("ManuallyCalculateTargets")
+                    b.Property<bool>("ManuallyCalculateCalories")
                         .HasColumnType("bit");
 
                     b.Property<int>("MeasurementSystem")
@@ -439,6 +483,31 @@ namespace FitnessTrackerApi.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("UserMetrics");
+                });
+
+            modelBuilder.Entity("FitnessTrackerApi.Models.UserTrackedMetric", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsTracked")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MetricID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MetricID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserTrackedMetrics");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -658,6 +727,13 @@ namespace FitnessTrackerApi.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("FitnessTrackerApi.Models.Activity", b =>
+                {
+                    b.HasOne("FitnessTrackerApi.Models.User", "User")
+                        .WithMany("CustomActivities")
+                        .HasForeignKey("UserID");
+                });
+
             modelBuilder.Entity("FitnessTrackerApi.Models.DailyTarget", b =>
                 {
                     b.HasOne("FitnessTrackerApi.Models.User", "User")
@@ -704,11 +780,18 @@ namespace FitnessTrackerApi.Migrations
                         .HasForeignKey("UserID");
                 });
 
+            modelBuilder.Entity("FitnessTrackerApi.Models.Gear", b =>
+                {
+                    b.HasOne("FitnessTrackerApi.Models.User", "User")
+                        .WithMany("Gear")
+                        .HasForeignKey("UserID");
+                });
+
             modelBuilder.Entity("FitnessTrackerApi.Models.Metric", b =>
                 {
-                    b.HasOne("FitnessTrackerApi.Models.User", null)
-                        .WithMany("MetricsTracked")
-                        .HasForeignKey("UserId");
+                    b.HasOne("FitnessTrackerApi.Models.User", "User")
+                        .WithMany("Metrics")
+                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("FitnessTrackerApi.Models.Recipe", b =>
@@ -755,7 +838,20 @@ namespace FitnessTrackerApi.Migrations
                         .IsRequired();
 
                     b.HasOne("FitnessTrackerApi.Models.User", "User")
-                        .WithMany("Metrics")
+                        .WithMany("MetricMeasurements")
+                        .HasForeignKey("UserID");
+                });
+
+            modelBuilder.Entity("FitnessTrackerApi.Models.UserTrackedMetric", b =>
+                {
+                    b.HasOne("FitnessTrackerApi.Models.Metric", "Metric")
+                        .WithMany()
+                        .HasForeignKey("MetricID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FitnessTrackerApi.Models.User", "User")
+                        .WithMany("TrackedMetrics")
                         .HasForeignKey("UserID");
                 });
 

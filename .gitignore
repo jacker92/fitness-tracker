@@ -373,3 +373,4 @@ yarn-error.log*
 
 appsettings.Development.json
 appsettings.Production.json
+/api/FitnessTrackerApi/Uploads

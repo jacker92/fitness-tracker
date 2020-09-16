@@ -1,16 +1,16 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
-import { Form } from '../Form/Form';
+import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AppContext } from '../AppContext/AppContext';
 
-const Login = (props: { redirectUrl: string }) => {
-    const { redirectUrl } = props;
+const Login = (props: { redirectUrl: string, message: string, messageColor: string }) => {
+    const { redirectUrl, message, messageColor } = props;
 
     // eslint-disable-next-line no-unused-vars
-    const [message, setMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const [email, setEmail] = useState('');
     const [emailError] = useState('');
     const [password, setPassword] = useState('');
@@ -19,25 +19,25 @@ const Login = (props: { redirectUrl: string }) => {
     const { loginUser } = useContext(AppContext);
 
     const login = async () => {
-        setMessage('');
+        setErrorMessage('');
 
         client('users/authenticate', { data: { Email: email, Password: password } }).then(
             (data) => {
-                if (data.error_message === '') {
-                    setMessage('');
+                if (data.successful) {
+                    setErrorMessage('');
                     loginUser(data.token);
                     window.location.assign(redirectUrl);
                 } else {
-                    setMessage(data.error_message);
+                    setErrorMessage(data.error);
                 }
             },
             (error) => {
                 if (typeof error === 'string') {
-                    setMessage(error);
+                    setErrorMessage(error);
                 } else if (typeof error.message === 'string') {
-                    setMessage(error.message);
+                    setErrorMessage(error.message);
                 } else {
-                    setMessage('An error has occurred');
+                    setErrorMessage('An error has occurred');
                 }
             },
         );
@@ -47,7 +47,9 @@ const Login = (props: { redirectUrl: string }) => {
         <>
             <h1 className="centered">Login</h1>
 
-            <ErrorMessage error={message} />
+            <ErrorMessage error={errorMessage} />
+
+            <div className="form-message" style={{ display: (message === '' ? 'none' : 'block'), color: messageColor }}>{message}</div>
 
             <Form
                 method="POST"
@@ -97,10 +99,14 @@ const Login = (props: { redirectUrl: string }) => {
 
 Login.defaultProps = {
     redirectUrl: '/',
+    message: '',
+    messageColor: 'hsl(0, 0%, 19%)',
 };
 
 Login.propTypes = {
     redirectUrl: PropTypes.string,
+    message: PropTypes.string,
+    messageColor: PropTypes.string,
 };
 
 export { Login };
