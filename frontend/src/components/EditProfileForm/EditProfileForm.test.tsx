@@ -68,7 +68,8 @@ describe('<EditProfileForm />', () => {
         await act(async () => {
             await userEvent.clear(nameField);
             await userEvent.clear(emailField);
-            await userEvent.type(heightField, 'A');
+            await userEvent.clear(heightField);
+            await userEvent.type(heightField, '0');
 
             await waitFor(() => {
                 fireEvent.blur(nameField);
@@ -79,7 +80,7 @@ describe('<EditProfileForm />', () => {
 
         await screen.findByText(/Name is required/);
         await screen.findByText(/Valid email address required/);
-        await screen.findByText('Height (inches) must be numeric');
+        await screen.findByText('Height must be numeric and greater than zero');
 
         const saveButton = screen.getByRole('button', { name: /Save Changes/i });
         expect(saveButton).toBeDisabled();
