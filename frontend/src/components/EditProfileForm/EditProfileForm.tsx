@@ -173,6 +173,8 @@ const EditProfileForm = () => {
                     if (data.successful) {
                         if (!data.valid) {
                             setEmailError('Email is already in use');
+                        } else {
+                            setEmailError('');
                         }
                     }
                 },

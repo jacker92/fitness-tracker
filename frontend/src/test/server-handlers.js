@@ -206,6 +206,21 @@ const handlers = [
             error: 'Invalid email or password',
         }));
     }),
+
+    rest.get('*/users/checkemail', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        valid: true,
+    }))),
+
+    rest.post('*/users/register', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        userId: '123',
+        name: 'Test User',
+        email: 'test@testing.com',
+        token: '1234567890',
+    }))),
 ];
 
 export { handlers };

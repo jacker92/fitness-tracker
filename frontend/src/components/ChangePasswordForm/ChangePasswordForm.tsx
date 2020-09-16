@@ -32,6 +32,7 @@ const ChangePasswordForm = () => {
         if (!passwordValidationResult.valid) {
             setNewPasswordError(passwordValidationResult.message);
             setConfirmNewPasswordError(passwordValidationResult.message);
+            isValid = false;
         }
 
         return isValid;

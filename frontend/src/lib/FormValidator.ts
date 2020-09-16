@@ -118,6 +118,18 @@ class FormValidator {
 
         return !Number.isNaN(Number(value));
     }
+
+    static validateRequiredNumericGreaterThanZero(value: string | number) {
+        if (value === null) {
+            return false;
+        }
+
+        if (typeof value === 'string' && value.trim().length === 0) {
+            return false;
+        }
+
+        return !Number.isNaN(Number(value)) && Number(value) > 0;
+    }
 }
 
 export { FormValidator };
