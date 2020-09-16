@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AppContext } from '../AppContext/AppContext';
+import { FormValidator } from '../../lib/FormValidator';
 
 const Login = (props: { redirectUrl: string, message: string, messageColor: string }) => {
     const { redirectUrl, message, messageColor } = props;
@@ -12,36 +13,63 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
     // eslint-disable-next-line no-unused-vars
     const [errorMessage, setErrorMessage] = useState('');
     const [email, setEmail] = useState('');
-    const [emailError] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [saveDisabled, setSaveDisabled] = useState(false);
 
     const { loginUser } = useContext(AppContext);
+
+    const validate = () => {
+        let isValid: boolean = true;
+
+        if (!FormValidator.validateEmail(email)) {
+            setEmailError('Valid email address required');
+            isValid = false;
+        }
+
+        if (!FormValidator.validateNotEmpty(password)) {
+            setPasswordError('Password is required');
+            isValid = false;
+        }
+
+        return isValid;
+    };
 
     const login = async () => {
         setErrorMessage('');
 
-        client('users/authenticate', { data: { Email: email, Password: password } }).then(
-            (data) => {
-                if (data.successful) {
-                    setErrorMessage('');
-                    loginUser(data.token);
-                    window.location.assign(redirectUrl);
-                } else {
-                    setErrorMessage(data.error);
-                }
-            },
-            (error) => {
-                if (typeof error === 'string') {
-                    setErrorMessage(error);
-                } else if (typeof error.message === 'string') {
-                    setErrorMessage(error.message);
-                } else {
-                    setErrorMessage('An error has occurred');
-                }
-            },
-        );
+        if (validate()) {
+            client('users/authenticate', { data: { Email: email, Password: password } }).then(
+                (data) => {
+                    if (data.successful) {
+                        setErrorMessage('');
+                        loginUser(data.token);
+                        window.location.assign(redirectUrl);
+                    } else {
+                        setErrorMessage(data.error);
+                    }
+                },
+                (error) => {
+                    if (typeof error === 'string') {
+                        setErrorMessage(error);
+                    } else if (typeof error.message === 'string') {
+                        setErrorMessage(error.message);
+                    } else {
+                        setErrorMessage('An error has occurred');
+                    }
+                },
+            );
+        }
     };
+
+    useEffect(() => {
+        if (emailError === '' && passwordError === '') {
+            setSaveDisabled(false);
+        } else {
+            setSaveDisabled(true);
+        }
+    }, [emailError, passwordError]);
 
     return (
         <>
@@ -70,6 +98,9 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
                             onChange={(e: any) => {
                                 setEmail(e.target.value);
                             }}
+                            onErrorChange={(error: string) => {
+                                setEmailError(error);
+                            }}
                         />
                     </div>
 
@@ -85,11 +116,14 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
                             onChange={(e: any) => {
                                 setPassword(e.target.value);
                             }}
+                            onErrorChange={(error: string) => {
+                                setPasswordError(error);
+                            }}
                         />
                     </div>
 
                     <div className="form-field">
-                        <button type="submit">Login</button>
+                        <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>Login</button>
                     </div>
                 </fieldset>
             </Form>

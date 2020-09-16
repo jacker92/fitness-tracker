@@ -103,11 +103,11 @@ class FormValidator {
         };
     }
 
-    static validateNumeric(value: any) {
+    static validateNumeric(value: string | number) {
         return !Number.isNaN(Number(value));
     }
 
-    static validateRequiredNumeric(value: any) {
+    static validateRequiredNumeric(value: string | number) {
         if (value === null) {
             return false;
         }
