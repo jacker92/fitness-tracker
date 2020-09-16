@@ -133,6 +133,7 @@ const ChangePasswordForm = () => {
                             name="current_password"
                             type="password"
                             label="Current Password"
+                            autocomplete="current-password"
                             value={currentPassword}
                             error={currentPasswordError}
                             onChange={(e: any) => {
@@ -154,6 +155,7 @@ const ChangePasswordForm = () => {
                             name="new_password"
                             type="password"
                             label="New Password"
+                            autocomplete="new-password"
                             value={newPassword}
                             error={newPasswordError}
                             showErrorMessage={false}
@@ -176,6 +178,7 @@ const ChangePasswordForm = () => {
                             name="confirm_new_password"
                             type="password"
                             label="Confirm New Password"
+                            autocomplete="new-password"
                             value={confirmNewPassword}
                             error={confirmNewPasswordError}
                             onChange={(e: any) => {

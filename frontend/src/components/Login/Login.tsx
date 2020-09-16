@@ -94,6 +94,7 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
                             label="Email"
                             value={email}
                             error={emailError}
+                            autocomplete="email"
                             validationRule="email"
                             onChange={(e: any) => {
                                 setEmail(e.target.value);
@@ -110,6 +111,7 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
                             name="password"
                             type="password"
                             label="Password"
+                            autocomplete="current-password"
                             value={password}
                             error={passwordError}
                             validationRule="notempty"
