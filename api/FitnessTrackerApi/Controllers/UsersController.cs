@@ -69,7 +69,6 @@ namespace FitnessTrackerApi.Controllers
             return Ok(JsonSerializer.Serialize(response));
         }
 
-        [Authorize]
         [HttpGet("checkemail")]
         public async Task<IActionResult> CheckUserEmail(string userId, string email)
         {

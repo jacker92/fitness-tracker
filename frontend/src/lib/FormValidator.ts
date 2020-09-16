@@ -103,11 +103,11 @@ class FormValidator {
         };
     }
 
-    static validateNumeric(value: any) {
+    static validateNumeric(value: string | number) {
         return !Number.isNaN(Number(value));
     }
 
-    static validateRequiredNumeric(value: any) {
+    static validateRequiredNumeric(value: string | number) {
         if (value === null) {
             return false;
         }
@@ -117,6 +117,18 @@ class FormValidator {
         }
 
         return !Number.isNaN(Number(value));
+    }
+
+    static validateRequiredNumericGreaterThanZero(value: string | number) {
+        if (value === null) {
+            return false;
+        }
+
+        if (typeof value === 'string' && value.trim().length === 0) {
+            return false;
+        }
+
+        return !Number.isNaN(Number(value)) && Number(value) > 0;
     }
 }
 

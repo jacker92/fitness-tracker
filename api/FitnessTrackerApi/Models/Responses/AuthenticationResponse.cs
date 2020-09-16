@@ -4,7 +4,7 @@ namespace FitnessTrackerApi.Models.Responses
 {
     public class AuthenticationResponse : BaseResponse
     {
-        [JsonPropertyName("user_id")]
+        [JsonPropertyName("userId")]
         public string UserID { get; set; }
 
         [JsonPropertyName("name")]

@@ -83,6 +83,12 @@ const TextBox = (props: {
                 }
                 break;
 
+            case 'requiredgreaterzero':
+                if (!FormValidator.validateRequiredNumericGreaterThanZero(val)) {
+                    validationError = `${label} must be numeric and greater than zero`;
+                }
+                break;
+
             default:
                 break;
         }
