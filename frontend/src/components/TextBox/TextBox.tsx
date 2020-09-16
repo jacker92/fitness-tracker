@@ -1,26 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FormValidator } from '../../lib/FormValidator';
+// eslint-disable-next-line no-unused-vars
+import { TextBoxProps } from '../../lib/types/TextBoxProps';
 
-const TextBox = (props: {
-    name: string,
-    label: string,
-    type: string,
-    value: any,
-    id: string,
-    disabled: boolean,
-    readonly: boolean,
-    error: string,
-    success: string,
-    onChange: Function,
-    validationRule: string,
-    validate: Function,
-    validationArgs: { min: number, max: number },
-    showErrorMessage: boolean,
-    doesErrorContainHtml: boolean,
-    showSuccessMessage: boolean,
-    onErrorChange: Function,
-    autocomplete: string}) => {
+const TextBox = (props: TextBoxProps) => {
     const {
         error,
         success,
@@ -108,7 +92,7 @@ const TextBox = (props: {
                 id={name}
                 name={name}
                 data-testid={id}
-                value={fieldValue}
+                defaultValue={fieldValue}
                 autoComplete={autocomplete}
                 onChange={(e) => {
                     if (onChange) {
