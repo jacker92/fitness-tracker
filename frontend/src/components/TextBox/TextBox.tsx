@@ -19,7 +19,8 @@ const TextBox = (props: {
     showErrorMessage: boolean,
     doesErrorContainHtml: boolean,
     showSuccessMessage: boolean,
-    onErrorChange: Function}) => {
+    onErrorChange: Function,
+    autocomplete: string}) => {
     const {
         error,
         success,
@@ -37,6 +38,7 @@ const TextBox = (props: {
         showSuccessMessage,
         doesErrorContainHtml,
         onErrorChange,
+        autocomplete = 'off',
     } = props;
 
     const [errorMessage, setErrorMessage] = useState(error);
@@ -107,6 +109,7 @@ const TextBox = (props: {
                 name={name}
                 data-testid={id}
                 value={fieldValue}
+                autoComplete={autocomplete}
                 onChange={(e) => {
                     if (onChange) {
                         onChange(e);
@@ -159,6 +162,7 @@ TextBox.defaultProps = {
     onErrorChange: null,
     disabled: false,
     readonly: false,
+    autocomplete: 'off',
 };
 
 TextBox.propTypes = {
@@ -185,6 +189,7 @@ TextBox.propTypes = {
     doesErrorContainHtml: PropTypes.bool,
     showSuccessMessage: PropTypes.bool,
     onErrorChange: PropTypes.func,
+    autocomplete: PropTypes.string,
 };
 
 export { TextBox };

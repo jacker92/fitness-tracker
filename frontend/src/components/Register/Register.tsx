@@ -183,6 +183,7 @@ const Register = () => {
                             label="Name"
                             value={name}
                             error={nameError}
+                            autocomplete="name"
                             validationRule="notempty"
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setName(e.target.value);
@@ -200,6 +201,7 @@ const Register = () => {
                             label="Email"
                             value={email}
                             error={emailError}
+                            autocomplete="email"
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setEmail(e.target.value);
                             }}
@@ -218,6 +220,7 @@ const Register = () => {
                             label="Password"
                             value={password}
                             error={passwordError}
+                            autocomplete="new-password"
                             validationRule="notempty"
                             showErrorMessage={false}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -238,6 +241,7 @@ const Register = () => {
                             label="Confirm Password"
                             value={confirmPassword}
                             error={confirmPasswordError}
+                            autocomplete="new-password"
                             validationRule="notempty"
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setConfirmPassword(e.target.value);
@@ -283,6 +287,7 @@ const Register = () => {
                                     validateBirthday(date);
                                 }}
                                 closeOnScroll
+                                autoComplete="bday"
                                 maxDate={new Date()}
                                 peekNextMonth
                                 showMonthDropdown
