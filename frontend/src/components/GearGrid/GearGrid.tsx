@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Grid } from '../Grid/Grid';
+import { GridColumn } from '../../types/GridColumn';
+import { Gear } from '../../types/Gear';
+import { GearDataRow } from '../../types/GearDataRow';
 import { client } from '../../lib/client';
+import { Grid } from '../Grid/Grid';
 import { AppContext } from '../AppContext/AppContext';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { GearForm } from '../GearForm/GearForm';
 import { Confirm } from '../Confirm/Confirm';
-// eslint-disable-next-line no-unused-vars
-import { GridColumn } from '../../lib/types/GridColumn';
-// eslint-disable-next-line no-unused-vars
-import { Gear } from '../../lib/types/Gear';
-// eslint-disable-next-line no-unused-vars
-import { GearDataRow } from '../../lib/types/GearDataRow';
 
 const GearGrid = () => {
     const newGear: Gear = {

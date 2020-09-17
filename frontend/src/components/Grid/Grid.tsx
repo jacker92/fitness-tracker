@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-// eslint-disable-next-line no-unused-vars
-import { GridProps } from '../../lib/types/GridProps';
-// eslint-disable-next-line no-unused-vars
-import { GridColumn } from '../../lib/types/GridColumn';
+import { GridProps } from '../../types/GridProps';
+import { GridColumn } from '../../types/GridColumn';
 
 import './Grid.css';
 

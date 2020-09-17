@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { GridColumn } from '../../types/GridColumn';
+import { ActivityDataRow } from '../../types/ActivityDataRow';
+import { Activity } from '../../types/Activity';
 import { Grid } from '../Grid/Grid';
 import { client } from '../../lib/client';
 import { AppContext } from '../AppContext/AppContext';
@@ -7,12 +10,6 @@ import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { Confirm } from '../Confirm/Confirm';
 import { CustomActivityForm } from '../CustomActivityForm/CustomActivityForm';
-// eslint-disable-next-line no-unused-vars
-import { GridColumn } from '../../lib/types/GridColumn';
-// eslint-disable-next-line no-unused-vars
-import { ActivityDataRow } from '../../lib/types/ActivityDataRow';
-// eslint-disable-next-line no-unused-vars
-import { Activity } from '../../lib/types/Activity';
 
 const CustomActivitiesGrid = () => {
     const newActivity: Activity = {

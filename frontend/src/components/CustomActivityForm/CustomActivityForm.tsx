@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Activity } from '../../types/Activity';
+import { CustomActivityFormProps } from '../../types/CustomActivityFormProps';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
-// eslint-disable-next-line no-unused-vars
-import { Activity } from '../../lib/types/Activity';
 
-const CustomActivityForm = (props: { activity: Activity, visible: boolean, onSuccess: Function, onCancel: Function }) => {
+const CustomActivityForm = (props: CustomActivityFormProps) => {
     const {
         activity, visible, onSuccess, onCancel,
     } = props;

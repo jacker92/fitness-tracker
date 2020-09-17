@@ -3,10 +3,9 @@ import {
     render, act, screen, fireEvent, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Metric } from '../../types/Metric';
 import { AppContext } from '../AppContext/AppContext';
 import { MetricForm } from './MetricForm';
-// eslint-disable-next-line no-unused-vars
-import { Metric } from '../../lib/types/Metric';
 
 describe('<MetricForm />', () => {
     const newMetric: Metric = {

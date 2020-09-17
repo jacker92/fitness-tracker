@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import jwt from 'jsonwebtoken';
-// eslint-disable-next-line no-unused-vars
-import { JwtToken } from '../../lib/JwtToken';
+import { JwtToken } from '../../types/JwtToken';
 import { AppContext } from '../AppContext/AppContext';
 import { Overlay } from '../Overlay/Overlay';
 

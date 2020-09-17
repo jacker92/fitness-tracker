@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { SelectFieldProps } from '../../types/SelectFieldProps';
 
 // eslint-disable-next-line max-len
-const SelectField = (props: { name: string, label: string, value: any, id: string, error: string, success: string, onChange: Function, requiredField: boolean, showErrorMessage: boolean, doesErrorContainHtml: boolean, showSuccessMessage: boolean, valueList: any, includeBlank: boolean }) => {
+const SelectField = (props: SelectFieldProps) => {
     const {
         error,
         success,

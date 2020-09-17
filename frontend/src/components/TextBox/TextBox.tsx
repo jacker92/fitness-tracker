@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { TextBoxProps } from '../../types/TextBoxProps';
 import { FormValidator } from '../../lib/FormValidator';
-// eslint-disable-next-line no-unused-vars
-import { TextBoxProps } from '../../lib/types/TextBoxProps';
 
 const TextBox = (props: TextBoxProps) => {
     const {

@@ -9,7 +9,6 @@ import { FormValidator } from '../../lib/FormValidator';
 const Login = (props: { redirectUrl: string, message: string, messageColor: string }) => {
     const { redirectUrl, message, messageColor } = props;
 
-    // eslint-disable-next-line no-unused-vars
     const [errorMessage, setErrorMessage] = useState('');
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
