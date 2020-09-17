@@ -29,7 +29,7 @@ describe('<GearForm />', () => {
                 overlayVisible: false,
             }}
             >
-                <GearForm gear={newGear} onSuccess={() => {}} onCancel={() => {}} />
+                <GearForm gear={newGear} visible onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 
@@ -51,7 +51,7 @@ describe('<GearForm />', () => {
                 overlayVisible: false,
             }}
             >
-                <GearForm gear={existingGear} onSuccess={() => {}} onCancel={() => {}} />
+                <GearForm gear={existingGear} visible onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 
@@ -73,7 +73,7 @@ describe('<GearForm />', () => {
                 overlayVisible: false,
             }}
             >
-                <GearForm gear={newGear} onSuccess={() => {}} onCancel={() => {}} />
+                <GearForm gear={newGear} visible onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 
@@ -105,7 +105,7 @@ describe('<GearForm />', () => {
                 overlayVisible: false,
             }}
             >
-                <GearForm gear={newGear} onSuccess={() => {}} onCancel={() => {}} />
+                <GearForm gear={newGear} visible onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 

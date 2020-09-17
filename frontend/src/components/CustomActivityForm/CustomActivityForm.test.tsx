@@ -21,15 +21,15 @@ describe('<GearForm />', () => {
         render(
             <AppContext.Provider value={{
                 currentUser: { id: '123', name: 'Tester', email: 'test@test.com' },
-                loginUser: null,
-                logoutUser: null,
-                toggleUserMenu: null,
+                loginUser: jest.fn(),
+                logoutUser: jest.fn(),
+                toggleUserMenu: jest.fn(),
                 userMenuVisible: false,
-                setOverlayVisibility: null,
+                setOverlayVisibility: jest.fn(),
                 overlayVisible: false,
             }}
             >
-                <CustomActivityForm activity={newActivity} onSuccess={() => {}} onCancel={() => {}} />
+                <CustomActivityForm activity={newActivity} visible onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 
@@ -49,15 +49,15 @@ describe('<GearForm />', () => {
         render(
             <AppContext.Provider value={{
                 currentUser: { id: '123', name: 'Tester', email: 'test@test.com' },
-                loginUser: null,
-                logoutUser: null,
-                toggleUserMenu: null,
+                loginUser: jest.fn(),
+                logoutUser: jest.fn(),
+                toggleUserMenu: jest.fn(),
                 userMenuVisible: false,
-                setOverlayVisibility: null,
+                setOverlayVisibility: jest.fn(),
                 overlayVisible: false,
             }}
             >
-                <CustomActivityForm activity={existingActivity} onSuccess={() => {}} onCancel={() => {}} />
+                <CustomActivityForm activity={existingActivity} visible onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 
@@ -77,15 +77,15 @@ describe('<GearForm />', () => {
         render(
             <AppContext.Provider value={{
                 currentUser: { id: '123', name: 'Tester', email: 'test@test.com' },
-                loginUser: null,
-                logoutUser: null,
-                toggleUserMenu: null,
+                loginUser: jest.fn(),
+                logoutUser: jest.fn(),
+                toggleUserMenu: jest.fn(),
                 userMenuVisible: false,
-                setOverlayVisibility: null,
+                setOverlayVisibility: jest.fn(),
                 overlayVisible: false,
             }}
             >
-                <CustomActivityForm activity={newActivity} onSuccess={() => {}} onCancel={() => {}} />
+                <CustomActivityForm activity={newActivity} visible onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 
@@ -109,15 +109,15 @@ describe('<GearForm />', () => {
         render(
             <AppContext.Provider value={{
                 currentUser: { id: '123', name: 'Tester', email: 'test@test.com' },
-                loginUser: null,
-                logoutUser: null,
-                toggleUserMenu: null,
+                loginUser: jest.fn(),
+                logoutUser: jest.fn(),
+                toggleUserMenu: jest.fn(),
                 userMenuVisible: false,
-                setOverlayVisibility: null,
+                setOverlayVisibility: jest.fn(),
                 overlayVisible: false,
             }}
             >
-                <CustomActivityForm activity={newActivity} onSuccess={() => {}} onCancel={() => {}} />
+                <CustomActivityForm activity={newActivity} visible onSuccess={() => {}} onCancel={() => {}} />
             </AppContext.Provider>,
         );
 

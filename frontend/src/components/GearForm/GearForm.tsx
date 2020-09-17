@@ -3,21 +3,27 @@ import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
 import { TextBox } from '../TextBox/TextBox';
+import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 // eslint-disable-next-line no-unused-vars
 import { Gear } from '../../lib/types/Gear';
 
-const GearForm = (props: { gear: Gear, onSuccess: Function, onCancel: Function }) => {
+const GearForm = (props: { gear: Gear, visible: boolean, onSuccess: Function, onCancel: Function }) => {
     const {
-        gear, onSuccess, onCancel,
+        gear, visible, onSuccess, onCancel,
     } = props;
 
+    const [isVisible, setIsVisible] = useState(visible);
     const [id, setId] = useState(gear.id);
     const [name, setName] = useState(gear.name);
     const [nameError, setNameError] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const thsGearForm = useRef(null);
+
+    useEffect(() => {
+        setIsVisible(visible);
+    }, [visible]);
 
     useEffect(() => {
         setId(gear.id);
@@ -105,75 +111,77 @@ const GearForm = (props: { gear: Gear, onSuccess: Function, onCancel: Function }
     };
 
     return (
-        <div className="grid-form">
-            <h2>Add New Gear</h2>
+        <ModalWindow width={376} visible={isVisible}>
+            <div className="grid-form">
+                <h2>Add New Gear</h2>
 
-            <ErrorMessage error={errorMessage} />
+                <ErrorMessage error={errorMessage} />
 
-            <form
-                className="autowidth"
-                method="POST"
-                ref={thsGearForm}
-                onSubmit={async (e) => {
-                    e.preventDefault();
+                <form
+                    className="autowidth"
+                    method="POST"
+                    ref={thsGearForm}
+                    onSubmit={async (e) => {
+                        e.preventDefault();
 
-                    if (validate()) {
-                        const editedGear: Gear = {
-                            id,
-                            name,
-                        };
+                        if (validate()) {
+                            const editedGear: Gear = {
+                                id,
+                                name,
+                            };
 
-                        if (id > 0) {
-                            await updateGear(editedGear);
-                        } else {
-                            await addGear(editedGear);
+                            if (id > 0) {
+                                await updateGear(editedGear);
+                            } else {
+                                await addGear(editedGear);
+                            }
                         }
-                    }
-                }}
-            >
-                <fieldset>
-                    <div className="form-field">
-                        <TextBox
-                            id="name"
-                            name="name"
-                            label="Name"
-                            value={name}
-                            error={nameError}
-                            validationRule="notempty"
-                            onChange={(e: any) => {
-                                setName(e.target.value);
-                            }}
-                            onErrorChange={(error: string) => {
-                                setNameError(error);
-                            }}
-                        />
-                    </div>
+                    }}
+                >
+                    <fieldset>
+                        <div className="form-field">
+                            <TextBox
+                                id="name"
+                                name="name"
+                                label="Name"
+                                value={name}
+                                error={nameError}
+                                validationRule="notempty"
+                                onChange={(e: any) => {
+                                    setName(e.target.value);
+                                }}
+                                onErrorChange={(error: string) => {
+                                    setNameError(error);
+                                }}
+                            />
+                        </div>
 
-                    <div className="form-field">
-                        <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>
-                            {id > 0 ? 'Update' : 'Add' }
-                        </button>
+                        <div className="form-field">
+                            <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>
+                                {id > 0 ? 'Update' : 'Add' }
+                            </button>
 
-                        <button
-                            type="button"
-                            onClick={() => {
-                                resetForm();
-                                onCancel();
-                            }}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </fieldset>
-            </form>
-
-        </div>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    resetForm();
+                                    onCancel();
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </ModalWindow>
     );
 };
 
 GearForm.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     gear: PropTypes.object.isRequired,
+    visible: PropTypes.bool.isRequired,
     onSuccess: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 };

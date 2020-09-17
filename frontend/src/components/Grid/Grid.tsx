@@ -32,7 +32,16 @@ const Grid = (props: GridProps) => {
         <>
             {typeof onAdd === 'function' && (
                 <div className="add-button">
-                    <button type="button" className="blue" onClick={() => { onAdd(); }}>Add</button>
+                    <button
+                        type="button"
+                        className="blue"
+                        onClick={(e: React.MouseEvent<HTMLElement>) => {
+                            e.preventDefault();
+                            onAdd();
+                        }}
+                    >
+                        Add
+                    </button>
                 </div>
             )}
             <table className="grid" cellSpacing={0}>
@@ -58,7 +67,7 @@ const Grid = (props: GridProps) => {
                                                             <button
                                                                 className="blue"
                                                                 type="button"
-                                                                onClick={(e) => {
+                                                                onClick={(e: React.MouseEvent<HTMLElement>) => {
                                                                     e.preventDefault();
                                                                     if (typeof onEdit === 'function') {
                                                                         onEdit(row[IDColumn]);
@@ -77,7 +86,7 @@ const Grid = (props: GridProps) => {
                                                     <button
                                                         className="blue"
                                                         type="button"
-                                                        onClick={(e) => {
+                                                        onClick={(e: React.MouseEvent<HTMLElement>) => {
                                                             e.preventDefault();
                                                             if (typeof onTrackChange === 'function') {
                                                                 onTrackChange(row[IDColumn]);
@@ -95,7 +104,7 @@ const Grid = (props: GridProps) => {
                                                     <button
                                                         className="blue"
                                                         type="button"
-                                                        onClick={(e) => {
+                                                        onClick={(e: React.MouseEvent<HTMLElement>) => {
                                                             e.preventDefault();
                                                             if (typeof onToggleActive === 'function') {
                                                                 onToggleActive(row[IDColumn], row.active);
@@ -115,7 +124,7 @@ const Grid = (props: GridProps) => {
                                                             <button
                                                                 className="red"
                                                                 type="button"
-                                                                onClick={(e) => {
+                                                                onClick={(e: React.MouseEvent<HTMLElement>) => {
                                                                     e.preventDefault();
                                                                     if (typeof onDelete === 'function') {
                                                                         onDelete(row[IDColumn], row[nameColumn]);
