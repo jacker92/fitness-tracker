@@ -9,7 +9,7 @@ import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { AppContext } from '../AppContext/AppContext';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 
-const EditActivitySettingsForm = () => {
+const EditActivitySettingsForm: React.FC = () => {
     const [status, setStatus] = useState('initialized');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -141,7 +141,7 @@ const EditActivitySettingsForm = () => {
                                 ]}
                                 requiredField
                                 includeBlank={false}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                     setCaloriesBurnedSetting(parseInt(e.target.value, 10));
                                 }}
                             />
@@ -154,7 +154,7 @@ const EditActivitySettingsForm = () => {
                                 label="Enable Active Minute Target"
                                 value={1}
                                 isChecked={enableActiveMinuteTarget}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setEnableActiveMinuteTarget(e.target.checked);
                                 }}
                             />
@@ -172,7 +172,7 @@ const EditActivitySettingsForm = () => {
                                 value={activeMinuteTarget}
                                 error={activeMinuteTargetError}
                                 validationRule="numeric"
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     if (e.target.value !== '') {
                                         if (!Number.isNaN(e.target.value)) {
                                             setActiveMinuteTarget(parseInt(e.target.value, 10));
@@ -194,7 +194,7 @@ const EditActivitySettingsForm = () => {
                                 label="Enable Calories Burned Target"
                                 value={1}
                                 isChecked={enableCaloriesBurnedTarget}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setEnableCaloriesBurnedTarget(e.target.checked);
                                 }}
                             />
@@ -212,7 +212,7 @@ const EditActivitySettingsForm = () => {
                                 value={caloriesBurnedTarget}
                                 error={caloriesBurnedTargetError}
                                 validationRule="numeric"
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     if (e.target.value !== '') {
                                         if (!Number.isNaN(e.target.value)) {
                                             setCaloriesBurnedTarget(parseInt(e.target.value, 10));

@@ -5,7 +5,7 @@ import { JwtToken } from '../../types/JwtToken';
 import { AppContext } from '../AppContext/AppContext';
 import { Overlay } from '../Overlay/Overlay';
 
-const MainApp = (props: { children: any; }) => {
+const MainApp: React.FC<{children: React.ReactNode}> = (props) => {
     const token = window.localStorage.getItem('__fittracker_token__');
 
     let user = null;
@@ -28,7 +28,7 @@ const MainApp = (props: { children: any; }) => {
 
     const { children } = props;
 
-    const loginUser = (userToken: any) => {
+    const loginUser = (userToken: string) => {
         window.localStorage.setItem('__fittracker_token__', userToken);
 
         jwt.verify(token, process.env.REACT_APP_FT_JWT_SECRET, (err, decoded) => {

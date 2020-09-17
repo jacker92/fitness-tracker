@@ -5,7 +5,7 @@ import { EditProfileForm } from '../EditProfileForm/EditProfileForm';
 
 import '../../styles/account.css';
 
-const ProfileSettings = () => (
+const ProfileSettings: React.FC = () => (
     <AuthGateway redirectUrl="/account/profile">
         <div className="account-page">
             <div className="sidebar">

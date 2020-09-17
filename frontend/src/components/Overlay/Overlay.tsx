@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const Overlay = (props: { visible: boolean, showSpinner: boolean }) => {
+const Overlay: React.FC<{ visible: boolean, showSpinner: boolean }> = (props) => {
     const { visible, showSpinner } = props;
 
     const [isVisible, setIsVisible] = useState(visible);

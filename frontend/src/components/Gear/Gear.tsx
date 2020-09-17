@@ -5,7 +5,7 @@ import { GearGrid } from '../GearGrid/GearGrid';
 
 import '../../styles/account.css';
 
-const Gear = () => (
+const Gear: React.FC = () => (
     <AuthGateway redirectUrl="/account/gear">
         <div className="account-page">
             <div className="sidebar">

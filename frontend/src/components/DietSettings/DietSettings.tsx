@@ -5,7 +5,7 @@ import { EditDietSettingsForm } from '../EditDietSettingsForm/EditDietSettingsFo
 
 import '../../styles/account.css';
 
-const DietSettings = () => (
+const DietSettings: React.FC = () => (
     <AuthGateway redirectUrl="/account/diet">
         <div className="account-page">
             <div className="sidebar">

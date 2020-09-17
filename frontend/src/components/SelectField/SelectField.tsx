@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { SelectFieldProps } from '../../types/SelectFieldProps';
 
 // eslint-disable-next-line max-len
-const SelectField = (props: SelectFieldProps) => {
+const SelectField: React.FC<SelectFieldProps> = (props) => {
     const {
         error,
         success,
@@ -51,7 +51,7 @@ const SelectField = (props: SelectFieldProps) => {
                 value={fieldValue}
             >
                 {includeBlank && (<option value="">&nbsp;</option>)}
-                {valueList.map((item: { value: any, text: string}) => (
+                {valueList.map((item: { value: number | string, text: string}) => (
                     <option key={item.value} value={item.value}>{item.text}</option>
                 ))}
             </select>

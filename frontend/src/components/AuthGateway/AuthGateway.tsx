@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { AppContext } from '../AppContext/AppContext';
 import { Login } from '../Login/Login';
 
-const AuthGateway = (props: { redirectUrl: string, children: any }) => {
+const AuthGateway: React.FC<{ redirectUrl: string, children: React.ReactNode }> = (props) => {
     const { redirectUrl = '/', children } = props;
 
     const { currentUser } = useContext(AppContext);
@@ -16,7 +16,7 @@ const AuthGateway = (props: { redirectUrl: string, children: any }) => {
         );
     }
 
-    return children;
+    return (<>{children}</>);
 };
 
 AuthGateway.defaultProps = {
@@ -25,7 +25,7 @@ AuthGateway.defaultProps = {
 
 AuthGateway.propTypes = {
     redirectUrl: PropTypes.string,
-    children: PropTypes.node,
+    children: PropTypes.node.isRequired,
 };
 
 export { AuthGateway };

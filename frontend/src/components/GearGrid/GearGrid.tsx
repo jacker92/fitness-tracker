@@ -11,7 +11,7 @@ import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { GearForm } from '../GearForm/GearForm';
 import { Confirm } from '../Confirm/Confirm';
 
-const GearGrid = () => {
+const GearGrid: React.FC = () => {
     const newGear: Gear = {
         id: 0, name: '', active: true,
     };
@@ -28,10 +28,10 @@ const GearGrid = () => {
 
     const { currentUser } = useContext(AppContext);
 
-    const transformData = (data: any) => {
+    const transformData = (data: Array<Gear>) => {
         const gearData: Array<GearDataRow> = [];
 
-        data.forEach((g: any) => {
+        data.forEach((g: Gear) => {
             gearData.push({
                 id: g.id,
                 name: g.name,
@@ -203,7 +203,7 @@ const GearGrid = () => {
                     <GearForm
                         gear={gear}
                         visible={formVisible}
-                        onSuccess={(data: any) => {
+                        onSuccess={(data: Array<Gear>) => {
                             setFormVisible(false);
                             const gearData: Array<GearDataRow> = transformData(data);
                             setGridData(gearData);

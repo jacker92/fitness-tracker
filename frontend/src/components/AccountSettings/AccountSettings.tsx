@@ -5,7 +5,7 @@ import { ChangePasswordForm } from '../ChangePasswordForm/ChangePasswordForm';
 
 import '../../styles/account.css';
 
-const AccountSettings = () => (
+const AccountSettings: React.FC = () => (
     <AuthGateway redirectUrl="/account/settings">
         <div className="account-page">
             <div className="sidebar">

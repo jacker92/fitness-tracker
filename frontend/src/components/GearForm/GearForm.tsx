@@ -8,7 +8,7 @@ import { TextBox } from '../TextBox/TextBox';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-const GearForm = (props: GearFormProps) => {
+const GearForm: React.FC<GearFormProps> = (props) => {
     const {
         gear, visible, onSuccess, onCancel,
     } = props;
@@ -147,7 +147,7 @@ const GearForm = (props: GearFormProps) => {
                                 value={name}
                                 error={nameError}
                                 validationRule="notempty"
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setName(e.target.value);
                                 }}
                                 onErrorChange={(error: string) => {
@@ -179,8 +179,12 @@ const GearForm = (props: GearFormProps) => {
 };
 
 GearForm.propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    gear: PropTypes.object.isRequired,
+    gear: PropTypes.exact({
+        id: PropTypes.number,
+        name: PropTypes.string.isRequired,
+        active: PropTypes.bool,
+        activeString: PropTypes.string,
+    }).isRequired,
     visible: PropTypes.bool.isRequired,
     onSuccess: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,

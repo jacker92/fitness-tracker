@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CheckboxProps } from '../../types/CheckboxProps';
 
-const Checkbox = (props: CheckboxProps) => {
+const Checkbox: React.FC<CheckboxProps> = (props) => {
     const {
         isChecked,
         label,

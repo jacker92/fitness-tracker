@@ -13,7 +13,7 @@ import { AppContext } from '../AppContext/AppContext';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { MacroTargetForm } from '../MacroTargetForm/MacroTargetForm';
 
-const EditDietSettingsForm = () => {
+const EditDietSettingsForm: React.FC = () => {
     const [status, setStatus] = useState('initialized');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -316,7 +316,7 @@ const EditDietSettingsForm = () => {
                                 name="manuallycalculatecalories"
                                 label="Manually Calculate Calories"
                                 isChecked={manuallyCalculateCalories}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     const doManualCalories = e.target.checked;
                                     if (weight === 0 && !doManualCalories) {
                                         setErrorMessage('You must enter your weight before you can automatically calculate calories');
@@ -348,7 +348,7 @@ const EditDietSettingsForm = () => {
                                     { value: 3, text: 'Bulk' },
                                 ]}
                                 includeBlank={false}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                     setDietMode(parseInt(e.target.value, 10));
                                 }}
                             />
@@ -366,7 +366,7 @@ const EditDietSettingsForm = () => {
                                 value={dietPercentage}
                                 error={dietPercentageError}
                                 validationRule="numeric"
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     if (e.target.value !== '') {
                                         if (!Number.isNaN(e.target.value)) {
                                             setDietPercentage(parseInt(e.target.value, 10));
@@ -388,7 +388,7 @@ const EditDietSettingsForm = () => {
                                 label="Enable Calories Target"
                                 value={1}
                                 isChecked={enableCaloriesTarget}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setEnableCaloriesTarget(e.target.checked);
                                 }}
                             />
@@ -407,7 +407,7 @@ const EditDietSettingsForm = () => {
                                 error={caloriesTargetError}
                                 validationRule="numeric"
                                 disabled={!manuallyCalculateCalories}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     if (e.target.value !== '') {
                                         if (!Number.isNaN(e.target.value)) {
                                             setCaloriesTarget(parseInt(e.target.value, 10));
@@ -435,7 +435,7 @@ const EditDietSettingsForm = () => {
                                 ]}
                                 requiredField
                                 includeBlank={false}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                     const macroMode = parseInt(e.target.value, 10);
 
                                     if (macroMode !== 0) {
@@ -468,10 +468,10 @@ const EditDietSettingsForm = () => {
                                     fatTarget={fatPercentage}
                                     fatGrams={fatPercentageGrams}
                                     error={percentagesError}
-                                    onEnableProteinChange={(e: any) => {
+                                    onEnableProteinChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         setEnableProteinPercentage(e.target.checked);
                                     }}
-                                    onProteinChange={(e: any) => {
+                                    onProteinChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         if (e.target.value !== '') {
                                             if (!Number.isNaN(e.target.value)) {
                                                 setProteinPercentage(parseInt(e.target.value, 10));
@@ -480,10 +480,10 @@ const EditDietSettingsForm = () => {
                                             setProteinPercentage(0);
                                         }
                                     }}
-                                    onEnableCarbsChange={(e: any) => {
+                                    onEnableCarbsChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         setEnableCarbsPercentage(e.target.checked);
                                     }}
-                                    onCarbsChange={(e: any) => {
+                                    onCarbsChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         if (e.target.value !== '') {
                                             if (!Number.isNaN(e.target.value)) {
                                                 setCarbsPercentage(parseInt(e.target.value, 10));
@@ -492,10 +492,10 @@ const EditDietSettingsForm = () => {
                                             setCarbsPercentage(0);
                                         }
                                     }}
-                                    onEnableFatChange={(e: any) => {
+                                    onEnableFatChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         setEnableFatPercentage(e.target.checked);
                                     }}
-                                    onFatChange={(e: any) => {
+                                    onFatChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         if (e.target.value !== '') {
                                             if (!Number.isNaN(e.target.value)) {
                                                 setFatPercentage(parseInt(e.target.value, 10));
@@ -521,10 +521,10 @@ const EditDietSettingsForm = () => {
                                     enableFat={enableFatGrams}
                                     fatTarget={fatGrams}
                                     error={manualMacrosError}
-                                    onEnableProteinChange={(e: any) => {
+                                    onEnableProteinChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         setEnableProteinGrams(e.target.checked);
                                     }}
-                                    onProteinChange={(e: any) => {
+                                    onProteinChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         if (e.target.value !== '') {
                                             if (!Number.isNaN(e.target.value)) {
                                                 setProteinGrams(parseInt(e.target.value, 10));
@@ -533,10 +533,10 @@ const EditDietSettingsForm = () => {
                                             setProteinGrams(0);
                                         }
                                     }}
-                                    onEnableCarbsChange={(e: any) => {
+                                    onEnableCarbsChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         setEnableCarbsGrams(e.target.checked);
                                     }}
-                                    onCarbsChange={(e: any) => {
+                                    onCarbsChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         if (e.target.value !== '') {
                                             if (!Number.isNaN(e.target.value)) {
                                                 setCarbsGrams(parseInt(e.target.value, 10));
@@ -545,10 +545,10 @@ const EditDietSettingsForm = () => {
                                             setCarbsGrams(0);
                                         }
                                     }}
-                                    onEnableFatChange={(e: any) => {
+                                    onEnableFatChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         setEnableFatGrams(e.target.checked);
                                     }}
-                                    onFatChange={(e: any) => {
+                                    onFatChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         if (e.target.value !== '') {
                                             if (!Number.isNaN(e.target.value)) {
                                                 setFatGrams(parseInt(e.target.value, 10));

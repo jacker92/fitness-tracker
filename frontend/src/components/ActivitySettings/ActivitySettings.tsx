@@ -5,7 +5,7 @@ import { EditActivitySettingsForm } from '../EditActivitySettingsForm/EditActivi
 
 import '../../styles/account.css';
 
-const ActivitySettings = () => (
+const ActivitySettings: React.FC = () => (
     <AuthGateway redirectUrl="/account/activity">
         <div className="account-page">
             <div className="sidebar">

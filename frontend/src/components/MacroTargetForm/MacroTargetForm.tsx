@@ -4,7 +4,7 @@ import { MacroTargetFormProps } from '../../types/MacroTargetFormProps';
 
 import './MacroTargetForm.css';
 
-const MacroTargetForm = (props: MacroTargetFormProps) => {
+const MacroTargetForm: React.FC<MacroTargetFormProps> = (props) => {
     const {
         mode,
         enableProtein,

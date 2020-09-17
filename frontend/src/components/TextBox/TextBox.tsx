@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TextBoxProps } from '../../types/TextBoxProps';
 import { FormValidator } from '../../lib/FormValidator';
 
-const TextBox = (props: TextBoxProps) => {
+const TextBox: React.FC<TextBoxProps> = (props) => {
     const {
         error,
         success,
@@ -140,7 +140,7 @@ TextBox.defaultProps = {
     onChange: null,
     validationRule: '',
     validate: null,
-    validationArgs: {},
+    validationArgs: { min: 0, max: 0 },
     value: '',
     onErrorChange: null,
     disabled: false,
@@ -164,7 +164,7 @@ TextBox.propTypes = {
     onChange: PropTypes.func,
     validationRule: PropTypes.string,
     validate: PropTypes.func,
-    validationArgs: PropTypes.shape({
+    validationArgs: PropTypes.exact({
         min: PropTypes.number,
         max: PropTypes.number,
     }),

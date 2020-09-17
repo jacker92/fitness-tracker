@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './SuccessMessage.css';
 
-const SuccessMessage = (props: { message: string }) => {
+const SuccessMessage: React.FC<{ message: string }> = (props) => {
     const { message } = props;
 
     return (
