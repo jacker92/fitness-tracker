@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    render, fireEvent, act, screen,
+    render, fireEvent, act, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AppContext } from '../AppContext/AppContext';
@@ -130,16 +130,19 @@ describe('<Register />', () => {
 
         await act(async () => {
             await userEvent.type(nameField, 'Test User');
-            await fireEvent.blur(nameField);
             await userEvent.type(emailField, 'test@testing.com');
-            await fireEvent.blur(emailField);
             await userEvent.type(passwordField, 'validPassword123');
-            await fireEvent.blur(passwordField);
             await userEvent.type(confirmPasswordField, 'validPassword123');
-            await fireEvent.blur(confirmPasswordField);
             await userEvent.type(birthdayField, '06/01/1980');
             await userEvent.type(heightField, '72');
-            await fireEvent.blur(heightField);
+
+            await waitFor(() => {
+                fireEvent.blur(nameField);
+                fireEvent.blur(emailField);
+                fireEvent.blur(passwordField);
+                fireEvent.blur(confirmPasswordField);
+                fireEvent.blur(heightField);
+            });
 
             await userEvent.click(submitButton);
         });
