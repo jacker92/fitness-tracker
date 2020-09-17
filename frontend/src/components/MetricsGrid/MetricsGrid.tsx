@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Grid } from '../Grid/Grid';
+import { GridColumn } from '../../types/GridColumn';
+import { UserTrackedMetric } from '../../types/UserTrackedMetric';
+import { Metric } from '../../types/Metric';
 import { client } from '../../lib/client';
+import { Grid } from '../Grid/Grid';
 import { AppContext } from '../AppContext/AppContext';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { MetricForm } from '../MetricForm/MetricForm';
 import { Confirm } from '../Confirm/Confirm';
-// eslint-disable-next-line no-unused-vars
-import { GridColumn } from '../../types/GridColumn';
-// eslint-disable-next-line no-unused-vars
-import { UserTrackedMetric } from '../../types/UserTrackedMetric';
-// eslint-disable-next-line no-unused-vars
-import { Metric } from '../../types/Metric';
 
 const MetricsGrid = () => {
     const newMetric: Metric = {

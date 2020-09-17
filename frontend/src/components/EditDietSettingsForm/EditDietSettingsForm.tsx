@@ -1,8 +1,8 @@
 import React, {
     useState, useEffect, useContext, useCallback,
 } from 'react';
+import { DietSettingsUpdateRequest } from '../../types/DietSettingsUpdateRequest';
 import { client } from '../../lib/client';
-// import { FormValidator } from '../../lib/FormValidator';
 import { Utilities } from '../../lib/Utilities';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
@@ -12,8 +12,6 @@ import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { AppContext } from '../AppContext/AppContext';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { MacroTargetForm } from '../MacroTargetForm/MacroTargetForm';
-// eslint-disable-next-line no-unused-vars
-import { DietSettingsUpdateRequest } from '../../types/DietSettingsUpdateRequest';
 
 const EditDietSettingsForm = () => {
     const [status, setStatus] = useState('initialized');

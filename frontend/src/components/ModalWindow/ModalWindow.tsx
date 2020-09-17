@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { ModalWindowProps } from '../../types/ModalWindowProps';
 
-const ModalWindow = (props: { visible: boolean, width: number, height: number | string, children: React.ReactNode }) => {
+const ModalWindow = (props: ModalWindowProps) => {
     const {
         visible, width, height, children,
     } = props;

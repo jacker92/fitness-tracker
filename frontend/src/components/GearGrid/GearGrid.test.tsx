@@ -2,8 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { AppContext } from '../AppContext/AppContext';
 import { GearGrid } from './GearGrid';
-// eslint-disable-next-line no-unused-vars
-import { Gear } from '../../types/Gear';
 
 describe('<GearGrid />', () => {
     test('it renders the grid', async () => {

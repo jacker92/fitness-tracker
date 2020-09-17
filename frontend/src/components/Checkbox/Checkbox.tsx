@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { CheckboxProps } from '../../types/CheckboxProps';
 
-const Checkbox = (props: { isChecked: boolean, label: string, name: string, id: string, onChange: Function, value: any}) => {
+const Checkbox = (props: CheckboxProps) => {
     const {
         isChecked,
         label,

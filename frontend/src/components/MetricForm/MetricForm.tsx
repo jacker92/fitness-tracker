@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { MetricFormProps } from '../../types/MetricFormProps';
+import { Metric } from '../../types/Metric';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
-// eslint-disable-next-line no-unused-vars
-import { Metric } from '../../types/Metric';
 
-const MetricForm = (props: { metric: Metric, visible: boolean, onSuccess: Function, onCancel: Function }) => {
+const MetricForm = (props: MetricFormProps) => {
     const {
         metric, visible, onSuccess, onCancel,
     } = props;

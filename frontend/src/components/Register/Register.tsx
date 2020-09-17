@@ -9,7 +9,6 @@ import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AppContext } from '../AppContext/AppContext';
 
 const Register = () => {
-    // eslint-disable-next-line no-unused-vars
     const [errorMessage, setErrorMessage] = useState('');
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');

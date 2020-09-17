@@ -3,10 +3,9 @@ import {
     render, act, screen, fireEvent, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Activity } from '../../types/Activity';
 import { AppContext } from '../AppContext/AppContext';
 import { CustomActivityForm } from './CustomActivityForm';
-// eslint-disable-next-line no-unused-vars
-import { Activity } from '../../types/Activity';
 
 describe('<GearForm />', () => {
     const newActivity: Activity = {

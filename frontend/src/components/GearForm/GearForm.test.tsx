@@ -3,10 +3,9 @@ import {
     render, act, screen, fireEvent, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Gear } from '../../types/Gear';
 import { AppContext } from '../AppContext/AppContext';
 import { GearForm } from './GearForm';
-// eslint-disable-next-line no-unused-vars
-import { Gear } from '../../types/Gear';
 
 describe('<GearForm />', () => {
     const newGear: Gear = {

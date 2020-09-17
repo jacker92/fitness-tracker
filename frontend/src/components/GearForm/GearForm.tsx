@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Gear } from '../../types/Gear';
+import { GearFormProps } from '../../types/GearFormProps';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
 import { TextBox } from '../TextBox/TextBox';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
-// eslint-disable-next-line no-unused-vars
-import { Gear } from '../../types/Gear';
 
-const GearForm = (props: { gear: Gear, visible: boolean, onSuccess: Function, onCancel: Function }) => {
+const GearForm = (props: GearFormProps) => {
     const {
         gear, visible, onSuccess, onCancel,
     } = props;
