@@ -1,41 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 // eslint-disable-next-line no-unused-vars
 import { GridProps } from '../../lib/types/GridProps';
 // eslint-disable-next-line no-unused-vars
 import { GridColumn } from '../../lib/types/GridColumn';
 
-const Table = styled.table`
-    width: 100%;
-
-    thead {
-        tr {
-            background-color: hsl(0, 0%, 19%);
-            color: hsl(0,0%,100%);
-            padding: 10px 0;
-
-            th {
-                text-align: left;
-                padding: 10px;
-            }
-        }
-    }
-
-    tbody {
-        tr {
-            padding: 10px 0;
-
-            td {
-                padding: 10px;
-            }
-        }
-
-        tr:nth-child(even) {
-            background: hsl(0, 0%, 92%)
-        }
-    }
-`;
+import './Grid.css';
 
 const Grid = (props: GridProps) => {
     const {
@@ -62,10 +32,19 @@ const Grid = (props: GridProps) => {
         <>
             {typeof onAdd === 'function' && (
                 <div className="add-button">
-                    <button type="button" className="blue" onClick={() => { onAdd(); }}>Add</button>
+                    <button
+                        type="button"
+                        className="blue"
+                        onClick={(e: React.MouseEvent<HTMLElement>) => {
+                            e.preventDefault();
+                            onAdd();
+                        }}
+                    >
+                        Add
+                    </button>
                 </div>
             )}
-            <Table cellSpacing={0}>
+            <table className="grid" cellSpacing={0}>
                 <thead>
                     <tr>
                         {columns.map((col: GridColumn) => (
@@ -88,7 +67,7 @@ const Grid = (props: GridProps) => {
                                                             <button
                                                                 className="blue"
                                                                 type="button"
-                                                                onClick={(e) => {
+                                                                onClick={(e: React.MouseEvent<HTMLElement>) => {
                                                                     e.preventDefault();
                                                                     if (typeof onEdit === 'function') {
                                                                         onEdit(row[IDColumn]);
@@ -107,7 +86,7 @@ const Grid = (props: GridProps) => {
                                                     <button
                                                         className="blue"
                                                         type="button"
-                                                        onClick={(e) => {
+                                                        onClick={(e: React.MouseEvent<HTMLElement>) => {
                                                             e.preventDefault();
                                                             if (typeof onTrackChange === 'function') {
                                                                 onTrackChange(row[IDColumn]);
@@ -125,7 +104,7 @@ const Grid = (props: GridProps) => {
                                                     <button
                                                         className="blue"
                                                         type="button"
-                                                        onClick={(e) => {
+                                                        onClick={(e: React.MouseEvent<HTMLElement>) => {
                                                             e.preventDefault();
                                                             if (typeof onToggleActive === 'function') {
                                                                 onToggleActive(row[IDColumn], row.active);
@@ -145,7 +124,7 @@ const Grid = (props: GridProps) => {
                                                             <button
                                                                 className="red"
                                                                 type="button"
-                                                                onClick={(e) => {
+                                                                onClick={(e: React.MouseEvent<HTMLElement>) => {
                                                                     e.preventDefault();
                                                                     if (typeof onDelete === 'function') {
                                                                         onDelete(row[IDColumn], row[nameColumn]);
@@ -173,7 +152,7 @@ const Grid = (props: GridProps) => {
                         </tr>
                     )}
                 </tbody>
-            </Table>
+            </table>
         </>
     );
 };

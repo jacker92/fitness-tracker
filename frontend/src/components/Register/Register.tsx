@@ -3,7 +3,6 @@ import DatePicker from 'react-datepicker';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
 import { Utilities } from '../../lib/Utilities';
-import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
@@ -168,7 +167,7 @@ const Register = () => {
 
             <ErrorMessage error={errorMessage} />
 
-            <Form
+            <form
                 method="POST"
                 onSubmit={async (e) => {
                     e.preventDefault();
@@ -368,7 +367,7 @@ const Register = () => {
                         </button>
                     </div>
                 </fieldset>
-            </Form>
+            </form>
         </>
     );
 };

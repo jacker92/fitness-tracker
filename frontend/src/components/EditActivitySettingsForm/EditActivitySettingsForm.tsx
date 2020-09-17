@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
-import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -121,7 +120,7 @@ const EditActivitySettingsForm = () => {
             {status === 'initialized' && <LoadingBox />}
 
             {(status === 'loaded' || status === 'saving') && (
-                <Form
+                <form
                     className="autowidth"
                     method="POST"
                     onSubmit={async (e) => {
@@ -234,7 +233,7 @@ const EditActivitySettingsForm = () => {
                             </button>
                         </div>
                     </fieldset>
-                </Form>
+                </form>
             )}
         </>
     );

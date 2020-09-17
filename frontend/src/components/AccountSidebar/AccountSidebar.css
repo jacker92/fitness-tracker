@@ -1,0 +1,35 @@
+ul.admin-sidebar {
+    list-style-type: none;
+    margin: 0 0 0 0;
+    padding: 25px 0 0 0;
+}
+
+ul.admin-sidebar li {
+    padding: 12px 0 12px 10px;
+    font-size: 1.1rem;
+    border-bottom: 1px solid hsl(0, 0%, 19%);
+}
+
+ul.admin-sidebar li:first-child {
+    border-top: 1px solid hsl(0, 0%, 19%);
+}
+
+ul.admin-sidebar li.active {
+    font-weight: bold;
+    background: hsl(0, 0%, 19%);
+    color: hsl(0, 0%, 100%);
+}
+
+ul.admin-sidebar li a {
+    color: hsl(0, 0%, 19%);
+    text-decoration: none;
+}
+
+ul.admin-sidebar li:hover {
+    background: hsl(0, 0%, 19%);
+    color: hsl(0, 0%, 100%);
+}
+
+ul.admin-sidebar li:hover a {
+    color: hsl(0, 0%, 100%);
+}

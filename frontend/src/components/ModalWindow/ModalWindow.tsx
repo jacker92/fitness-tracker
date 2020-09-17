@@ -1,45 +1,31 @@
-import React, { useEffect, useState, useContext } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { AppContext } from '../AppContext/AppContext';
-
-const Popup = styled.div`
-    position:fixed;
-    z-index: 10;
-    background: hsl(0,0%,100%);
-    box-shadow: 0 12px 24px 0 hsla(0, 0%, 0%, 0.2);
-    border-radius: 4px;
-    top: 50px;
-    left: 50%;
-`;
 
 const ModalWindow = (props: { visible: boolean, width: number, height: number | string, children: React.ReactNode }) => {
     const {
         visible, width, height, children,
     } = props;
 
-    const { setOverlayVisibility } = useContext(AppContext);
-
     const [isVisible, setIsVisible] = useState(visible);
 
     useEffect(() => {
-        if (visible) {
-            setOverlayVisibility(true, false);
-            setIsVisible(visible);
-        } else {
-            setOverlayVisibility(false, false);
-            setIsVisible(visible);
-        }
-    }, [visible, setOverlayVisibility]);
+        setIsVisible(visible);
+    }, [visible]);
 
     return (
-        <Popup
-            style={{
-                width: `${width}px`, height: (height === 'auto' ? 'auto' : `${height}px`), display: (isVisible ? 'block' : 'none'), marginLeft: `-${width / 2}px`,
-            }}
-        >
-            {children}
-        </Popup>
+        <div className="overlay" style={isVisible ? { display: 'block' } : { display: 'none' }}>
+            <div
+                className="modal-window"
+                style={{
+                    width: `${width}px`,
+                    height: (height === 'auto' ? 'auto' : `${height}px`),
+                    display: (isVisible ? 'block' : 'none'),
+                    marginLeft: `-${width / 2}px`,
+                }}
+            >
+                {children}
+            </div>
+        </div>
     );
 };
 

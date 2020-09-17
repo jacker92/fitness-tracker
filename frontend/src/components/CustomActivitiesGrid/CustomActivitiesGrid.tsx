@@ -5,7 +5,6 @@ import { AppContext } from '../AppContext/AppContext';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
-import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { Confirm } from '../Confirm/Confirm';
 import { CustomActivityForm } from '../CustomActivityForm/CustomActivityForm';
 // eslint-disable-next-line no-unused-vars
@@ -25,7 +24,7 @@ const CustomActivitiesGrid = () => {
     const [successMessage] = useState('');
     const [gridData, setGridData] = useState([]);
     const [activity, setActivity] = useState(newActivity);
-    const [addFormVisible, setAddFormVisible] = useState(false);
+    const [formVisible, setFormVisible] = useState(false);
     const [confirmVisible, setConfirmVisible] = useState(false);
     const [confirmText, setConfirmText] = useState('Are you sure you want to delete this activity?');
     const [actvityToDeleteId, setActvityToDeleteId] = useState(null);
@@ -164,23 +163,18 @@ const CustomActivitiesGrid = () => {
 
             {(status === 'loaded' || status === 'saving') && (
                 <>
-                    <ModalWindow
-                        width={460}
-                        height="auto"
-                        visible={addFormVisible}
-                    >
-                        <CustomActivityForm
-                            activity={activity}
-                            onSuccess={(activities: any) => {
-                                setAddFormVisible(false);
-                                const customActivities: Array<ActivityDataRow> = transformData(activities);
-                                setGridData(customActivities);
-                            }}
-                            onCancel={() => {
-                                setAddFormVisible(false);
-                            }}
-                        />
-                    </ModalWindow>
+                    <CustomActivityForm
+                        activity={activity}
+                        visible={formVisible}
+                        onSuccess={(activities: any) => {
+                            setFormVisible(false);
+                            const customActivities: Array<ActivityDataRow> = transformData(activities);
+                            setGridData(customActivities);
+                        }}
+                        onCancel={() => {
+                            setFormVisible(false);
+                        }}
+                    />
 
                     <Confirm
                         text={confirmText}
@@ -202,11 +196,11 @@ const CustomActivitiesGrid = () => {
                         noRowsMessage="No Custom Activities Defined"
                         onAdd={() => {
                             setActivity(newActivity);
-                            setAddFormVisible(true);
+                            setFormVisible(true);
                         }}
                         onEdit={async (id: number) => {
                             await getActivityById(id);
-                            setAddFormVisible(true);
+                            setFormVisible(true);
                         }}
                         onDelete={async (id: number, activityName: string) => {
                             setActvityToDeleteId(id);

@@ -1,48 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const SidebarList = styled.ul`
-    list-style-type: none;
-    margin:0 0 0 0;
-    padding:25px 0 0 0;
-
-    li {
-        padding: 12px 0 12px 10px;
-        font-size: 1.1rem;
-        border-bottom: 1px solid hsl(0, 0%, 19%);
-
-        &.active {
-            font-weight: bold;
-            background: hsl(0, 0%, 19%);
-            color: hsl(0, 0%, 100%);
-        }
-
-        &:hover {
-            background: hsl(0, 0%, 19%);
-            color: hsl(0, 0%, 100%);
-
-            a {
-                color: hsl(0, 0%, 100%);
-            }
-        }
-
-        a {
-            color: hsl(0, 0%, 19%);
-            text-decoration: none;
-        }
-
-        &:first-child {
-            border-top: 1px solid hsl(0, 0%, 19%);
-        }
-    }
-`;
+import './AccountSidebar.css';
 
 const AccountSidebar = (props: { activePage: string }) => {
     const { activePage } = props;
 
     return (
-        <SidebarList>
+        <ul className="admin-sidebar">
             <li className={activePage === 'profile' ? 'active' : ''}>
                 {activePage === 'profile' ? (
                     <>Profile</>
@@ -106,7 +71,7 @@ const AccountSidebar = (props: { activePage: string }) => {
                     <a href="/account/delete-account">Delete Account</a>
                 )}
             </li>
-        </SidebarList>
+        </ul>
     );
 };
 

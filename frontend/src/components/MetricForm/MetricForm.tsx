@@ -2,19 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
-import { Form } from '../Styles/Form';
-import { GridForm } from '../Styles/GridForm';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { ModalWindow } from '../ModalWindow/ModalWindow';
 // eslint-disable-next-line no-unused-vars
 import { Metric } from '../../lib/types/Metric';
 
-const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Function }) => {
+const MetricForm = (props: { metric: Metric, visible: boolean, onSuccess: Function, onCancel: Function }) => {
     const {
-        metric, onSuccess, onCancel,
+        metric, visible, onSuccess, onCancel,
     } = props;
 
+    const [isVisible, setIsVisible] = useState(visible);
     const [id, setId] = useState(metric.id);
     const [name, setName] = useState(metric.name);
     const [nameError, setNameError] = useState('');
@@ -24,6 +24,10 @@ const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Func
     const [saveDisabled, setSaveDisabled] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const theMetricForm = useRef(null);
+
+    useEffect(() => {
+        setIsVisible(visible);
+    }, [visible]);
 
     useEffect(() => {
         setId(metric.id);
@@ -118,122 +122,125 @@ const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Func
     };
 
     return (
-        <GridForm>
-            <h2>Add New Metric</h2>
+        <ModalWindow width={376} visible={isVisible}>
+            <div className="grid-form">
+                <h2>Add New Metric</h2>
 
-            <ErrorMessage error={errorMessage} />
+                <ErrorMessage error={errorMessage} />
 
-            <Form
-                className="autowidth"
-                method="POST"
-                ref={theMetricForm}
-                onSubmit={async (e) => {
-                    e.preventDefault();
+                <form
+                    className="autowidth"
+                    method="POST"
+                    ref={theMetricForm}
+                    onSubmit={async (e) => {
+                        e.preventDefault();
 
-                    if (validate()) {
-                        const editedMetric: Metric = {
-                            id,
-                            name,
-                            units,
-                            type,
-                        };
+                        if (validate()) {
+                            const editedMetric: Metric = {
+                                id,
+                                name,
+                                units,
+                                type,
+                            };
 
-                        if (id > 0) {
-                            await updateMetric(editedMetric);
-                        } else {
-                            await addNewMetric(editedMetric);
+                            if (id > 0) {
+                                await updateMetric(editedMetric);
+                            } else {
+                                await addNewMetric(editedMetric);
+                            }
                         }
-                    }
-                }}
-            >
-                <fieldset>
-                    <div className="form-field">
-                        <TextBox
-                            id="name"
-                            name="name"
-                            label="Name"
-                            value={name}
-                            error={nameError}
-                            validationRule="notempty"
-                            onChange={(e: any) => {
-                                setName(e.target.value);
-                            }}
-                            onErrorChange={(error: string) => {
-                                setNameError(error);
-                            }}
-                        />
-                    </div>
+                    }}
+                >
+                    <fieldset>
+                        <div className="form-field">
+                            <TextBox
+                                id="name"
+                                name="name"
+                                label="Name"
+                                value={name}
+                                error={nameError}
+                                validationRule="notempty"
+                                onChange={(e: any) => {
+                                    setName(e.target.value);
+                                }}
+                                onErrorChange={(error: string) => {
+                                    setNameError(error);
+                                }}
+                            />
+                        </div>
 
-                    <div
-                        className="form-field"
-                        data-testid="units-div"
-                        style={showUnits ? { display: 'block' } : { display: 'none' }}
-                    >
-                        <TextBox
-                            id="units"
-                            name="units"
-                            label="Units"
-                            value={units}
-                            onChange={(e: any) => {
-                                setUnits(e.target.value);
-                            }}
-                        />
-                    </div>
-
-                    <div className="form-field">
-                        <SelectField
-                            id="metrictype"
-                            name="metrictype"
-                            label="Type"
-                            value={type}
-                            valueList={[
-                                { value: 0, text: 'None' },
-                                { value: 1, text: 'Distance' },
-                                { value: 2, text: 'Weight' },
-                                { value: 3, text: 'Numeric' },
-                                { value: 4, text: 'Percentage' },
-                            ]}
-                            requiredField
-                            includeBlank={false}
-                            onChange={(e: any) => {
-                                const typeVal = parseInt(e.target.value, 10);
-                                setType(typeVal);
-
-                                if (typeVal === 3) {
-                                    setShowUnits(true);
-                                } else {
-                                    setShowUnits(false);
-                                    setUnits('');
-                                }
-                            }}
-                        />
-                    </div>
-
-                    <div className="form-field">
-                        <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>
-                            {id > 0 ? 'Update' : 'Add' }
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={() => {
-                                resetForm();
-                                onCancel();
-                            }}
+                        <div
+                            className="form-field"
+                            data-testid="units-div"
+                            style={showUnits ? { display: 'block' } : { display: 'none' }}
                         >
-                            Cancel
-                        </button>
-                    </div>
-                </fieldset>
-            </Form>
+                            <TextBox
+                                id="units"
+                                name="units"
+                                label="Units"
+                                value={units}
+                                onChange={(e: any) => {
+                                    setUnits(e.target.value);
+                                }}
+                            />
+                        </div>
 
-        </GridForm>
+                        <div className="form-field">
+                            <SelectField
+                                id="metrictype"
+                                name="metrictype"
+                                label="Type"
+                                value={type}
+                                valueList={[
+                                    { value: 0, text: 'None' },
+                                    { value: 1, text: 'Distance' },
+                                    { value: 2, text: 'Weight' },
+                                    { value: 3, text: 'Numeric' },
+                                    { value: 4, text: 'Percentage' },
+                                ]}
+                                requiredField
+                                includeBlank={false}
+                                onChange={(e: any) => {
+                                    const typeVal = parseInt(e.target.value, 10);
+                                    setType(typeVal);
+
+                                    if (typeVal === 3) {
+                                        setShowUnits(true);
+                                    } else {
+                                        setShowUnits(false);
+                                        setUnits('');
+                                    }
+                                }}
+                            />
+                        </div>
+
+                        <div className="form-field">
+                            <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>
+                                {id > 0 ? 'Update' : 'Add' }
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    resetForm();
+                                    onCancel();
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+        </ModalWindow>
     );
 };
 
 MetricForm.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     metric: PropTypes.object.isRequired,
+    visible: PropTypes.bool.isRequired,
     onSuccess: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 };

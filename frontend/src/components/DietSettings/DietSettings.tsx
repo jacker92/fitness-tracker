@@ -1,18 +1,22 @@
 import React from 'react';
+import { AuthGateway } from '../AuthGateway/AuthGateway';
 import { AccountSidebar } from '../AccountSidebar/AccountSidebar';
-import { AccountPage } from '../Styles/AccountPage';
 import { EditDietSettingsForm } from '../EditDietSettingsForm/EditDietSettingsForm';
 
+import '../../styles/account.css';
+
 const DietSettings = () => (
-    <AccountPage>
-        <div className="sidebar">
-            <AccountSidebar activePage="diet" />
+    <AuthGateway redirectUrl="/account/diet">
+        <div className="account-page">
+            <div className="sidebar">
+                <AccountSidebar activePage="diet" />
+            </div>
+            <div className="content">
+                <h1>Diet Settings</h1>
+                <EditDietSettingsForm />
+            </div>
         </div>
-        <div className="content">
-            <h1>Diet Settings</h1>
-            <EditDietSettingsForm />
-        </div>
-    </AccountPage>
+    </AuthGateway>
 );
 
 export { DietSettings };

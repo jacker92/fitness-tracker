@@ -1,18 +1,22 @@
 import React from 'react';
+import { AuthGateway } from '../AuthGateway/AuthGateway';
 import { AccountSidebar } from '../AccountSidebar/AccountSidebar';
-import { AccountPage } from '../Styles/AccountPage';
 import { GearGrid } from '../GearGrid/GearGrid';
 
+import '../../styles/account.css';
+
 const Gear = () => (
-    <AccountPage>
-        <div className="sidebar">
-            <AccountSidebar activePage="gear" />
+    <AuthGateway redirectUrl="/account/gear">
+        <div className="account-page">
+            <div className="sidebar">
+                <AccountSidebar activePage="gear" />
+            </div>
+            <div className="content">
+                <h1>Gear</h1>
+                <GearGrid />
+            </div>
         </div>
-        <div className="content">
-            <h1>Gear</h1>
-            <GearGrid />
-        </div>
-    </AccountPage>
+    </AuthGateway>
 );
 
 export { Gear };

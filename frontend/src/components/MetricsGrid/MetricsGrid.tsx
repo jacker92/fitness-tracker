@@ -6,7 +6,6 @@ import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { MetricForm } from '../MetricForm/MetricForm';
-import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { Confirm } from '../Confirm/Confirm';
 // eslint-disable-next-line no-unused-vars
 import { GridColumn } from '../../lib/types/GridColumn';
@@ -25,7 +24,7 @@ const MetricsGrid = () => {
     const [successMessage] = useState('');
     const [gridData, setGridData] = useState([]);
     const [metric, setMetric] = useState(newMetric);
-    const [addFormVisible, setAddFormVisible] = useState(false);
+    const [formVisible, setFormVisible] = useState(false);
     const [confirmVisible, setConfirmVisible] = useState(false);
     const [confirmText, setConfirmText] = useState('Are you sure you want to delete this metric?');
     const [metricToDeleteId, setMetricToDeleteId] = useState(null);
@@ -198,23 +197,20 @@ const MetricsGrid = () => {
 
             {(status === 'loaded' || status === 'saving') && (
                 <>
-                    <ModalWindow
-                        width={460}
-                        height="auto"
-                        visible={addFormVisible}
-                    >
-                        <MetricForm
-                            metric={metric}
-                            onSuccess={(metrics: any) => {
-                                setAddFormVisible(false);
-                                const trackedMetrics: Array<UserTrackedMetric> = transformData(metrics);
-                                setGridData(trackedMetrics);
-                            }}
-                            onCancel={() => {
-                                setAddFormVisible(false);
-                            }}
-                        />
-                    </ModalWindow>
+
+                    <MetricForm
+                        metric={metric}
+                        visible={formVisible}
+                        onSuccess={(metrics: any) => {
+                            setFormVisible(false);
+
+                            const trackedMetrics: Array<UserTrackedMetric> = transformData(metrics);
+                            setGridData(trackedMetrics);
+                        }}
+                        onCancel={() => {
+                            setFormVisible(false);
+                        }}
+                    />
 
                     <Confirm
                         text={confirmText}
@@ -239,11 +235,11 @@ const MetricsGrid = () => {
                         }}
                         onAdd={() => {
                             setMetric(newMetric);
-                            setAddFormVisible(true);
+                            setFormVisible(true);
                         }}
                         onEdit={async (id: number) => {
                             await getMetricById(id);
-                            setAddFormVisible(true);
+                            setFormVisible(true);
                         }}
                         onDelete={async (id: number, metricName: string) => {
                             setMetricToDeleteId(id);

@@ -1,0 +1,37 @@
+table.grid {
+    width: 100%;
+}
+
+table.grid thead tr {
+    background-color: var(--dark-gray-bgcolor);
+    color: hsl(0, 0%, 100%);
+    padding: 10px 0;
+}
+
+table.grid thead th {
+    text-align: left;
+    padding: 10px;
+}
+
+table.grid tbody tr {
+    padding: 10px 0;
+}
+
+table.grid tbody tr td {
+    padding: 10px;
+}
+
+table.grid tbody tr:nth-child(even) {
+    background: hsl(0, 0%, 92%);
+}
+
+.add-button {
+    text-align: right;
+    margin: 15px 0 15px 15px;
+}
+
+div.grid-form {
+    margin: 25px auto;
+    width: 400px;
+    padding: 0 30px;
+}

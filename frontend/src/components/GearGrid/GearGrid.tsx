@@ -5,7 +5,6 @@ import { AppContext } from '../AppContext/AppContext';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
-import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { GearForm } from '../GearForm/GearForm';
 import { Confirm } from '../Confirm/Confirm';
 // eslint-disable-next-line no-unused-vars
@@ -25,7 +24,7 @@ const GearGrid = () => {
     const [successMessage] = useState('');
     const [gridData, setGridData] = useState([]);
     const [gear, setGear] = useState(newGear);
-    const [addFormVisible, setAddFormVisible] = useState(false);
+    const [formVisible, setFormVisible] = useState(false);
     const [confirmVisible, setConfirmVisible] = useState(false);
     const [confirmText, setConfirmText] = useState('Are you sure you want to delete this gear?');
     const [gearToDeleteId, setGearToDeleteId] = useState(null);
@@ -204,23 +203,18 @@ const GearGrid = () => {
 
             {(status === 'loaded' || status === 'saving') && (
                 <>
-                    <ModalWindow
-                        width={460}
-                        height="auto"
-                        visible={addFormVisible}
-                    >
-                        <GearForm
-                            gear={gear}
-                            onSuccess={(data: any) => {
-                                setAddFormVisible(false);
-                                const gearData: Array<GearDataRow> = transformData(data);
-                                setGridData(gearData);
-                            }}
-                            onCancel={() => {
-                                setAddFormVisible(false);
-                            }}
-                        />
-                    </ModalWindow>
+                    <GearForm
+                        gear={gear}
+                        visible={formVisible}
+                        onSuccess={(data: any) => {
+                            setFormVisible(false);
+                            const gearData: Array<GearDataRow> = transformData(data);
+                            setGridData(gearData);
+                        }}
+                        onCancel={() => {
+                            setFormVisible(false);
+                        }}
+                    />
 
                     <Confirm
                         text={confirmText}
@@ -245,11 +239,11 @@ const GearGrid = () => {
                         }}
                         onAdd={() => {
                             setGear(newGear);
-                            setAddFormVisible(true);
+                            setFormVisible(true);
                         }}
                         onEdit={async (id: number) => {
                             await getGearById(id);
-                            setAddFormVisible(true);
+                            setFormVisible(true);
                         }}
                         onDelete={(id: number, gearName: string) => {
                             setGearToDeleteId(id);

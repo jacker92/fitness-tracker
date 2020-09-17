@@ -2,19 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
-import { Form } from '../Styles/Form';
-import { GridForm } from '../Styles/GridForm';
+import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 // eslint-disable-next-line no-unused-vars
 import { Activity } from '../../lib/types/Activity';
 
-const CustomActivityForm = (props: { activity: Activity, onSuccess: Function, onCancel: Function }) => {
+const CustomActivityForm = (props: { activity: Activity, visible: boolean, onSuccess: Function, onCancel: Function }) => {
     const {
-        activity, onSuccess, onCancel,
+        activity, visible, onSuccess, onCancel,
     } = props;
 
+    const [isVisible, setIsVisible] = useState(visible);
     const [id, setId] = useState(activity.id);
     const [name, setName] = useState(activity.name);
     const [nameError, setNameError] = useState('');
@@ -23,6 +23,10 @@ const CustomActivityForm = (props: { activity: Activity, onSuccess: Function, on
     const [saveDisabled, setSaveDisabled] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const theActivityForm = useRef(null);
+
+    useEffect(() => {
+        setIsVisible(visible);
+    }, [visible]);
 
     useEffect(() => {
         setId(activity.id);
@@ -117,115 +121,117 @@ const CustomActivityForm = (props: { activity: Activity, onSuccess: Function, on
     };
 
     return (
-        <GridForm>
-            <h2>Add New Metric</h2>
+        <ModalWindow width={376} visible={isVisible}>
+            <div className="grid-form">
+                <h2>Add New Metric</h2>
 
-            <ErrorMessage error={errorMessage} />
+                <ErrorMessage error={errorMessage} />
 
-            <Form
-                className="autowidth"
-                method="POST"
-                ref={theActivityForm}
-                onSubmit={async (e) => {
-                    e.preventDefault();
+                <form
+                    className="autowidth"
+                    method="POST"
+                    ref={theActivityForm}
+                    onSubmit={async (e) => {
+                        e.preventDefault();
 
-                    if (validate()) {
-                        const editedActivity: Activity = {
-                            id,
-                            name,
-                            estimatedCaloriesBurnedPerMinute,
-                            type,
-                            isSystem: false,
-                        };
+                        if (validate()) {
+                            const editedActivity: Activity = {
+                                id,
+                                name,
+                                estimatedCaloriesBurnedPerMinute,
+                                type,
+                                isSystem: false,
+                            };
 
-                        if (id > 0) {
-                            await updateActivity(editedActivity);
-                        } else {
-                            await addActivity(editedActivity);
+                            if (id > 0) {
+                                await updateActivity(editedActivity);
+                            } else {
+                                await addActivity(editedActivity);
+                            }
                         }
-                    }
-                }}
-            >
-                <fieldset>
-                    <div className="form-field">
-                        <TextBox
-                            id="name"
-                            name="name"
-                            label="Name"
-                            value={name}
-                            error={nameError}
-                            validationRule="notempty"
-                            onChange={(e: any) => {
-                                setName(e.target.value);
-                            }}
-                            onErrorChange={(error: string) => {
-                                setNameError(error);
-                            }}
-                        />
-                    </div>
+                    }}
+                >
+                    <fieldset>
+                        <div className="form-field">
+                            <TextBox
+                                id="name"
+                                name="name"
+                                label="Name"
+                                value={name}
+                                error={nameError}
+                                validationRule="notempty"
+                                onChange={(e: any) => {
+                                    setName(e.target.value);
+                                }}
+                                onErrorChange={(error: string) => {
+                                    setNameError(error);
+                                }}
+                            />
+                        </div>
 
-                    <div className="form-field">
-                        <TextBox
-                            id="estimatedCaloriesBurnedPerMinute"
-                            name="estimatedCaloriesBurnedPerMinute"
-                            label="Est. Calories Burned per Minute"
-                            value={estimatedCaloriesBurnedPerMinute}
-                            onChange={(e: any) => {
-                                if (e.target.value !== '') {
-                                    if (!Number.isNaN(e.target.value)) {
-                                        setEstimatedCaloriesBurnedPerMinute(parseInt(e.target.value, 10));
+                        <div className="form-field">
+                            <TextBox
+                                id="estimatedCaloriesBurnedPerMinute"
+                                name="estimatedCaloriesBurnedPerMinute"
+                                label="Est. Calories Burned per Minute"
+                                value={estimatedCaloriesBurnedPerMinute}
+                                onChange={(e: any) => {
+                                    if (e.target.value !== '') {
+                                        if (!Number.isNaN(e.target.value)) {
+                                            setEstimatedCaloriesBurnedPerMinute(parseInt(e.target.value, 10));
+                                        }
+                                    } else {
+                                        setEstimatedCaloriesBurnedPerMinute(0);
                                     }
-                                } else {
-                                    setEstimatedCaloriesBurnedPerMinute(0);
-                                }
-                            }}
-                        />
-                    </div>
+                                }}
+                            />
+                        </div>
 
-                    <div className="form-field">
-                        <SelectField
-                            id="metrictype"
-                            name="metrictype"
-                            label="Type"
-                            value={type}
-                            valueList={[
-                                { value: 0, text: 'None' },
-                                { value: 1, text: 'Distance' },
-                            ]}
-                            requiredField
-                            includeBlank={false}
-                            onChange={(e: any) => {
-                                const typeVal = parseInt(e.target.value, 10);
-                                setType(typeVal);
-                            }}
-                        />
-                    </div>
+                        <div className="form-field">
+                            <SelectField
+                                id="metrictype"
+                                name="metrictype"
+                                label="Type"
+                                value={type}
+                                valueList={[
+                                    { value: 0, text: 'None' },
+                                    { value: 1, text: 'Distance' },
+                                ]}
+                                requiredField
+                                includeBlank={false}
+                                onChange={(e: any) => {
+                                    const typeVal = parseInt(e.target.value, 10);
+                                    setType(typeVal);
+                                }}
+                            />
+                        </div>
 
-                    <div className="form-field">
-                        <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>
-                            {id > 0 ? 'Update' : 'Add' }
-                        </button>
+                        <div className="form-field">
+                            <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>
+                                {id > 0 ? 'Update' : 'Add' }
+                            </button>
 
-                        <button
-                            type="button"
-                            onClick={() => {
-                                resetForm();
-                                onCancel();
-                            }}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </fieldset>
-            </Form>
-
-        </GridForm>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    resetForm();
+                                    onCancel();
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </ModalWindow>
     );
 };
 
 CustomActivityForm.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     activity: PropTypes.object.isRequired,
+    visible: PropTypes.bool.isRequired,
     onSuccess: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 };
