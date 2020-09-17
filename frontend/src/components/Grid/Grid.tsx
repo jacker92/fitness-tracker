@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // eslint-disable-next-line no-unused-vars
+import { GridProps } from '../../lib/types/GridProps';
+// eslint-disable-next-line no-unused-vars
 import { GridColumn } from '../../lib/types/GridColumn';
 
 const Table = styled.table`
@@ -26,32 +28,6 @@ const Table = styled.table`
 
             td {
                 padding: 10px;
-
-                button.edit {
-                    background: hsl(199, 83%, 56%);
-                    color: hsl(0,0%,100%);
-                    padding: 4px 10px;
-                    border: 1px solid hsl(199, 100%, 34%);
-                    font-size: 1rem;
-                    border-radius: 3px;
-
-                    &:hover {
-                        background: hsl(199, 100%, 34%);
-                    }
-                }
-
-                button.delete {
-                    background: hsl(2, 99%, 45%);
-                    color: hsl(0,0%,100%);
-                    padding: 4px 10px;
-                    border: 1px solid hsl(3, 87%, 35%);
-                    font-size: 1rem;
-                    border-radius: 3px;
-
-                    &:hover {
-                        background: hsl(3, 87%, 35%);
-                    }
-                }
             }
         }
 
@@ -61,36 +37,14 @@ const Table = styled.table`
     }
 `;
 
-const AddButton = styled.button`
-    background: hsl(199, 83%, 56%);
-    color: hsl(0,0%,100%);
-    padding: 4px 10px;
-    border: 1px solid hsl(199, 100%, 34%);
-    font-size: 1rem;
-    border-radius: 3px;
-
-    &:hover {
-        background: hsl(199, 100%, 34%);
-    }
-`;
-
-const Grid = (props: {
-                columns: Array<GridColumn>,
-                data: Array<any>,
-                noRowsMessage: string,
-                keyColumn: string,
-                IDColumn: string,
-                onAdd: Function,
-                onEdit: Function,
-                onDelete: Function,
-                onToggleActive: Function,
-                onTrackChange: Function }) => {
+const Grid = (props: GridProps) => {
     const {
         columns,
         data,
         noRowsMessage,
         keyColumn,
         IDColumn,
+        nameColumn,
         onAdd,
         onEdit,
         onDelete,
@@ -108,7 +62,7 @@ const Grid = (props: {
         <>
             {typeof onAdd === 'function' && (
                 <div className="add-button">
-                    <AddButton onClick={() => { onAdd(); }}>Add</AddButton>
+                    <button type="button" className="blue" onClick={() => { onAdd(); }}>Add</button>
                 </div>
             )}
             <Table cellSpacing={0}>
@@ -132,7 +86,7 @@ const Grid = (props: {
                                                     {row.canEdit
                                                         ? (
                                                             <button
-                                                                className="edit"
+                                                                className="blue"
                                                                 type="button"
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
@@ -151,7 +105,7 @@ const Grid = (props: {
                                             return (
                                                 <td key={`row_${col.Key}`} align="center">
                                                     <button
-                                                        className="edit"
+                                                        className="blue"
                                                         type="button"
                                                         onClick={(e) => {
                                                             e.preventDefault();
@@ -169,7 +123,7 @@ const Grid = (props: {
                                             return (
                                                 <td key={`row_${col.Key}`} align="center">
                                                     <button
-                                                        className="edit"
+                                                        className="blue"
                                                         type="button"
                                                         onClick={(e) => {
                                                             e.preventDefault();
@@ -189,12 +143,12 @@ const Grid = (props: {
                                                     {row.canDelete
                                                         ? (
                                                             <button
-                                                                className="delete"
+                                                                className="red"
                                                                 type="button"
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
                                                                     if (typeof onDelete === 'function') {
-                                                                        onDelete(row[IDColumn]);
+                                                                        onDelete(row[IDColumn], row[nameColumn]);
                                                                     }
                                                                 }}
                                                             >
@@ -225,10 +179,10 @@ const Grid = (props: {
 };
 
 Grid.defaultProps = {
-    columns: [],
     data: [],
     noRowsMessage: 'No rows',
     IDColumn: 'ID',
+    nameColumn: 'name',
     onAdd: null,
     onEdit: null,
     onDelete: null,
@@ -238,12 +192,13 @@ Grid.defaultProps = {
 
 Grid.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
-    columns: PropTypes.array,
+    columns: PropTypes.array.isRequired,
     // eslint-disable-next-line react/forbid-prop-types
     data: PropTypes.array,
     noRowsMessage: PropTypes.string,
     keyColumn: PropTypes.string.isRequired,
     IDColumn: PropTypes.string,
+    nameColumn: PropTypes.string,
     onAdd: PropTypes.func,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,

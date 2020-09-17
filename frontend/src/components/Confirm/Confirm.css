@@ -1,0 +1,17 @@
+.confirm {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.confirm p {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.confirm .buttons {
+    margin: 15px 0 0 0;
+}
+
+.confirm button {
+    margin: 0 8px;
+}
