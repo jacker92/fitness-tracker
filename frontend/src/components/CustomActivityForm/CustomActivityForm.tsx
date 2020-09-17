@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
-import { Form } from '../Styles/Form';
-import { GridForm } from '../Styles/GridForm';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
@@ -117,12 +115,12 @@ const CustomActivityForm = (props: { activity: Activity, onSuccess: Function, on
     };
 
     return (
-        <GridForm>
+        <div className="grid-form">
             <h2>Add New Metric</h2>
 
             <ErrorMessage error={errorMessage} />
 
-            <Form
+            <form
                 className="autowidth"
                 method="POST"
                 ref={theActivityForm}
@@ -217,9 +215,9 @@ const CustomActivityForm = (props: { activity: Activity, onSuccess: Function, on
                         </button>
                     </div>
                 </fieldset>
-            </Form>
+            </form>
 
-        </GridForm>
+        </div>
     );
 };
 

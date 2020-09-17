@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
-import { Form } from '../Styles/Form';
-import { GridForm } from '../Styles/GridForm';
 import { TextBox } from '../TextBox/TextBox';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 // eslint-disable-next-line no-unused-vars
@@ -107,12 +105,12 @@ const GearForm = (props: { gear: Gear, onSuccess: Function, onCancel: Function }
     };
 
     return (
-        <GridForm>
+        <div className="grid-form">
             <h2>Add New Gear</h2>
 
             <ErrorMessage error={errorMessage} />
 
-            <Form
+            <form
                 className="autowidth"
                 method="POST"
                 ref={thsGearForm}
@@ -167,9 +165,9 @@ const GearForm = (props: { gear: Gear, onSuccess: Function, onCancel: Function }
                         </button>
                     </div>
                 </fieldset>
-            </Form>
+            </form>
 
-        </GridForm>
+        </div>
     );
 };
 

@@ -1,18 +1,22 @@
 import React from 'react';
+import { AuthGateway } from '../AuthGateway/AuthGateway';
 import { AccountSidebar } from '../AccountSidebar/AccountSidebar';
-import { AccountPage } from '../Styles/AccountPage';
 import { CustomActivitiesGrid } from '../CustomActivitiesGrid/CustomActivitiesGrid';
 
+import '../../styles/account.css';
+
 const CustomActivities = () => (
-    <AccountPage>
-        <div className="sidebar">
-            <AccountSidebar activePage="custom-activities" />
+    <AuthGateway redirectUrl="/account/custom-activities">
+        <div className="account-page">
+            <div className="sidebar">
+                <AccountSidebar activePage="custom-activities" />
+            </div>
+            <div className="content">
+                <h1>Custom Activities</h1>
+                <CustomActivitiesGrid />
+            </div>
         </div>
-        <div className="content">
-            <h1>Custom Activities</h1>
-            <CustomActivitiesGrid />
-        </div>
-    </AccountPage>
+    </AuthGateway>
 );
 
 export { CustomActivities };

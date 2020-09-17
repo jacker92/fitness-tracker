@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
-import { Form } from '../Styles/Form';
-import { GridForm } from '../Styles/GridForm';
 import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
@@ -118,12 +116,12 @@ const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Func
     };
 
     return (
-        <GridForm>
+        <div className="grid-form">
             <h2>Add New Metric</h2>
 
             <ErrorMessage error={errorMessage} />
 
-            <Form
+            <form
                 className="autowidth"
                 method="POST"
                 ref={theMetricForm}
@@ -225,9 +223,9 @@ const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Func
                         </button>
                     </div>
                 </fieldset>
-            </Form>
+            </form>
 
-        </GridForm>
+        </div>
     );
 };
 

@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
-import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AppContext } from '../AppContext/AppContext';
@@ -79,7 +78,7 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
 
             <div className="form-message" style={{ display: (message === '' ? 'none' : 'block'), color: messageColor }}>{message}</div>
 
-            <Form
+            <form
                 method="POST"
                 onSubmit={async (e) => {
                     e.preventDefault();
@@ -128,7 +127,7 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
                         <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>Login</button>
                     </div>
                 </fieldset>
-            </Form>
+            </form>
         </>
     );
 };

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { client } from '../../lib/client';
-import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
@@ -118,7 +117,7 @@ const ChangePasswordForm = () => {
             <ErrorMessage error={errorMessage} />
             <SuccessMessage message={successMessage} />
 
-            <Form
+            <form
                 className="autowidth"
                 method="POST"
                 onSubmit={async (e) => {
@@ -200,7 +199,7 @@ const ChangePasswordForm = () => {
                         </button>
                     </div>
                 </fieldset>
-            </Form>
+            </form>
         </>
     );
 };

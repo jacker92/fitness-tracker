@@ -1,10 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+:root {
+    --standard-font-family: 'Mulish', sans-serif;
+    --dark-gray-bgcolor: hsl(0, 0%, 19%);
+    --red-error-color: hsl(0, 100%, 50%);
+}
+
 html,
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Mulish', sans-serif;
+    font-family: var(--standard-font-family);
     font-size: 100%;
     position: relative;
     height: 100%;
@@ -15,31 +21,279 @@ main {
     margin: 0 auto;
 }
 
-.centered {
-    text-align: center;
+/* HEADER */
+header {
+    background-color: var(--dark-gray-bgcolor);
+    height: 60px;
+    line-height: 60px;
+    color: hsl(0, 0%, 100%);
 }
 
-i.arrow {
-    border: solid hsl(0, 0%, 100%);
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3px;
-    margin: 0 10px 5px 8px;
+header .title {
+    font-size: 24px;
+    margin: 0 15px;
+    float: left;
 }
 
-i.right {
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
+header .menu {
+    float: right;
+    text-align: right;
 }
 
-i.down {
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
+header .menu ul {
+    margin: 0;
+    padding: 0;
 }
 
-button,
+header .menu ul li {
+    display: inline;
+    padding: 0 15px;
+    list-style-type: none;
+}
+
+header .menu ul li a,
+header .menu ul li a:visited,
+header .menu ul li a:active {
+    color: hsl(0, 0%, 100%);
+    text-decoration: none;
+}
+
+header ul.user-menu {
+    list-style-type: none;
+}
+
+header ul.user-menu li button.link-button {
+    border: none;
+    background-color: transparent;
+    font-size: 1rem;
+    color: hsl(0, 0%, 100%);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+header ul.user-menu li ul.child-list {
+    display: none;
+    background: hsl(240, 20%, 98%);
+    position: absolute;
+    z-index: 12;
+    top: 60px;
+    right: 15px;
+    padding: 0;
+    width: 200px;
+    box-shadow: 0 12px 24px 0 hsla(0, 0%, 0%, 0.2);
+    height: auto;
+    float: none;
+    text-align: left;
+}
+
+header ul.user-menu li ul.child-list li {
+    display: block;
+    float: none;
+    margin: 0;
+    padding: 10px;
+    line-height: 1;
+}
+
+header ul.user-menu li ul.child-list li:hover {
+    background: var(--dark-gray-bgcolor);
+}
+
+header ul.user-menu li ul.child-list li a,
+header ul.user-menu li ul.child-list li a:visited,
+header ul.user-menu li ul.child-list li a:active {
+    display: block;
+    color: var(--dark-gray-bgcolor);
+    float: none;
+    border: none;
+    line-height: 1;
+}
+
+header ul.user-menu li ul.child-list li button.link-button {
+    border: none;
+    background-color: transparent;
+    font-size: 1rem;
+    color: var(--dark-gray-bgcolor);
+    text-decoration: none;
+    cursor: pointer;
+    align-items: normal;
+    border-style: none;
+    box-sizing: content-box;
+    display: inline;
+    font: inherit;
+    padding: 0;
+    perspective-origin: 0 0;
+    text-align: start;
+    text-decoration: none;
+    transform-origin: 0 0;
+    -moz-appearance: none;
+    -webkit-logical-height: 1em; /* Chrome ignores auto, so we have to use this hack to set the correct height  */
+    -webkit-logical-width: auto; /* Chrome ignores auto, but here for completeness */
+}
+
+header ul.user-menu li ul.child-list li:hover a,
+header ul.user-menu li ul.child-list li:hover button.link-button {
+    color: hsl(0, 0%, 100%);
+}
+
+/* FORMS */
+form {
+    width: 300px;
+    margin: 20px auto;
+}
+
+form.autowidth {
+    width: 100%;
+}
+
+form fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+form div.form-field {
+    margin: 20px 0;
+}
+
+form div.form-field label {
+    font-weight: bold;
+    display: block;
+    font-size: 1.2rem;
+}
+
+form div.form-field label.errored {
+    color: var(--red-error-color);
+}
+
+form div.form-field label input[type='text'],
+form div.form-field label input[type='password'] {
+    margin-top: 7px;
+    border: 1px solid var(--dark-gray-bgcolor);
+    padding: 8px;
+    display: block;
+    width: 300px;
+    font-size: 1.2rem;
+}
+
+form div.form-field label select {
+    margin-top: 7px;
+    border: 1px solid var(--dark-gray-bgcolor);
+    padding: 8px;
+    display: block;
+    width: 300px;
+    font-size: 1.2rem;
+}
+
+form div.form-field label select.react-datepicker__month-select,
+form div.form-field label select.react-datepicker__year-select {
+    width: auto;
+    padding: 4px;
+    font-size: 1rem;
+}
+
+form div.form-field label input[type='checkbox'] {
+    margin-right: 10px;
+    vertical-align: bottom;
+    position: relative;
+    height: 1.2rem;
+}
+
+form div.form-field label.errored input[type='text'],
+form div.form-field label.errored input[type='password'],
+form div.form-field label.errored select {
+    border-color: var(--red-error-color);
+}
+
 textarea {
-    font-family: 'Mulish', sans-serif;
+    font-family: var(--standard-font-family);
+}
+
+form input[type='submit'],
+form button[type='submit'],
+form button[type='button'] {
+    background: var(--dark-gray-bgcolor);
+    color: hsl(0, 0%, 100%);
+    padding: 8px 12px;
+    border: 1px solid hsl(0, 0%, 7%);
+    font-size: 1.2rem;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+form input[type='submit']:hover,
+form button[type='submit']:hover,
+form button[type='button']:hover {
+    background: hsl(0, 0%, 13%);
+}
+
+form input[type='submit']:disabled,
+form button[type='submit']:disabled,
+form button[type='button']:disabled {
+    background: hsl(0, 0%, 73%);
+    color: hsl(0, 0%, 37%);
+    border-color: hsl(0, 0%, 37%);
+}
+
+form div.form-field-upload .upload-field {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+form div.form-field-upload input[type='file'] {
+    position: absolute;
+    z-index: -1;
+    top: 7px;
+    left: 38px;
+    font-size: 0.9rem;
+    color: transparent;
+}
+
+form div.form-field-upload .button-wrap {
+    position: relative;
+}
+
+form div.form-field-upload label.button {
+    background: var(--dark-gray-bgcolor);
+    color: hsl(0, 0%, 100%);
+    padding: 6px 12px;
+    border: 1px solid hsl(0, 0%, 7%);
+    font-size: 1.05rem;
+    border-radius: 3px;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+form div.form-field-upload label {
+    font-weight: bold;
+    display: block;
+    font-size: 1.2rem;
+}
+
+form div.form-field-upload .image-preview {
+    margin: 25px 0;
+}
+
+form div.form-field-upload .image-preview img {
+    max-width: 300px;
+}
+
+form div.form-field-upload .image-preview .remove-avatar {
+    margin: 10px 0 0 0;
+}
+
+form div.form-field-upload .image-preview .remove-avatar button {
+    background: var(--dark-gray-bgcolor);
+    color: hsl(0, 0%, 100%);
+    padding: 6px 12px;
+    border: 1px solid hsl(0, 0%, 7%);
+    font-size: 1.05rem;
+    border-radius: 3px;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: normal;
 }
 
 .form-message {
@@ -48,18 +302,9 @@ textarea {
     text-align: center;
 }
 
-.error-text {
-    color: hsl(0, 100%, 50%);
-    margin: 10px 0;
-}
-
-.add-button {
-    text-align: right;
-    margin: 15px 0 15px 15px;
-}
-
 /* BUTTONS */
 button {
+    font-family: var(--standard-font-family);
     padding: 4px 10px;
     border-width: 1px;
     border-style: solid;
@@ -107,4 +352,111 @@ button.blue:focus {
     border-color: hsl(199, 100%, 34%);
     background: hsl(199, 100%, 34%);
     outline-color: hsl(199, 100%, 34%);
+}
+
+/* LOADING BOX */
+div.loading-box {
+    margin: 20px auto;
+    font-size: 0.9rem;
+    text-align: center;
+    font-size: 1.4rem;
+    width: 100px;
+}
+
+div.loading-box div.spinner {
+    height: 48px;
+    width: 48px;
+    border: 5px solid hsla(0, 0%, 59%, 0.2);
+    border-radius: 50%;
+    border-top-color: hsl(0, 0%, 59%);
+    animation: rotate 1s 0s infinite linear normal;
+    margin: 0 auto 12px;
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
+
+/* OVERLAY */
+div.overlay {
+    background: hsla(0, 0%, 71%, 0.5);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 5;
+}
+
+div.overlay div.loading-box {
+    margin: 20px auto;
+    font-size: 0.9rem;
+    text-align: center;
+    font-size: 1.4rem;
+    width: 100px;
+}
+
+div.overlay div.loadingbox div.spinner {
+    height: 48px;
+    width: 48px;
+    border: 5px solid hsla(0, 0%, 59%, 0.2);
+    border-radius: 50%;
+    border-top-color: hsl(0, 0%, 59%);
+    animation: rotate 1s 0s infinite linear normal;
+    margin: -24px auto;
+    top: 50%;
+    position: absolute;
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
+
+/* MODAL WINDOW */
+div.modal-window {
+    position: fixed;
+    z-index: 10;
+    background: hsl(0, 0%, 100%);
+    box-shadow: 0 12px 24px 0 hsla(0, 0%, 0%, 0.2);
+    border-radius: 4px;
+    top: 50px;
+    left: 50%;
+}
+
+/* UTILITIES */
+.centered {
+    text-align: center;
+}
+
+i.arrow {
+    border: solid hsl(0, 0%, 100%);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    margin: 0 10px 5px 8px;
+}
+
+i.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+i.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.error-text {
+    color: var(--red-error-color);
+    margin: 10px 0;
 }

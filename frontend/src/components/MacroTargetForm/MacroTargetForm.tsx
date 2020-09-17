@@ -1,66 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+// eslint-disable-next-line no-unused-vars
+import { MacroTargetFormProps } from '../../lib/types/MacroTargetFormProps';
 
-const MacroForm = styled.div`
-    fieldset {
-        margin: 25px 0;
+import './MacroTargetForm.css';
 
-        legend {
-            font-weight: 700;
-        }
-
-        div.macro-field {
-            margin: 12px 0;
-            height: 42px;
-            line-height: 42px;
-
-            label {
-                display: inline-block;
-                line-height: 42px;
-
-                div.macro-name {
-                    display: inline-block;
-                    width: 200px;
-                    line-height: 42px;
-                }
-
-                input[type="text"] {
-                    display: inline-block;
-                    width: 80px;
-                }
-
-                input[type="checkbox"] {
-                    height: 42px;
-                }
-            }
-
-            .macro-target {
-                margin-left: 20px;
-            }
-        }
-    }
-`;
-
-const MacroTargetForm = (props: {
-    mode: string,
-    enableProtein: boolean,
-    proteinTarget: number,
-    proteinGrams: number,
-    enableCarbs: boolean,
-    carbsTarget: number,
-    carbGrams: number,
-    enableFat: boolean,
-    fatTarget: number,
-    fatGrams: number,
-    onEnableProteinChange: Function,
-    onProteinChange: Function,
-    onEnableCarbsChange: Function,
-    onCarbsChange: Function,
-    onEnableFatChange: Function,
-    onFatChange: Function,
-    error: string,
-}) => {
+const MacroTargetForm = (props: MacroTargetFormProps) => {
     const {
         mode,
         enableProtein,
@@ -94,7 +39,7 @@ const MacroTargetForm = (props: {
     }, [enableProtein, enableCarbs, enableFat, error]);
 
     return (
-        <MacroForm>
+        <div className="macro-form">
             <fieldset>
                 <legend>Macro Targets</legend>
 
@@ -210,7 +155,7 @@ const MacroTargetForm = (props: {
                     {errorMessage}
                 </div>
             </fieldset>
-        </MacroForm>
+        </div>
     );
 };
 

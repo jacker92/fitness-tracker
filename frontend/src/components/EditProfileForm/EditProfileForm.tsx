@@ -3,7 +3,6 @@ import DatePicker from 'react-datepicker';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
 import { Utilities } from '../../lib/Utilities';
-import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
 import { Confirm } from '../Confirm/Confirm';
 import { SelectField } from '../SelectField/SelectField';
@@ -298,7 +297,7 @@ const EditProfileForm = () => {
             {status === 'initialized' && <LoadingBox />}
 
             {(status === 'loaded' || status === 'saving') && (
-                <Form
+                <form
                     className="autowidth"
                     method="POST"
                     onSubmit={async (e) => {
@@ -494,7 +493,7 @@ const EditProfileForm = () => {
                             </button>
                         </div>
                     </fieldset>
-                </Form>
+                </form>
             )}
         </>
     );

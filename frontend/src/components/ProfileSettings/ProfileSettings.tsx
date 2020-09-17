@@ -1,12 +1,13 @@
 import React from 'react';
 import { AuthGateway } from '../AuthGateway/AuthGateway';
 import { AccountSidebar } from '../AccountSidebar/AccountSidebar';
-import { AccountPage } from '../Styles/AccountPage';
 import { EditProfileForm } from '../EditProfileForm/EditProfileForm';
+
+import '../../styles/account.css';
 
 const ProfileSettings = () => (
     <AuthGateway redirectUrl="/account/profile">
-        <AccountPage>
+        <div className="account-page">
             <div className="sidebar">
                 <AccountSidebar activePage="profile" />
             </div>
@@ -14,7 +15,7 @@ const ProfileSettings = () => (
                 <h1>Edit Profile</h1>
                 <EditProfileForm />
             </div>
-        </AccountPage>
+        </div>
     </AuthGateway>
 );
 
