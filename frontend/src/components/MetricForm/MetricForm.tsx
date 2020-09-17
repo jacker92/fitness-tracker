@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
@@ -23,6 +23,7 @@ const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Func
     const [type, setType] = useState(metric.type);
     const [saveDisabled, setSaveDisabled] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const theMetricForm = useRef(null);
 
     useEffect(() => {
         setId(metric.id);
@@ -45,6 +46,7 @@ const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Func
         setUnits('');
         setType(0);
         setSaveDisabled(false);
+        theMetricForm.current.reset();
     };
 
     const addNewMetric = (newMetric: Metric) => {
@@ -124,6 +126,7 @@ const MetricForm = (props: { metric: Metric, onSuccess: Function, onCancel: Func
             <Form
                 className="autowidth"
                 method="POST"
+                ref={theMetricForm}
                 onSubmit={async (e) => {
                     e.preventDefault();
 

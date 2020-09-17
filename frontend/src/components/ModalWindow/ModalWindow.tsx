@@ -13,7 +13,7 @@ const Popup = styled.div`
     left: 50%;
 `;
 
-const ModalWindow = (props: { visible: boolean, width: number, height: any, children: React.ReactNode }) => {
+const ModalWindow = (props: { visible: boolean, width: number, height: number | string, children: React.ReactNode }) => {
     const {
         visible, width, height, children,
     } = props;

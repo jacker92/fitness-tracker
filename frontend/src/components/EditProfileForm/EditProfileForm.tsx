@@ -5,6 +5,7 @@ import { FormValidator } from '../../lib/FormValidator';
 import { Utilities } from '../../lib/Utilities';
 import { Form } from '../Styles/Form';
 import { TextBox } from '../TextBox/TextBox';
+import { Confirm } from '../Confirm/Confirm';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
@@ -31,6 +32,7 @@ const EditProfileForm = () => {
     const [heightError, setHeightError] = useState('');
     const [avatar, setAvatar] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
+    const [confirmVisible, setConfirmVisible] = useState(false);
 
     const { currentUser, setOverlayVisibility } = useContext(AppContext);
 
@@ -250,38 +252,48 @@ const EditProfileForm = () => {
         );
     };
 
-    const removeAvatar = () => {
+    const removeAvatar = async () => {
         setErrorMessage('');
         setSuccessMessage('');
 
-        // eslint-disable-next-line no-alert
-        if (window.confirm('Are you sure you want to remove your avatar?')) {
-            client('users/removeavatar', { data: {} }).then(
-                (data) => {
-                    if (data.successful) {
-                        setAvatar('');
-                        setSuccessMessage('Avatar removed successfully');
-                    } else {
-                        setErrorMessage(data.error);
-                    }
-                },
-                (error) => {
-                    if (typeof error === 'string') {
-                        setErrorMessage(error);
-                    } else if (typeof error.message === 'string') {
-                        setErrorMessage(error.message);
-                    } else {
-                        setErrorMessage('An error has occurred');
-                    }
-                },
-            );
-        }
+        await client('users/removeavatar', { data: {} }).then(
+            (data) => {
+                if (data.successful) {
+                    setAvatar('');
+                    setSuccessMessage('Avatar removed successfully');
+                } else {
+                    setErrorMessage(data.error);
+                }
+                setConfirmVisible(false);
+            },
+            (error) => {
+                if (typeof error === 'string') {
+                    setErrorMessage(error);
+                } else if (typeof error.message === 'string') {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('An error has occurred');
+                }
+                setConfirmVisible(false);
+            },
+        );
     };
 
     return (
         <>
             <ErrorMessage error={errorMessage} />
             <SuccessMessage message={successMessage} />
+
+            <Confirm
+                text="Are you sure you want to remove your avatar?"
+                visible={confirmVisible}
+                onCancel={() => {
+                    setConfirmVisible(false);
+                }}
+                onConfirm={async () => {
+                    await removeAvatar();
+                }}
+            />
 
             {status === 'initialized' && <LoadingBox />}
 
@@ -444,7 +456,13 @@ const EditProfileForm = () => {
                                     <div className="image-preview">
                                         <img src={avatar} alt={name} />
                                         <div className="remove-avatar">
-                                            <button type="button" onClick={removeAvatar}>
+                                            <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setConfirmVisible(true);
+                                                }}
+                                            >
                                                 Remove Avatar
                                             </button>
                                         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
@@ -22,6 +22,7 @@ const CustomActivityForm = (props: { activity: Activity, onSuccess: Function, on
     const [type, setType] = useState(activity.type);
     const [saveDisabled, setSaveDisabled] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const theActivityForm = useRef(null);
 
     useEffect(() => {
         setId(activity.id);
@@ -44,6 +45,7 @@ const CustomActivityForm = (props: { activity: Activity, onSuccess: Function, on
         setEstimatedCaloriesBurnedPerMinute(0);
         setType(0);
         setSaveDisabled(false);
+        theActivityForm.current.reset();
     };
 
     const addActivity = (newActivity: Activity) => {
@@ -123,6 +125,7 @@ const CustomActivityForm = (props: { activity: Activity, onSuccess: Function, on
             <Form
                 className="autowidth"
                 method="POST"
+                ref={theActivityForm}
                 onSubmit={async (e) => {
                     e.preventDefault();
 

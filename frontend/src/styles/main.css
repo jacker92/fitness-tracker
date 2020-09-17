@@ -57,3 +57,54 @@ textarea {
     text-align: right;
     margin: 15px 0 15px 15px;
 }
+
+/* BUTTONS */
+button {
+    padding: 4px 10px;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 1rem;
+    border-radius: 3px;
+}
+
+button.green {
+    background: hsl(120, 61%, 40%);
+    color: hsl(0, 0%, 100%);
+    border-color: hsl(120, 61%, 25%);
+}
+
+button.green:hover,
+button.green:active,
+button.green:focus {
+    border-color: hsl(120, 61%, 25%);
+    background: hsl(120, 61%, 25%);
+    outline-color: hsl(120, 61%, 25%);
+}
+
+button.red {
+    background: hsl(2, 99%, 45%);
+    color: hsl(0, 0%, 100%);
+    border-color: hsl(3, 87%, 35%);
+}
+
+button.red:hover,
+button.red:active,
+button.red:focus {
+    border-color: hsl(3, 87%, 35%);
+    background: hsl(3, 87%, 35%);
+    outline-color: hsl(3, 87%, 35%);
+}
+
+button.blue {
+    background: hsl(199, 83%, 56%);
+    color: hsl(0, 0%, 100%);
+    border-color: hsl(199, 100%, 34%);
+}
+
+button.blue:hover,
+button.blue:active,
+button.blue:focus {
+    border-color: hsl(199, 100%, 34%);
+    background: hsl(199, 100%, 34%);
+    outline-color: hsl(199, 100%, 34%);
+}

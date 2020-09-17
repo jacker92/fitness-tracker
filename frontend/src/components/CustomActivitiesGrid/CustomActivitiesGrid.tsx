@@ -6,6 +6,7 @@ import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
+import { Confirm } from '../Confirm/Confirm';
 import { CustomActivityForm } from '../CustomActivityForm/CustomActivityForm';
 // eslint-disable-next-line no-unused-vars
 import { GridColumn } from '../../lib/types/GridColumn';
@@ -25,6 +26,9 @@ const CustomActivitiesGrid = () => {
     const [gridData, setGridData] = useState([]);
     const [activity, setActivity] = useState(newActivity);
     const [addFormVisible, setAddFormVisible] = useState(false);
+    const [confirmVisible, setConfirmVisible] = useState(false);
+    const [confirmText, setConfirmText] = useState('Are you sure you want to delete this activity?');
+    const [actvityToDeleteId, setActvityToDeleteId] = useState(null);
 
     const { currentUser } = useContext(AppContext);
 
@@ -111,6 +115,9 @@ const CustomActivitiesGrid = () => {
                 } else {
                     setErrorMessage(data.error);
                 }
+
+                setActvityToDeleteId(null);
+                setConfirmVisible(false);
             },
             (error) => {
                 if (typeof error === 'string') {
@@ -120,6 +127,9 @@ const CustomActivitiesGrid = () => {
                 } else {
                     setErrorMessage('An error has occurred');
                 }
+
+                setActvityToDeleteId(null);
+                setConfirmVisible(false);
             },
         );
     };
@@ -171,6 +181,19 @@ const CustomActivitiesGrid = () => {
                             }}
                         />
                     </ModalWindow>
+
+                    <Confirm
+                        text={confirmText}
+                        visible={confirmVisible}
+                        onCancel={() => {
+                            setActvityToDeleteId(null);
+                            setConfirmVisible(false);
+                        }}
+                        onConfirm={async () => {
+                            await deleteActivity(actvityToDeleteId);
+                        }}
+                    />
+
                     <Grid
                         columns={columns}
                         data={gridData}
@@ -185,11 +208,10 @@ const CustomActivitiesGrid = () => {
                             await getActivityById(id);
                             setAddFormVisible(true);
                         }}
-                        onDelete={async (id: number) => {
-                            // eslint-disable-next-line max-len, no-alert
-                            if (window.confirm('Are you sure you want to delete this activity? All entries associated with it will be deleted as well.')) {
-                                await deleteActivity(id);
-                            }
+                        onDelete={async (id: number, activityName: string) => {
+                            setActvityToDeleteId(id);
+                            setConfirmText(`Are you sure you want to delete ${activityName}?`);
+                            setConfirmVisible(true);
                         }}
                     />
                 </>

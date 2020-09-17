@@ -7,6 +7,7 @@ import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { MetricForm } from '../MetricForm/MetricForm';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
+import { Confirm } from '../Confirm/Confirm';
 // eslint-disable-next-line no-unused-vars
 import { GridColumn } from '../../lib/types/GridColumn';
 // eslint-disable-next-line no-unused-vars
@@ -25,6 +26,9 @@ const MetricsGrid = () => {
     const [gridData, setGridData] = useState([]);
     const [metric, setMetric] = useState(newMetric);
     const [addFormVisible, setAddFormVisible] = useState(false);
+    const [confirmVisible, setConfirmVisible] = useState(false);
+    const [confirmText, setConfirmText] = useState('Are you sure you want to delete this metric?');
+    const [metricToDeleteId, setMetricToDeleteId] = useState(null);
 
     const { currentUser } = useContext(AppContext);
 
@@ -51,6 +55,7 @@ const MetricsGrid = () => {
                     const trackedMetrics: Array<UserTrackedMetric> = transformData(data.metrics);
 
                     setGridData(trackedMetrics);
+
                     setStatus('loaded');
                 } else {
                     setErrorMessage(data.error);
@@ -138,6 +143,9 @@ const MetricsGrid = () => {
                 } else {
                     setErrorMessage(data.error);
                 }
+
+                setMetricToDeleteId(null);
+                setConfirmVisible(false);
             },
             (error) => {
                 if (typeof error === 'string') {
@@ -147,6 +155,9 @@ const MetricsGrid = () => {
                 } else {
                     setErrorMessage('An error has occurred');
                 }
+
+                setMetricToDeleteId(null);
+                setConfirmVisible(false);
             },
         );
     };
@@ -204,11 +215,25 @@ const MetricsGrid = () => {
                             }}
                         />
                     </ModalWindow>
+
+                    <Confirm
+                        text={confirmText}
+                        visible={confirmVisible}
+                        onCancel={() => {
+                            setMetricToDeleteId(null);
+                            setConfirmVisible(false);
+                        }}
+                        onConfirm={async () => {
+                            await deleteMetric(metricToDeleteId);
+                        }}
+                    />
+
                     <Grid
                         columns={columns}
                         data={gridData}
                         keyColumn="ID"
                         noRowsMessage="No Metrics Defined"
+                        nameColumn="Name"
                         onTrackChange={(id: number) => {
                             toggleTracking(id);
                         }}
@@ -220,11 +245,10 @@ const MetricsGrid = () => {
                             await getMetricById(id);
                             setAddFormVisible(true);
                         }}
-                        onDelete={async (id: number) => {
-                            // eslint-disable-next-line max-len, no-alert
-                            if (window.confirm('Are you sure you want to delete this metric? All entries associated with it will be deleted as well. Untracking it will allow you to keep your data while hiding it.')) {
-                                await deleteMetric(id);
-                            }
+                        onDelete={async (id: number, metricName: string) => {
+                            setMetricToDeleteId(id);
+                            setConfirmText(`Are you sure you want to delete ${metricName}?`);
+                            setConfirmVisible(true);
                         }}
                     />
                 </>

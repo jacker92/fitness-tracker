@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { client } from '../../lib/client';
 import { FormValidator } from '../../lib/FormValidator';
@@ -19,6 +19,7 @@ const GearForm = (props: { gear: Gear, onSuccess: Function, onCancel: Function }
     const [nameError, setNameError] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const thsGearForm = useRef(null);
 
     useEffect(() => {
         setId(gear.id);
@@ -38,6 +39,7 @@ const GearForm = (props: { gear: Gear, onSuccess: Function, onCancel: Function }
         setName('');
         setNameError('');
         setSaveDisabled(false);
+        thsGearForm.current.reset();
     };
 
     const addGear = (newGear: Gear) => {
@@ -113,6 +115,7 @@ const GearForm = (props: { gear: Gear, onSuccess: Function, onCancel: Function }
             <Form
                 className="autowidth"
                 method="POST"
+                ref={thsGearForm}
                 onSubmit={async (e) => {
                     e.preventDefault();
 
