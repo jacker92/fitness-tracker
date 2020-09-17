@@ -8,11 +8,11 @@ import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { Confirm } from '../Confirm/Confirm';
 import { CustomActivityForm } from '../CustomActivityForm/CustomActivityForm';
 // eslint-disable-next-line no-unused-vars
-import { GridColumn } from '../../lib/types/GridColumn';
+import { GridColumn } from '../../types/GridColumn';
 // eslint-disable-next-line no-unused-vars
-import { ActivityDataRow } from '../../lib/types/ActivityDataRow';
+import { ActivityDataRow } from '../../types/ActivityDataRow';
 // eslint-disable-next-line no-unused-vars
-import { Activity } from '../../lib/types/Activity';
+import { Activity } from '../../types/Activity';
 
 const CustomActivitiesGrid = () => {
     const newActivity: Activity = {

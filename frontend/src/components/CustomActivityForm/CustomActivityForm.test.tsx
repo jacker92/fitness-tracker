@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { AppContext } from '../AppContext/AppContext';
 import { CustomActivityForm } from './CustomActivityForm';
 // eslint-disable-next-line no-unused-vars
-import { Activity } from '../../lib/types/Activity';
+import { Activity } from '../../types/Activity';
 
 describe('<GearForm />', () => {
     const newActivity: Activity = {

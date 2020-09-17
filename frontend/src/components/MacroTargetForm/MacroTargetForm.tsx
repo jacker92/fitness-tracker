@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line no-unused-vars
-import { MacroTargetFormProps } from '../../lib/types/MacroTargetFormProps';
+import { MacroTargetFormProps } from '../../types/MacroTargetFormProps';
 
 import './MacroTargetForm.css';
 

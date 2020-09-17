@@ -8,11 +8,11 @@ import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { GearForm } from '../GearForm/GearForm';
 import { Confirm } from '../Confirm/Confirm';
 // eslint-disable-next-line no-unused-vars
-import { GridColumn } from '../../lib/types/GridColumn';
+import { GridColumn } from '../../types/GridColumn';
 // eslint-disable-next-line no-unused-vars
-import { Gear } from '../../lib/types/Gear';
+import { Gear } from '../../types/Gear';
 // eslint-disable-next-line no-unused-vars
-import { GearDataRow } from '../../lib/types/GearDataRow';
+import { GearDataRow } from '../../types/GearDataRow';
 
 const GearGrid = () => {
     const newGear: Gear = {

@@ -6,7 +6,7 @@ import { TextBox } from '../TextBox/TextBox';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 // eslint-disable-next-line no-unused-vars
-import { Gear } from '../../lib/types/Gear';
+import { Gear } from '../../types/Gear';
 
 const GearForm = (props: { gear: Gear, visible: boolean, onSuccess: Function, onCancel: Function }) => {
     const {

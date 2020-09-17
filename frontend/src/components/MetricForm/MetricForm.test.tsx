@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { AppContext } from '../AppContext/AppContext';
 import { MetricForm } from './MetricForm';
 // eslint-disable-next-line no-unused-vars
-import { Metric } from '../../lib/types/Metric';
+import { Metric } from '../../types/Metric';
 
 describe('<MetricForm />', () => {
     const newMetric: Metric = {

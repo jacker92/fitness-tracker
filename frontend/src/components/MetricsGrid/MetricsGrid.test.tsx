@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { AppContext } from '../AppContext/AppContext';
 import { MetricsGrid } from './MetricsGrid';
 // eslint-disable-next-line no-unused-vars
-import { Metric } from '../../lib/types/Metric';
+import { Metric } from '../../types/Metric';
 
 describe('<MetricsGrid />', () => {
     test('it renders the grid', async () => {

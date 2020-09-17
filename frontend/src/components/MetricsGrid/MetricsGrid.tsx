@@ -8,11 +8,11 @@ import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { MetricForm } from '../MetricForm/MetricForm';
 import { Confirm } from '../Confirm/Confirm';
 // eslint-disable-next-line no-unused-vars
-import { GridColumn } from '../../lib/types/GridColumn';
+import { GridColumn } from '../../types/GridColumn';
 // eslint-disable-next-line no-unused-vars
-import { UserTrackedMetric } from '../../lib/types/UserTrackedMetric';
+import { UserTrackedMetric } from '../../types/UserTrackedMetric';
 // eslint-disable-next-line no-unused-vars
-import { Metric } from '../../lib/types/Metric';
+import { Metric } from '../../types/Metric';
 
 const MetricsGrid = () => {
     const newMetric: Metric = {

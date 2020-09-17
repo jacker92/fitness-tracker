@@ -7,7 +7,7 @@ import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 // eslint-disable-next-line no-unused-vars
-import { Metric } from '../../lib/types/Metric';
+import { Metric } from '../../types/Metric';
 
 const MetricForm = (props: { metric: Metric, visible: boolean, onSuccess: Function, onCancel: Function }) => {
     const {

@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { AppContext } from '../AppContext/AppContext';
 import { GearForm } from './GearForm';
 // eslint-disable-next-line no-unused-vars
-import { Gear } from '../../lib/types/Gear';
+import { Gear } from '../../types/Gear';
 
 describe('<GearForm />', () => {
     const newGear: Gear = {

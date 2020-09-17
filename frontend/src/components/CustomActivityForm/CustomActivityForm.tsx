@@ -7,7 +7,7 @@ import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 // eslint-disable-next-line no-unused-vars
-import { Activity } from '../../lib/types/Activity';
+import { Activity } from '../../types/Activity';
 
 const CustomActivityForm = (props: { activity: Activity, visible: boolean, onSuccess: Function, onCancel: Function }) => {
     const {

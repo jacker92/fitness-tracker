@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import { HttpHeader } from './types/HttpHeader';
+import { HttpHeader } from '../types/HttpHeader';
 // eslint-disable-next-line no-unused-vars
-import { ClientArguments } from './types/ClientArguments';
+import { ClientArguments } from '../types/ClientArguments';
 
 const apiUrl = process.env.REACT_APP_FT_API_URL;
 const localStorageKey = '__fittracker_token__';
