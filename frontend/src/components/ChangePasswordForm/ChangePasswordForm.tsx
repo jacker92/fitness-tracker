@@ -46,9 +46,9 @@ const ChangePasswordForm: React.FC = () => {
         if (validateForm()) {
             client('users/changepassword', {
                 data: {
-                    CurrentPassword: currentPassword,
-                    NewPassword: newPassword,
-                    ConfirmNewPassword: confirmNewPassword,
+                    currentPassword,
+                    newPassword,
+                    confirmNewPassword,
                 },
             }).then(
                 (data) => {

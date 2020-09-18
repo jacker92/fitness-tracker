@@ -116,14 +116,14 @@ const Register: React.FC = () => {
         if (validate()) {
             client('users/register', {
                 data: {
-                    Name: name,
-                    Email: email,
-                    Password: password,
-                    MeasurementSystem: measurementSystem,
-                    Gender: gender,
-                    ActivityLevel: activityLevel,
-                    Birthday: birthday,
-                    Height: height,
+                    name,
+                    email,
+                    password,
+                    measurementSystem,
+                    gender,
+                    activityLevel,
+                    birthday,
+                    height,
                 },
             }).then(
                 (data) => {

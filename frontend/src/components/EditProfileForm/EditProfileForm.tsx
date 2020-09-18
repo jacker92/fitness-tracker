@@ -63,21 +63,21 @@ const EditProfileForm: React.FC = () => {
         client('users/getuser').then(
             (data) => {
                 if (data.successful) {
-                    setName(data.user.Name);
-                    setEmail(data.user.Email);
-                    setMeasurementSystem(parseInt(data.user.MeasurementSystem, 10));
-                    setGender(data.user.Gender);
-                    setActivityLevel(data.user.ActivityLevel);
+                    setName(data.user.name);
+                    setEmail(data.user.email);
+                    setMeasurementSystem(parseInt(data.user.measurementSystem, 10));
+                    setGender(data.user.gender);
+                    setActivityLevel(data.user.activityLevel);
 
-                    if (data.user.Birthday.substring(0, 4) !== '0001') {
-                        setBirthday(new Date(data.user.Birthday));
+                    if (data.user.birthday.substring(0, 4) !== '0001') {
+                        setBirthday(new Date(data.user.birthday));
                     }
 
-                    if (data.user.Height > 0) {
-                        setHeight(data.user.Height);
+                    if (data.user.height > 0) {
+                        setHeight(data.user.height);
                     }
 
-                    if (data.user.Avatar !== '' && data.user.Avatar !== null) {
+                    if (data.user.avatar !== '' && data.user.avatar !== null) {
                         getUserAvatar();
                     } else {
                         setStatus('loaded');
@@ -156,13 +156,13 @@ const EditProfileForm: React.FC = () => {
         if (validate()) {
             client('users/updateprofile', {
                 data: {
-                    Name: name,
-                    Email: email,
-                    MeasurementSystem: measurementSystem,
-                    Birthday: birthday,
-                    Height: height,
-                    Gender: gender,
-                    ActivityLevel: activityLevel,
+                    name,
+                    email,
+                    measurementSystem,
+                    birthday,
+                    height,
+                    gender,
+                    activityLevel,
                 },
             }).then(
                 (data) => {
@@ -226,7 +226,7 @@ const EditProfileForm: React.FC = () => {
 
         const { files } = e.target;
         const formData = new FormData();
-        formData.append('Image', files[0]);
+        formData.append('image', files[0]);
 
         client('users/uploadavatar', { data: formData, contentType: null, fileUpload: true }).then(
             (data) => {
