@@ -1,6 +1,6 @@
 export interface ModalWindowProps {
     visible: boolean,
     width: number,
-    height: number | string,
+    height?: number | string,
     children: React.ReactNode
 }

@@ -9,7 +9,7 @@ import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 
-const MetricForm = (props: MetricFormProps) => {
+const MetricForm: React.FC<MetricFormProps> = (props) => {
     const {
         metric, visible, onSuccess, onCancel,
     } = props;
@@ -160,7 +160,7 @@ const MetricForm = (props: MetricFormProps) => {
                                 value={name}
                                 error={nameError}
                                 validationRule="notempty"
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setName(e.target.value);
                                 }}
                                 onErrorChange={(error: string) => {
@@ -179,7 +179,7 @@ const MetricForm = (props: MetricFormProps) => {
                                 name="units"
                                 label="Units"
                                 value={units}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setUnits(e.target.value);
                                 }}
                             />
@@ -200,7 +200,7 @@ const MetricForm = (props: MetricFormProps) => {
                                 ]}
                                 requiredField
                                 includeBlank={false}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                     const typeVal = parseInt(e.target.value, 10);
                                     setType(typeVal);
 
@@ -239,7 +239,13 @@ const MetricForm = (props: MetricFormProps) => {
 
 MetricForm.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
-    metric: PropTypes.object.isRequired,
+    metric: PropTypes.exact({
+        id: PropTypes.number,
+        name: PropTypes.string.isRequired,
+        units: PropTypes.string.isRequired,
+        type: PropTypes.number.isRequired,
+        isSystem: PropTypes.bool,
+    }).isRequired,
     visible: PropTypes.bool.isRequired,
     onSuccess: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,

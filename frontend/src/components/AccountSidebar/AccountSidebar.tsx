@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { AccountSidebarProps } from '../../types/AccountSidebarProps';
 
 import './AccountSidebar.css';
 
-const AccountSidebar = (props: { activePage: string }) => {
+const AccountSidebar: React.FC<AccountSidebarProps> = (props) => {
     const { activePage } = props;
 
     return (

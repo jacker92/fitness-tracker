@@ -8,7 +8,7 @@ import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AppContext } from '../AppContext/AppContext';
 
-const Register = () => {
+const Register: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -279,7 +279,7 @@ const Register = () => {
                                 name="birthday"
                                 id="birthday"
                                 selected={birthday}
-                                onChange={(date: Date, e: any) => {
+                                onChange={(date: Date, e: React.ChangeEvent<HTMLInputElement>) => {
                                     e.preventDefault();
                                     setBirthday(date);
                                     validateBirthday(date);

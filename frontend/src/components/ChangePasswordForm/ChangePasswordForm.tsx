@@ -6,7 +6,7 @@ import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { FormValidator } from '../../lib/FormValidator';
 import { AppContext } from '../AppContext/AppContext';
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm: React.FC = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [currentPasswordError, setCurrentPasswordError] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -135,13 +135,13 @@ const ChangePasswordForm = () => {
                             autocomplete="current-password"
                             value={currentPassword}
                             error={currentPasswordError}
-                            onChange={(e: any) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setCurrentPassword(e.target.value);
                             }}
                             onErrorChange={(error: string) => {
                                 setCurrentPasswordError(error);
                             }}
-                            validate={(e: any) => {
+                            validate={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 e.persist();
                                 validate('currentpassword', e.target.value);
                             }}
@@ -158,13 +158,13 @@ const ChangePasswordForm = () => {
                             value={newPassword}
                             error={newPasswordError}
                             showErrorMessage={false}
-                            onChange={(e: any) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setNewPassword(e.target.value);
                             }}
                             onErrorChange={(error: string) => {
                                 setNewPasswordError(error);
                             }}
-                            validate={(e: any) => {
+                            validate={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 e.persist();
                                 validate('newpassword', e.target.value);
                             }}
@@ -180,13 +180,13 @@ const ChangePasswordForm = () => {
                             autocomplete="new-password"
                             value={confirmNewPassword}
                             error={confirmNewPasswordError}
-                            onChange={(e: any) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setConfirmNewPassword(e.target.value);
                             }}
                             onErrorChange={(error: string) => {
                                 setConfirmNewPasswordError(error);
                             }}
-                            validate={(e: any) => {
+                            validate={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 e.persist();
                                 validate('confirmnewpassword', e.target.value);
                             }}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GridColumn } from '../../types/GridColumn';
+import { MetricRow } from '../../types/MetricRow';
 import { UserTrackedMetric } from '../../types/UserTrackedMetric';
 import { Metric } from '../../types/Metric';
 import { client } from '../../lib/client';
@@ -11,7 +12,7 @@ import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { MetricForm } from '../MetricForm/MetricForm';
 import { Confirm } from '../Confirm/Confirm';
 
-const MetricsGrid = () => {
+const MetricsGrid: React.FC = () => {
     const newMetric: Metric = {
         id: 0, name: '', units: '', type: 0,
     };
@@ -28,16 +29,16 @@ const MetricsGrid = () => {
 
     const { currentUser } = useContext(AppContext);
 
-    const transformData = (metrics: any) => {
-        const trackedMetrics: Array<UserTrackedMetric> = [];
+    const transformData = (metrics: Array<UserTrackedMetric>) => {
+        const trackedMetrics: Array<MetricRow> = [];
 
-        metrics.forEach((m: any) => {
+        metrics.forEach((m: UserTrackedMetric) => {
             trackedMetrics.push({
-                ID: m.MetricID,
-                Name: m.Metric.Name,
-                isTracked: m.IsTracked,
-                canDelete: !m.Metric.IsSystem,
-                canEdit: !m.Metric.IsSystem,
+                id: m.metricId,
+                name: m.metric.name,
+                isTracked: m.isTracked,
+                canDelete: !m.metric.isSystem,
+                canEdit: !m.metric.isSystem,
             });
         });
 
@@ -48,7 +49,7 @@ const MetricsGrid = () => {
         client('users/getusertrackedmetrics').then(
             (data) => {
                 if (data.successful) {
-                    const trackedMetrics: Array<UserTrackedMetric> = transformData(data.metrics);
+                    const trackedMetrics: Array<MetricRow> = transformData(data.metrics);
 
                     setGridData(trackedMetrics);
 
@@ -76,10 +77,10 @@ const MetricsGrid = () => {
             (data) => {
                 if (data.successful) {
                     const selMetric: Metric = {
-                        id: data.metric.ID,
-                        name: data.metric.Name,
-                        units: data.metric.Units,
-                        type: data.metric.Type,
+                        id: data.metric.id,
+                        name: data.metric.name,
+                        units: data.metric.units,
+                        type: data.metric.type,
                     };
                     setMetric(selMetric);
                 } else {
@@ -106,7 +107,7 @@ const MetricsGrid = () => {
         }).then(
             (data) => {
                 if (data.successful) {
-                    const trackedMetrics: Array<UserTrackedMetric> = transformData(data.metrics);
+                    const trackedMetrics: Array<MetricRow> = transformData(data.metrics);
 
                     setGridData(trackedMetrics);
                 } else {
@@ -133,7 +134,7 @@ const MetricsGrid = () => {
         }).then(
             (data) => {
                 if (data.successful) {
-                    const trackedMetrics: Array<UserTrackedMetric> = transformData(data.metrics);
+                    const trackedMetrics: Array<MetricRow> = transformData(data.metrics);
 
                     setGridData(trackedMetrics);
                 } else {
@@ -162,7 +163,7 @@ const MetricsGrid = () => {
         {
             Heading: 'Name',
             Width: '55%',
-            ColumnId: 'Name',
+            ColumnId: 'name',
             Key: 'NAME',
         },
         {
@@ -194,14 +195,13 @@ const MetricsGrid = () => {
 
             {(status === 'loaded' || status === 'saving') && (
                 <>
-
                     <MetricForm
                         metric={metric}
                         visible={formVisible}
-                        onSuccess={(metrics: any) => {
+                        onSuccess={(metrics: Array<UserTrackedMetric>) => {
                             setFormVisible(false);
 
-                            const trackedMetrics: Array<UserTrackedMetric> = transformData(metrics);
+                            const trackedMetrics: Array<MetricRow> = transformData(metrics);
                             setGridData(trackedMetrics);
                         }}
                         onCancel={() => {
@@ -224,9 +224,9 @@ const MetricsGrid = () => {
                     <Grid
                         columns={columns}
                         data={gridData}
-                        keyColumn="ID"
+                        keyColumn="id"
                         noRowsMessage="No Metrics Defined"
-                        nameColumn="Name"
+                        nameColumn="name"
                         onTrackChange={(id: number) => {
                             toggleTracking(id);
                         }}

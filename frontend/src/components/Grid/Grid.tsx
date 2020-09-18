@@ -5,7 +5,7 @@ import { GridColumn } from '../../types/GridColumn';
 
 import './Grid.css';
 
-const Grid = (props: GridProps) => {
+const Grid: React.FC<GridProps> = (props) => {
     const {
         columns,
         data,
@@ -53,6 +53,7 @@ const Grid = (props: GridProps) => {
 
                 <tbody>
                     {gridData.length > 0 && (
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         gridData.map((row: any) => (
                             <tr data-testid="griddatarow" key={row[keyColumn]}>
                                 {columns.map((col: GridColumn) => {
@@ -158,7 +159,7 @@ const Grid = (props: GridProps) => {
 Grid.defaultProps = {
     data: [],
     noRowsMessage: 'No rows',
-    IDColumn: 'ID',
+    IDColumn: 'id',
     nameColumn: 'name',
     onAdd: null,
     onEdit: null,

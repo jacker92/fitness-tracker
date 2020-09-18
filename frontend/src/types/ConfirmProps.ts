@@ -5,6 +5,6 @@ export interface ConfirmProps {
     noButtonText?: string,
     width?: number,
     height?: string | number,
-    onConfirm: Function,
-    onCancel: Function
+    onConfirm: () => void,
+    onCancel: () => void
 }

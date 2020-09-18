@@ -11,7 +11,7 @@ import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { Confirm } from '../Confirm/Confirm';
 import { CustomActivityForm } from '../CustomActivityForm/CustomActivityForm';
 
-const CustomActivitiesGrid = () => {
+const CustomActivitiesGrid: React.FC = () => {
     const newActivity: Activity = {
         id: 0, name: '', estimatedCaloriesBurnedPerMinute: 0, type: 0, isSystem: false,
     };
@@ -28,10 +28,10 @@ const CustomActivitiesGrid = () => {
 
     const { currentUser } = useContext(AppContext);
 
-    const transformData = (activities: any) => {
+    const transformData = (activities: Array<Activity>) => {
         const customActivities: Array<ActivityDataRow> = [];
 
-        activities.forEach((a: any) => {
+        activities.forEach((a: Activity) => {
             customActivities.push({
                 id: a.id,
                 name: a.name,
@@ -163,7 +163,7 @@ const CustomActivitiesGrid = () => {
                     <CustomActivityForm
                         activity={activity}
                         visible={formVisible}
-                        onSuccess={(activities: any) => {
+                        onSuccess={(activities: Array<Activity>) => {
                             setFormVisible(false);
                             const customActivities: Array<ActivityDataRow> = transformData(activities);
                             setGridData(customActivities);

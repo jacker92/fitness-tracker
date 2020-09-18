@@ -13,7 +13,7 @@ import { LoadingBox } from '../LoadingBox/LoadingBox';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-const EditProfileForm = () => {
+const EditProfileForm: React.FC = () => {
     const [status, setStatus] = useState('initialized');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -218,7 +218,7 @@ const EditProfileForm = () => {
         }
     };
 
-    const uploadImage = (e: any) => {
+    const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
 
         setErrorMessage('');
@@ -370,7 +370,7 @@ const EditProfileForm = () => {
                                     name="birthday"
                                     id="birthday"
                                     selected={birthday}
-                                    onChange={(date: Date, e: any) => {
+                                    onChange={(date: Date, e: React.ChangeEvent<HTMLInputElement>) => {
                                         e.preventDefault();
                                         setBirthday(date);
                                         validateBirthday(date);

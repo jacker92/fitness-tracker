@@ -5,7 +5,7 @@ import { CustomActivitiesGrid } from '../CustomActivitiesGrid/CustomActivitiesGr
 
 import '../../styles/account.css';
 
-const CustomActivities = () => (
+const CustomActivities: React.FC = () => (
     <AuthGateway redirectUrl="/account/custom-activities">
         <div className="account-page">
             <div className="sidebar">

@@ -9,7 +9,7 @@ import { TextBox } from '../TextBox/TextBox';
 import { SelectField } from '../SelectField/SelectField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-const CustomActivityForm = (props: CustomActivityFormProps) => {
+const CustomActivityForm: React.FC<CustomActivityFormProps> = (props) => {
     const {
         activity, visible, onSuccess, onCancel,
     } = props;
@@ -160,7 +160,7 @@ const CustomActivityForm = (props: CustomActivityFormProps) => {
                                 value={name}
                                 error={nameError}
                                 validationRule="notempty"
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setName(e.target.value);
                                 }}
                                 onErrorChange={(error: string) => {
@@ -175,7 +175,7 @@ const CustomActivityForm = (props: CustomActivityFormProps) => {
                                 name="estimatedCaloriesBurnedPerMinute"
                                 label="Est. Calories Burned per Minute"
                                 value={estimatedCaloriesBurnedPerMinute}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     if (e.target.value !== '') {
                                         if (!Number.isNaN(e.target.value)) {
                                             setEstimatedCaloriesBurnedPerMinute(parseInt(e.target.value, 10));
@@ -199,7 +199,7 @@ const CustomActivityForm = (props: CustomActivityFormProps) => {
                                 ]}
                                 requiredField
                                 includeBlank={false}
-                                onChange={(e: any) => {
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                     const typeVal = parseInt(e.target.value, 10);
                                     setType(typeVal);
                                 }}
@@ -230,7 +230,13 @@ const CustomActivityForm = (props: CustomActivityFormProps) => {
 
 CustomActivityForm.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
-    activity: PropTypes.object.isRequired,
+    activity: PropTypes.exact({
+        id: PropTypes.number,
+        name: PropTypes.string.isRequired,
+        estimatedCaloriesBurnedPerMinute: PropTypes.number.isRequired,
+        type: PropTypes.number.isRequired,
+        isSystem: PropTypes.bool.isRequired,
+    }).isRequired,
     visible: PropTypes.bool.isRequired,
     onSuccess: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,

@@ -3,6 +3,6 @@ export interface CheckboxProps {
     label: string,
     name: string,
     id: string,
-    onChange?: Function,
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
     value?: string | number
 }

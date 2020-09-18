@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { AppContext } from '../AppContext/AppContext';
 import { UserHeaderMenu } from '../UserHeaderMenu/UserHeaderMenu';
 
-const Header = () => {
+const Header: React.FC = () => {
     const { currentUser } = useContext(AppContext);
 
     return (

@@ -5,7 +5,7 @@ import { ModalWindow } from '../ModalWindow/ModalWindow';
 
 import './Confirm.css';
 
-const Confirm = (props: ConfirmProps) => {
+const Confirm: React.FC<ConfirmProps> = (props) => {
     const {
         visible, width, height, text, yesButtonText, noButtonText, onConfirm, onCancel,
     } = props;
@@ -29,7 +29,7 @@ const Confirm = (props: ConfirmProps) => {
                     <button
                         className="green"
                         type="button"
-                        onClick={(e: any) => {
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                             e.preventDefault();
                             onConfirm();
                         }}
@@ -39,7 +39,7 @@ const Confirm = (props: ConfirmProps) => {
                     <button
                         className="red"
                         type="button"
-                        onClick={(e: any) => {
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                             e.preventDefault();
                             onCancel();
                         }}

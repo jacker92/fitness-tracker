@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { useClickOutside } from '../../lib/useClickOutside';
 import { AppContext } from '../AppContext/AppContext';
 
-const UserHeaderMenu = () => {
+const UserHeaderMenu: React.FC = () => {
     const {
         currentUser, logoutUser, userMenuVisible, toggleUserMenu,
     } = useContext(AppContext);

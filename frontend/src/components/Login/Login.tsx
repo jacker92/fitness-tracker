@@ -6,8 +6,8 @@ import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AppContext } from '../AppContext/AppContext';
 import { FormValidator } from '../../lib/FormValidator';
 
-const Login = (props: { redirectUrl: string, message: string, messageColor: string }) => {
-    const { redirectUrl, message, messageColor } = props;
+const Login: React.FC<{redirectUrl?: string, message?: string, messageColor?: string}> = (props) => {
+    const { redirectUrl = '/', message = '', messageColor = '' } = props;
 
     const [errorMessage, setErrorMessage] = useState('');
     const [email, setEmail] = useState('');
@@ -19,7 +19,7 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
     const { loginUser } = useContext(AppContext);
 
     const validate = () => {
-        let isValid: boolean = true;
+        let isValid = true;
 
         if (!FormValidator.validateEmail(email)) {
             setEmailError('Valid email address required');
@@ -94,7 +94,7 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
                             error={emailError}
                             autocomplete="email"
                             validationRule="email"
-                            onChange={(e: any) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setEmail(e.target.value);
                             }}
                             onErrorChange={(error: string) => {
@@ -113,7 +113,7 @@ const Login = (props: { redirectUrl: string, message: string, messageColor: stri
                             value={password}
                             error={passwordError}
                             validationRule="notempty"
-                            onChange={(e: any) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setPassword(e.target.value);
                             }}
                             onErrorChange={(error: string) => {

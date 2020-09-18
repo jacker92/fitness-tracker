@@ -5,7 +5,7 @@ import { MetricsGrid } from '../MetricsGrid/MetricsGrid';
 
 import '../../styles/account.css';
 
-const Metrics = () => (
+const Metrics: React.FC = () => (
     <AuthGateway redirectUrl="/account/metrics">
         <div className="account-page">
             <div className="sidebar">

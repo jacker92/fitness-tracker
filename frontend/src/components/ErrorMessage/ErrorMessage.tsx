@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './ErrorMessage.css';
 
-const ErrorMessage = (props: { error: string }) => {
+const ErrorMessage: React.FC<{error: string}> = (props) => {
     const { error } = props;
 
     return (
