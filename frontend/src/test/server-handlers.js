@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars-experimental */
 import { rest } from 'msw';
 
 const handlers = [

@@ -1,15 +1,15 @@
 export interface SelectFieldProps {
     name: string,
     label: string,
-    value?: any,
+    value?: string | number,
     id: string,
     error?: string,
     success?: string,
-    onChange?: Function,
+    onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void,
     requiredField?: boolean,
     showErrorMessage?: boolean,
     doesErrorContainHtml?: boolean,
     showSuccessMessage?: boolean,
-    valueList: any,
+    valueList: Array<{ value: number | string, text: string}>,
     includeBlank?: boolean
 }

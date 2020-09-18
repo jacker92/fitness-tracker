@@ -1,17 +1,17 @@
 class Utilities {
-    static calculateProteinFromPercentage(calories: number, proteinPercentage: number) {
+    static calculateProteinFromPercentage(calories: number, proteinPercentage: number): number {
         return Math.round((calories / 4) * (proteinPercentage / 100));
     }
 
-    static calculateCarbsFromPercentage(calories: number, carbsPercentage: number) {
+    static calculateCarbsFromPercentage(calories: number, carbsPercentage: number): number {
         return Math.round((calories / 4) * (carbsPercentage / 100));
     }
 
-    static calculateFatFromPercentage(calories: number, fatPercentage: number) {
+    static calculateFatFromPercentage(calories: number, fatPercentage: number): number {
         return Math.round((calories / 9) * (fatPercentage / 100));
     }
 
-    static calculateAge(birthday: Date) {
+    static calculateAge(birthday: Date): number {
         const now: Date = new Date();
 
         const todayYear: number = now.getFullYear();

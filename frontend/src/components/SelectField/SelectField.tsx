@@ -95,12 +95,12 @@ SelectField.propTypes = {
         PropTypes.string,
         PropTypes.number,
     ]),
-    valueList: PropTypes.arrayOf(PropTypes.shape({
+    valueList: PropTypes.arrayOf(PropTypes.exact({
         value: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.number,
-        ]),
-        text: PropTypes.string,
+        ]).isRequired,
+        text: PropTypes.string.isRequired,
     })).isRequired,
     id: PropTypes.string.isRequired,
     error: PropTypes.string,

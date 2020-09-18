@@ -1,7 +1,8 @@
 import validator from 'validator';
+import { ValidationResult } from '../types/ValidationResult';
 
 class FormValidator {
-    static validateEmail(value: string) {
+    static validateEmail(value: string): boolean {
         if (typeof value !== 'string' || !validator.isEmail(value)) {
             return false;
         }
@@ -9,7 +10,7 @@ class FormValidator {
         return true;
     }
 
-    static validateNotEmpty(value: string) {
+    static validateNotEmpty(value: string): boolean {
         if (typeof value !== 'string' || value.trim().length === 0) {
             return false;
         }
@@ -17,7 +18,7 @@ class FormValidator {
         return true;
     }
 
-    static validateSetLength(value: string, fieldName = 'value', minLength = 1, maxLength = 25) {
+    static validateSetLength(value: string, fieldName = 'value', minLength = 1, maxLength = 25): ValidationResult {
         if (!this.validateNotEmpty(value)) {
             return {
                 valid: false,
@@ -38,7 +39,7 @@ class FormValidator {
         };
     }
 
-    static validateUsername(value: string) {
+    static validateUsername(value: string): ValidationResult {
         if (!this.validateNotEmpty(value)) {
             return {
                 valid: false,
@@ -67,7 +68,7 @@ class FormValidator {
         };
     }
 
-    static validatePassword(value1: string, value2: string) {
+    static validatePassword(value1: string, value2: string): ValidationResult {
         if (typeof value1 !== 'string' || typeof value2 !== 'string' || (value1 === '' && value2 === '')) {
             return {
                 valid: false,
@@ -103,11 +104,11 @@ class FormValidator {
         };
     }
 
-    static validateNumeric(value: string | number) {
+    static validateNumeric(value: string | number): boolean {
         return !Number.isNaN(Number(value));
     }
 
-    static validateRequiredNumeric(value: string | number) {
+    static validateRequiredNumeric(value: string | number): boolean {
         if (value === null) {
             return false;
         }
@@ -119,7 +120,7 @@ class FormValidator {
         return !Number.isNaN(Number(value));
     }
 
-    static validateRequiredNumericGreaterThanZero(value: string | number) {
+    static validateRequiredNumericGreaterThanZero(value: string | number): boolean {
         if (value === null) {
             return false;
         }

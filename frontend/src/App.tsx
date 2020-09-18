@@ -19,7 +19,7 @@ const Home = () => (
     </>
 );
 
-function App() {
+function App(): JSX.Element {
     return (
         <Router>
             <MainApp>

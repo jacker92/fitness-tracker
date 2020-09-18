@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 /**
  * Hook that alerts clicks outside of the passed ref
  */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function useClickOutside(ref, visibleState, toggleFunction) {
     useEffect(() => {
         function handleClickOutside(event) {

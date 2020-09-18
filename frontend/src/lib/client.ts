@@ -1,4 +1,3 @@
-import { HttpHeader } from '../types/HttpHeader';
 import { ClientArguments } from '../types/ClientArguments';
 
 const apiUrl = process.env.REACT_APP_FT_API_URL;
@@ -9,11 +8,15 @@ function logout() {
 }
 
 async function client(endpoint: string, {
-    data = null, contentType = 'application/json', fileUpload = false, ...customConfig
-}: ClientArguments = {}) {
+    data = null,
+    contentType = 'application/json',
+    fileUpload = false,
+    ...customConfig
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+}: ClientArguments = {}) : Promise<any> {
     const token = window.localStorage.getItem(localStorageKey);
 
-    const headers: HttpHeader = {};
+    const headers: Record<string, string> = {};
 
     if (token) {
         headers.Authorization = `Bearer ${token}`;
@@ -28,7 +31,7 @@ async function client(endpoint: string, {
         body = (fileUpload ? data : JSON.stringify(data));
     }
 
-    const config: any = {
+    const config: RequestInit = {
         method: data ? 'POST' : 'GET',
         body,
         headers,
