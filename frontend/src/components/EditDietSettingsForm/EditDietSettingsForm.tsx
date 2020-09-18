@@ -52,34 +52,34 @@ const EditDietSettingsForm: React.FC = () => {
         client('users/getuser').then(
             (data) => {
                 if (data.successful) {
-                    setMacroTargetMode(data.user.DailyTarget.MacroTargetMode);
-                    setManuallyCalculateCalories(data.user.ManuallyCalculateCalories);
-                    setDietMode(data.user.DietMode);
-                    setDietPercentage(data.user.DietPercentage);
-                    setWeight(data.user.Weight);
-                    setTdee(data.user.TDEE);
+                    setMacroTargetMode(data.user.dailyTarget.macroTargetMode);
+                    setManuallyCalculateCalories(data.user.manuallyCalculateCalories);
+                    setDietMode(data.user.dietMode);
+                    setDietPercentage(data.user.dietPercentage);
+                    setWeight(data.user.weight);
+                    setTdee(data.user.tdee);
 
-                    setEnableCaloriesTarget(data.user.DailyTarget.EnableCalorieTarget);
-                    setCaloriesTarget(data.user.DailyTarget.CalorieTarget);
+                    setEnableCaloriesTarget(data.user.dailyTarget.enableCalorieTarget);
+                    setCaloriesTarget(data.user.dailyTarget.calorieTarget);
 
-                    setProteinPercentage(data.user.DailyTarget.ProteinPercentage);
-                    setCarbsPercentage(data.user.DailyTarget.CarbohydratesPercentage);
-                    setFatPercentage(data.user.DailyTarget.FatPercentage);
-                    setProteinGrams(data.user.DailyTarget.ProteinTarget);
-                    setCarbsGrams(data.user.DailyTarget.CarbohydratesTarget);
-                    setFatGrams(data.user.DailyTarget.FatTarget);
+                    setProteinPercentage(data.user.dailyTarget.proteinPercentage);
+                    setCarbsPercentage(data.user.dailyTarget.carbohydratesPercentage);
+                    setFatPercentage(data.user.dailyTarget.fatPercentage);
+                    setProteinGrams(data.user.dailyTarget.proteinTarget);
+                    setCarbsGrams(data.user.dailyTarget.carbohydratesTarget);
+                    setFatGrams(data.user.dailyTarget.fatTarget);
 
-                    switch (data.user.DailyTarget.MacroTargetMode) {
+                    switch (data.user.dailyTarget.macroTargetMode) {
                         case 1: // percentages
-                            setEnableProteinPercentage(data.user.DailyTarget.EnableProteinTarget);
-                            setEnableCarbsPercentage(data.user.DailyTarget.EnableCarbohydratesTarget);
-                            setEnableFatPercentage(data.user.DailyTarget.EnableFatTarget);
+                            setEnableProteinPercentage(data.user.dailyTarget.enableProteinTarget);
+                            setEnableCarbsPercentage(data.user.dailyTarget.enableCarbohydratesTarget);
+                            setEnableFatPercentage(data.user.dailyTarget.enableFatTarget);
                             break;
 
                         case 2: // manual
-                            setEnableProteinGrams(data.user.DailyTarget.EnableProteinTarget);
-                            setEnableCarbsGrams(data.user.DailyTarget.EnableCarbohydratesTarget);
-                            setEnableFatGrams(data.user.DailyTarget.EnableFatTarget);
+                            setEnableProteinGrams(data.user.dailyTarget.enableProteinTarget);
+                            setEnableCarbsGrams(data.user.dailyTarget.enableCarbohydratesTarget);
+                            setEnableFatGrams(data.user.dailyTarget.enableFatTarget);
                             break;
 
                         case 0:
@@ -206,60 +206,60 @@ const EditDietSettingsForm: React.FC = () => {
         switch (macroTargetMode) {
             case 1: // percentages
                 params = {
-                    ManuallyCalculateCalories: manuallyCalculateCalories,
-                    MacroTargetMode: macroTargetMode,
-                    DietMode: dietMode,
-                    DietPercentage: dietPercentage,
-                    EnableCalorieTarget: enableCaloriesTarget,
-                    CalorieTarget: caloriesTarget,
-                    EnableProteinTarget: enableProteinPercentage,
-                    ProteinTarget: proteinPercentageGrams,
-                    ProteinPercentage: proteinPercentage,
-                    EnableCarbohydratesTarget: enableCarbsPercentage,
-                    CarbohydratesTarget: carbsPercentageGrams,
-                    CarbohydratesPercentage: carbsPercentage,
-                    EnableFatTarget: enableFatPercentage,
-                    FatTarget: fatPercentageGrams,
-                    FatPercentage: fatPercentage,
+                    manuallyCalculateCalories,
+                    macroTargetMode,
+                    dietMode,
+                    dietPercentage,
+                    enableCalorieTarget: enableCaloriesTarget,
+                    calorieTarget: caloriesTarget,
+                    enableProteinTarget: enableProteinPercentage,
+                    proteinTarget: proteinPercentageGrams,
+                    proteinPercentage,
+                    enableCarbohydratesTarget: enableCarbsPercentage,
+                    carbohydratesTarget: carbsPercentageGrams,
+                    carbohydratesPercentage: carbsPercentage,
+                    enableFatTarget: enableFatPercentage,
+                    fatTarget: fatPercentageGrams,
+                    fatPercentage,
                 };
                 break;
             case 2: // manual
                 params = {
-                    ManuallyCalculateCalories: manuallyCalculateCalories,
-                    MacroTargetMode: macroTargetMode,
-                    DietMode: dietMode,
-                    DietPercentage: dietPercentage,
-                    EnableCalorieTarget: enableCaloriesTarget,
-                    CalorieTarget: caloriesTarget,
-                    EnableProteinTarget: enableProteinGrams,
-                    ProteinTarget: proteinGrams,
-                    ProteinPercentage: proteinPercentage,
-                    EnableCarbohydratesTarget: enableCarbsGrams,
-                    CarbohydratesTarget: carbsGrams,
-                    CarbohydratesPercentage: carbsPercentage,
-                    EnableFatTarget: enableFatGrams,
-                    FatTarget: fatGrams,
-                    FatPercentage: fatPercentage,
+                    manuallyCalculateCalories,
+                    macroTargetMode,
+                    dietMode,
+                    dietPercentage,
+                    enableCalorieTarget: enableCaloriesTarget,
+                    calorieTarget: caloriesTarget,
+                    enableProteinTarget: enableProteinGrams,
+                    proteinTarget: proteinGrams,
+                    proteinPercentage,
+                    enableCarbohydratesTarget: enableCarbsGrams,
+                    carbohydratesTarget: carbsGrams,
+                    carbohydratesPercentage: carbsPercentage,
+                    enableFatTarget: enableFatGrams,
+                    fatTarget: fatGrams,
+                    fatPercentage,
                 };
                 break;
 
             default: // off
                 params = {
-                    ManuallyCalculateCalories: manuallyCalculateCalories,
-                    MacroTargetMode: macroTargetMode,
-                    DietMode: dietMode,
-                    DietPercentage: dietPercentage,
-                    EnableCalorieTarget: false,
-                    CalorieTarget: caloriesTarget,
-                    EnableProteinTarget: false,
-                    ProteinTarget: proteinGrams,
-                    ProteinPercentage: proteinPercentage,
-                    EnableCarbohydratesTarget: false,
-                    CarbohydratesTarget: carbsGrams,
-                    CarbohydratesPercentage: carbsPercentage,
-                    EnableFatTarget: false,
-                    FatTarget: fatGrams,
-                    FatPercentage: fatPercentage,
+                    manuallyCalculateCalories,
+                    macroTargetMode,
+                    dietMode,
+                    dietPercentage,
+                    enableCalorieTarget: enableCaloriesTarget,
+                    calorieTarget: caloriesTarget,
+                    enableProteinTarget: false,
+                    proteinTarget: proteinGrams,
+                    proteinPercentage,
+                    enableCarbohydratesTarget: false,
+                    carbohydratesTarget: carbsGrams,
+                    carbohydratesPercentage: carbsPercentage,
+                    enableFatTarget: false,
+                    fatTarget: fatGrams,
+                    fatPercentage,
                 };
                 break;
         }

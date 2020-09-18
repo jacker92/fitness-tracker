@@ -13,78 +13,105 @@ namespace FitnessTrackerApi.Models
         public override string PasswordHash { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("email")]
+        public override string Email { get; set; }
+
         [PersonalData]
+        [JsonPropertyName("activities")]
         public List<UserActivity> Activities { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("foods")]
         public List<Food> Foods { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("foodGroupings")]
         public List<FoodGrouping> FoodGroupings { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("foodEaten")]
         public List<FoodIntake> FoodEaten { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("metrics")]
         public List<Metric> Metrics { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("customActivities")]
         public List<Activity> CustomActivities { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("metricMeasurements")]
         public List<UserMetric> MetricMeasurements { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("trackedMetrics")]
         public List<UserTrackedMetric> TrackedMetrics { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("recipes")]
         public List<Recipe> Recipes { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("gear")]
         public List<Gear> Gear { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("dailyTargetId")]
         public int DailyTargetID { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("dailyTarget")]
         public DailyTarget DailyTarget { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("measurementSystem")]
         public MeasurementSystem MeasurementSystem { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("birthday")]
         public DateTime Birthday { get; set; }
 
         [PersonalData]
         [Column(TypeName = "decimal(18,4)")]
+        [JsonPropertyName("height")]
         public decimal Height { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("avatar")]
         public string Avatar { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("caloriesBurnedSetting")]
         public CaloriesBurnedOffset CaloriesBurnedSetting { get; set; } = CaloriesBurnedOffset.Ignore;
 
         [PersonalData]
+        [JsonPropertyName("gender")]
         public char Gender { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("activityLevel")]
         public ActivityLevel ActivityLevel { get; set; }
 
         [PersonalData]
+        [JsonPropertyName("manuallyCalculateCalories")]
         public bool ManuallyCalculateCalories { get; set; } = true;
 
         [PersonalData]
+        [JsonPropertyName("dietMode")]
         public DietMode DietMode { get; set; } = DietMode.Maintenance;
 
         [PersonalData]
         [Column(TypeName = "decimal(18,4)")]
+        [JsonPropertyName("dietPercentage")]
         public decimal DietPercentage { get; set; } = 0;
 
         [PersonalData]
         [NotMapped]
+        [JsonPropertyName("age")]
         public int Age
         {
             get
@@ -104,6 +131,7 @@ namespace FitnessTrackerApi.Models
 
         [PersonalData]
         [NotMapped]
+        [JsonPropertyName("bmr")]
         public int BMR
         {
             get
@@ -146,6 +174,7 @@ namespace FitnessTrackerApi.Models
 
         [PersonalData]
         [NotMapped]
+        [JsonPropertyName("tdee")]
         public int TDEE
         {
             get
@@ -202,10 +231,12 @@ namespace FitnessTrackerApi.Models
 
         [PersonalData]
         [NotMapped]
+        [JsonPropertyName("weight")]
         public decimal Weight { get; set; }
 
         [PersonalData]
         [NotMapped]
+        [JsonPropertyName("bodyFatPercentage")]
         public decimal BodyFatPercentage { get; set; }
     }
 }

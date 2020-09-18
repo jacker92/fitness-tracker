@@ -28,11 +28,11 @@ const EditActivitySettingsForm: React.FC = () => {
         client('users/getuser').then(
             (data) => {
                 if (data.successful) {
-                    setCaloriesBurnedSetting(data.user.CaloriesBurnedSetting);
-                    setEnableActiveMinuteTarget(data.user.DailyTarget.EnableActiveMinuteTarget);
-                    setActiveMinuteTarget(data.user.DailyTarget.ActiveMintueTarget);
-                    setEnableCaloriesBurnedTarget(data.user.DailyTarget.EnableCaloriesBurnedTarget);
-                    setCaloriesBurnedTarget(data.user.DailyTarget.CaloriesBurnedTarget);
+                    setCaloriesBurnedSetting(data.user.caloriesBurnedSetting);
+                    setEnableActiveMinuteTarget(data.user.dailyTarget.enableActiveMinuteTarget);
+                    setActiveMinuteTarget(data.user.dailyTarget.activeMintueTarget);
+                    setEnableCaloriesBurnedTarget(data.user.dailyTarget.enableCaloriesBurnedTarget);
+                    setCaloriesBurnedTarget(data.user.dailyTarget.caloriesBurnedTarget);
                     setStatus('loaded');
                 } else {
                     setErrorMessage(data.error);
@@ -83,11 +83,11 @@ const EditActivitySettingsForm: React.FC = () => {
         if (validate()) {
             client('users/updateactivitysettings', {
                 data: {
-                    CaloriesBurnedSetting: caloriesBurnedSetting,
-                    EnableActiveMinuteTarget: enableActiveMinuteTarget,
-                    ActiveMintueTarget: activeMinuteTarget,
-                    EnableCaloriesBurnedTarget: enableCaloriesBurnedTarget,
-                    CaloriesBurnedTarget: caloriesBurnedTarget,
+                    caloriesBurnedSetting,
+                    enableActiveMinuteTarget,
+                    activeMinuteTarget,
+                    enableCaloriesBurnedTarget,
+                    caloriesBurnedTarget,
                 },
             }).then(
                 (data) => {

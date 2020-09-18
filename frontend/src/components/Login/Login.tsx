@@ -38,7 +38,7 @@ const Login: React.FC<{redirectUrl?: string, message?: string, messageColor?: st
         setErrorMessage('');
 
         if (validate()) {
-            client('users/authenticate', { data: { Email: email, Password: password } }).then(
+            client('users/authenticate', { data: { email, password } }).then(
                 (data) => {
                     if (data.successful) {
                         setErrorMessage('');
