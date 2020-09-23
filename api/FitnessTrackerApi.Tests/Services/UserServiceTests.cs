@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace FitnessTrackerApi.Tests.Services
 {
@@ -23,8 +24,9 @@ namespace FitnessTrackerApi.Tests.Services
         private Mock<UserManager<User>> _mockUserManager;
         private Mock<SignInManager<User>> _mockSignInManager;
         private Mock<IHostEnvironment> _mockHostEnvironment;
+        private readonly ITestOutputHelper _output;
 
-        public UserServiceTests()
+        public UserServiceTests(ITestOutputHelper output)
         {
             _mockUserManager = new Mock<UserManager<User>>(
                 new Mock<IUserStore<User>>().Object,
@@ -47,6 +49,8 @@ namespace FitnessTrackerApi.Tests.Services
                 new Mock<IUserConfirmation<User>>().Object);
 
             _mockHostEnvironment = new Mock<IHostEnvironment>();
+
+            _output = output;
         }
 
         [Fact]
@@ -203,6 +207,130 @@ namespace FitnessTrackerApi.Tests.Services
             var response = userService.CheckEmail("123", "TestUser123@testing.com").Result;
 
             Assert.True(response.Valid);
+        }
+
+        [Fact]
+        public void UserService_UpdateUserProfile_Success()
+        {
+            var request = new UpdateProfileRequest
+            {
+                Email = "TestUser123@testing.com",
+                Name = "Test User",
+                Height = 70,
+                Birthday = new DateTime(1985, 01, 01),
+                Gender = 'M',
+                ActivityLevel = ActivityLevel.Moderate
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Email = "TestUser123@testing.com",
+                UserName = "TestUser123@testing.com",
+                Name = "Test User",
+                Height = 70,
+                Birthday = new DateTime(1985, 01, 01),
+                Gender = 'M',
+                ActivityLevel = ActivityLevel.Moderate
+            };
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.UpdateAsync(It.IsAny<User>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.UpdateUserProfile(user, request).Result;
+
+            Assert.True(response.Successful);
+        }
+
+        [Fact]
+        public void UserService_UpdateActivitySettings_Success()
+        {
+            var request = new UpdateActivitySettingsRequest
+            {
+                ActiveMintueTarget = 30,
+                CaloriesBurnedSetting = CaloriesBurnedOffset.Ignore,
+                CaloriesBurnedTarget = 500,
+                EnableActiveMinuteTarget = true,
+                EnableCaloriesBurnedTarget = true
+            };
+
+            var dailyTargets = new List<DailyTarget>();
+            var dailyTarget = new DailyTarget
+            {
+                ID = 1,
+                UserID = "123",
+                MacroTargetMode = MacroTargetMode.Manual,
+                EnableActiveMinuteTarget = false,
+                ActiveMintueTarget = 30,
+                EnableCaloriesBurnedTarget = true,
+                CaloriesBurnedTarget = 500,
+                EnableCalorieTarget = true,
+                CalorieTarget = 2320,
+                ProteinPercentage = 35,
+                CarbohydratesPercentage = 35,
+                FatPercentage = 30,
+                ProteinTarget = 158,
+                CarbohydratesTarget = 158,
+                FatTarget = 60,
+                EnableProteinTarget = true,
+                EnableCarbohydratesTarget = true,
+                EnableFatTarget = false
+            };
+
+            dailyTargets.Add(dailyTarget);
+
+            var user = new User
+            {
+                Id = "123",
+                CaloriesBurnedSetting = request.CaloriesBurnedSetting,
+                DailyTarget = dailyTarget
+            };
+
+            var mockDailyTargetRepo = new MockRepository<DailyTarget>();
+            mockDailyTargetRepo.MockGet(dailyTargets.AsQueryable());
+            mockDailyTargetRepo.MockUpdate(dailyTarget);
+
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.UpdateAsync(It.IsAny<User>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo.Object,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.UpdateActivitySettings(user, request).Result;
+
+            Assert.True(response.Successful);
         }
     }
 }
