@@ -51,6 +51,203 @@ namespace FitnessTrackerApi.Tests.Services
             _mockHostEnvironment = new Mock<IHostEnvironment>();
 
             _output = output;
+
+            AppSettings config = new AppSettings
+            {
+                JwtSecret = "94jfdsf98wnkjsdfds93424nsdaifds",
+                MaxAvatarSize = 1048576
+            };
+
+            Utilities.AppSettings = config;
+        }
+
+        [Fact]
+        public void UserService_RegisterUser_Successful()
+        {
+            var request = new RegistrationRequest
+            {
+                Name = "Test User",
+                Email = "testing@testing.com",
+                MeasurementSystem = MeasurementSystem.US,
+                Gender = 'M',
+                Height = 72,
+                ActivityLevel = ActivityLevel.Moderate,
+                Birthday = new DateTime(1985, 6, 1)
+            };
+
+            var systemMetrics = new List<Metric>
+            {
+                new Metric { ID = -1, Name = "Test Metric 1", Type = MetricType.Weight },
+                new Metric { ID = -2, Name = "Test Metric 2", Type = MetricType.None },
+                new Metric { ID = 1, Name = "User Metric 1", Type = MetricType.None }
+            };
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+
+            var mockUserTrackedMetricRepo = new MockRepository<UserTrackedMetric>();
+            mockUserTrackedMetricRepo.MockAdd(new UserTrackedMetric { UserID = "123", MetricID = systemMetrics[0].ID, IsTracked = true });
+
+            var metricRepo = new MockRepository<Metric>();
+            metricRepo.MockGet(systemMetrics.AsQueryable());
+
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo.Object,
+                metricRepo.Object,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.RegisterUser(request).Result;
+
+            Assert.True(response.Successful);
+            Assert.NotEmpty(response.Token);
+        }
+
+        [Fact]
+        public void UserService_Authenticate_Successful()
+        {
+            var request = new AuthenticationRequest
+            {
+                Email = "testing@testing.com",
+                Password = "validPassword123!"
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "testing@testing.com",
+            };
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+
+            _mockSignInManager.Setup(x => x.CheckPasswordSignInAsync(user, request.Password, false))
+                .ReturnsAsync(SignInResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.Authenticate(request).Result;
+
+            Assert.NotEmpty(response.Token);
+            Assert.Equal(request.Email, response.Email);
+        }
+
+        [Fact]
+        public void UserService_Authenticate_UserNotFound()
+        {
+            var request = new AuthenticationRequest
+            {
+                Email = "testing@testing.com",
+                Password = "validPassword123!"
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "testing@testing.com",
+            };
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync((User)null);
+
+            _mockSignInManager.Setup(x => x.CheckPasswordSignInAsync(user, request.Password, false))
+                .ReturnsAsync(SignInResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.Authenticate(request).Result;
+
+            Assert.Equal("Invalid email or password", response.ErrorMessage);
+        }
+
+        [Fact]
+        public void UserService_Authenticate_BadPassword()
+        {
+            var request = new AuthenticationRequest
+            {
+                Email = "testing@testing.com",
+                Password = "validPassword123!"
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "testing@testing.com",
+            };
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+
+            _mockSignInManager.Setup(x => x.CheckPasswordSignInAsync(user, request.Password, false))
+                .ReturnsAsync(SignInResult.Failed);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.Authenticate(request).Result;
+
+            Assert.Equal("Invalid email or password", response.ErrorMessage);
         }
 
         [Fact]
@@ -116,6 +313,8 @@ namespace FitnessTrackerApi.Tests.Services
                 metricRepo,
                 gearRepo,
                 activityRepo);
+
+
 
             var response = userService.GetUserRecord("123").Result;
 
@@ -331,6 +530,299 @@ namespace FitnessTrackerApi.Tests.Services
             var response = userService.UpdateActivitySettings(user, request).Result;
 
             Assert.True(response.Successful);
+        }
+
+        [Fact]
+        public void UserService_UpdateDietSettings_Success()
+        {
+            var request = new UpdateDietSettingsRequest
+            {
+                ManuallyCalculateCalories = true,
+                MacroTargetMode = MacroTargetMode.Manual,
+                DietMode = DietMode.Maintenance,
+                DietPercentage = 0.0M,
+                EnableCalorieTarget = true,
+                CalorieTarget = 2000,
+                EnableProteinTarget = true,
+                ProteinTarget = 160,
+                EnableCarbohydratesTarget = true,
+                CarbohydratesTarget = 160,
+                EnableFatTarget = true,
+                FatTarget = 62
+            };
+
+            var dailyTargets = new List<DailyTarget>();
+            var dailyTarget = new DailyTarget
+            {
+                ID = 1,
+                UserID = "123",
+                MacroTargetMode = MacroTargetMode.Manual,
+                EnableActiveMinuteTarget = false,
+                ActiveMintueTarget = 30,
+                EnableCaloriesBurnedTarget = true,
+                CaloriesBurnedTarget = 500,
+                EnableCalorieTarget = request.EnableCalorieTarget,
+                CalorieTarget = request.CalorieTarget,
+                ProteinPercentage = 35,
+                CarbohydratesPercentage = 35,
+                FatPercentage = 30,
+                ProteinTarget = request.ProteinTarget,
+                CarbohydratesTarget = request.CarbohydratesTarget,
+                FatTarget = request.FatTarget,
+                EnableProteinTarget = request.EnableProteinTarget,
+                EnableCarbohydratesTarget = request.EnableCarbohydratesTarget,
+                EnableFatTarget = request.EnableFatTarget
+            };
+
+            dailyTargets.Add(dailyTarget);
+
+            var user = new User
+            {
+                Id = "123",
+                ManuallyCalculateCalories = request.ManuallyCalculateCalories,
+                DietMode = request.DietMode,
+                DietPercentage = request.DietPercentage,
+                DailyTarget = dailyTarget
+            };
+
+            var mockDailyTargetRepo = new MockRepository<DailyTarget>();
+            mockDailyTargetRepo.MockGet(dailyTargets.AsQueryable());
+            mockDailyTargetRepo.MockUpdate(dailyTarget);
+
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.UpdateAsync(It.IsAny<User>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo.Object,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.UpdateDietSettings(user, request).Result;
+
+            Assert.True(response.Successful);
+        }
+
+        [Fact]
+        public void UserService_ChangePassword_Success()
+        {
+            var request = new ChangePasswordRequest
+            {
+                CurrentPassword = "currentPassword123!",
+                NewPassword = "newPassword123!",
+                ConfirmNewPassword = "newPassword123!"
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "TestUser123@testing.com",
+                MeasurementSystem = MeasurementSystem.US,
+                Birthday = new DateTime(1980, 01, 01),
+                Height = 60,
+                Gender = 'M',
+                ActivityLevel = ActivityLevel.Moderate,
+                DailyTargetID = 1
+            };
+
+            _mockUserManager.Setup(um => um.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.UpdateAsync(It.IsAny<User>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.ChangePassword(user, request).Result;
+
+            Assert.True(response.Successful);
+        }
+
+        [Fact]
+        public void UserService_ChangePassword_InvalidCurrentPassword()
+        {
+            var request = new ChangePasswordRequest
+            {
+                CurrentPassword = "currentPassword123!",
+                NewPassword = "newPassword123!",
+                ConfirmNewPassword = "newPassword123!"
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "TestUser123@testing.com",
+                MeasurementSystem = MeasurementSystem.US,
+                Birthday = new DateTime(1980, 01, 01),
+                Height = 60,
+                Gender = 'M',
+                ActivityLevel = ActivityLevel.Moderate,
+                DailyTargetID = 1
+            };
+
+            _mockUserManager.Setup(um => um.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.UpdateAsync(It.IsAny<User>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.ChangePassword(user, request).Result;
+
+            Assert.False(response.Successful);
+            Assert.NotEmpty(response.ErrorMessage);
+        }
+
+        [Fact]
+        public void UserService_ChangePassword_NewPasswordsDoNotMatch()
+        {
+            var request = new ChangePasswordRequest
+            {
+                CurrentPassword = "currentPassword123!",
+                NewPassword = "newPassword123!",
+                ConfirmNewPassword = "newPassword123456!"
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "TestUser123@testing.com",
+                MeasurementSystem = MeasurementSystem.US,
+                Birthday = new DateTime(1980, 01, 01),
+                Height = 60,
+                Gender = 'M',
+                ActivityLevel = ActivityLevel.Moderate,
+                DailyTargetID = 1
+            };
+
+            _mockUserManager.Setup(um => um.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.UpdateAsync(It.IsAny<User>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.ChangePassword(user, request).Result;
+
+            Assert.False(response.Successful);
+            Assert.Equal("Passwords do not match", response.ErrorMessage);
+        }
+
+        [Fact]
+        public void UserService_ChangePassword_InvalidNewPassword()
+        {
+            var request = new ChangePasswordRequest
+            {
+                CurrentPassword = "currentPassword123!",
+                NewPassword = "paswd",
+                ConfirmNewPassword = "paswd"
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "TestUser123@testing.com",
+                MeasurementSystem = MeasurementSystem.US,
+                Birthday = new DateTime(1980, 01, 01),
+                Height = 60,
+                Gender = 'M',
+                ActivityLevel = ActivityLevel.Moderate,
+                DailyTargetID = 1
+            };
+
+            _mockUserManager.Setup(um => um.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            _mockUserManager.Setup(x => x.UpdateAsync(It.IsAny<User>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.ChangePassword(user, request).Result;
+
+            Assert.False(response.Successful);
+            Assert.Equal("Password must be at least 8 characters and contain an upper case letter", response.ErrorMessage);
         }
     }
 }
