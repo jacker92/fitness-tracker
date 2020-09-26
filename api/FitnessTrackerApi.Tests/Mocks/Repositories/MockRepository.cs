@@ -1,5 +1,6 @@
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FitnessTrackerApi.Repositories;
@@ -46,9 +47,16 @@ namespace FitnessTrackerApi.Tests.Mocks.Repositories
             return this;
         }
 
-        public MockRepository<T> MockDelete(T result)
+        public MockRepository<T> MockDelete()
         {
             Setup(x => x.Delete(It.IsAny<T>()));
+
+            return this;
+        }
+
+        public MockRepository<T> MockDeleteRange()
+        {
+            Setup(x => x.DeleteRange(It.IsAny<List<T>>()));
 
             return this;
         }

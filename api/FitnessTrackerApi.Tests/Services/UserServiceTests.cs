@@ -824,5 +824,183 @@ namespace FitnessTrackerApi.Tests.Services
             Assert.False(response.Successful);
             Assert.Equal("Password must be at least 8 characters and contain an upper case letter", response.ErrorMessage);
         }
+
+        [Fact]
+        public void UserService_GetUserTrackedMetrics_Successful()
+        {
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "TestUser123@testing.com"
+            };
+
+            var userTrackedMetrics = new List<UserTrackedMetric>
+            {
+                new UserTrackedMetric { ID = 1, UserID = "123", IsTracked = true, Metric = new Metric { ID = -1, Name = "Test Metric 1", Type = MetricType.Weight, IsSystem = true }, MetricID = -1, User = null },
+                new UserTrackedMetric { ID = 2, UserID = "123", IsTracked = false, Metric = new Metric { ID = -2, Name = "Test Metric 2", Type = MetricType.Percentage, IsSystem = true }, MetricID = -2, User = null },
+                new UserTrackedMetric { ID = 3, UserID = "123", IsTracked = true, Metric = new Metric { ID = 1, Name = "User Metric 1", Type = MetricType.Numeric, IsSystem = false, UserID = "123" }, MetricID = 1, User = null }
+            };
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+
+            var mockUserTrackedMetricRepo = new MockRepository<UserTrackedMetric>();
+            mockUserTrackedMetricRepo.MockGet(userTrackedMetrics.AsQueryable());
+
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo.Object,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.GetUserTrackedMetrics(user);
+
+            Assert.Equal(3, response.Metrics.Count);
+        }
+
+        [Fact]
+        public void UserService_UpdateUserMetricTracking_Success()
+        {
+            var request = new ToggleUserMetricTrackingRequest
+            {
+                MetricID = -2
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "TestUser123@testing.com"
+            };
+
+            var userTrackedMetrics = new List<UserTrackedMetric>
+            {
+                new UserTrackedMetric { ID = 1, UserID = "123", IsTracked = true, Metric = new Metric { ID = -1, Name = "Test Metric 1", Type = MetricType.Weight, IsSystem = true }, MetricID = -1, User = null },
+                new UserTrackedMetric { ID = 2, UserID = "123", IsTracked = false, Metric = new Metric { ID = -2, Name = "Test Metric 2", Type = MetricType.Percentage, IsSystem = true }, MetricID = -2, User = null },
+                new UserTrackedMetric { ID = 3, UserID = "123", IsTracked = true, Metric = new Metric { ID = 1, Name = "User Metric 1", Type = MetricType.Numeric, IsSystem = false, UserID = "123" }, MetricID = 1, User = null }
+            };
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+
+            var mockUserTrackedMetricRepo = new MockRepository<UserTrackedMetric>();
+            mockUserTrackedMetricRepo.MockGet(userTrackedMetrics.AsQueryable());
+            mockUserTrackedMetricRepo.MockUpdate(userTrackedMetrics[0]);
+
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo.Object,
+                metricRepo,
+                gearRepo,
+                activityRepo);
+
+            var response = userService.UpdateUserMetricTracking(user, request).Result;
+
+            Assert.Equal(3, response.Metrics.Count);
+        }
+
+        [Fact]
+        public void UserService_GetUserGear_Successful()
+        {
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "TestUser123@testing.com"
+            };
+
+            var gear = new List<Gear>
+            {
+                new Gear { ID = 1, Active = true, Name = "Gear 1", UserID = "123" },
+                new Gear { ID = 2, Active = true, Name = "Gear 2", UserID = "123" },
+                new Gear { ID = 3, Active = true, Name = "Gear 3", UserID = "123" }
+            };
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+
+            var gearRepo = new MockRepository<Gear>();
+            gearRepo.MockGet(gear.AsQueryable());
+
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var activityRepo = Mock.Of<IRepository<Activity>>();
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo.Object,
+                activityRepo);
+
+            var response = userService.GetUserGear(user);
+
+            Assert.Equal(3, response.Gear.Count);
+        }
+
+        [Fact]
+        public void UserService_GetUserCustomActivities_Successful()
+        {
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "TestUser123@testing.com"
+            };
+
+            var activities = new List<Activity>
+            {
+                new Activity { ID = 1, EstimatedCaloriesBurnedPerMinute = 5, IsSystem = false, Name = "Activity 1", UserID = "123" },
+                new Activity { ID = 2, EstimatedCaloriesBurnedPerMinute = 5, IsSystem = false, Name = "Activity 2", UserID = "123" },
+                new Activity { ID = 3, EstimatedCaloriesBurnedPerMinute = 5, IsSystem = false, Name = "Activity 3", UserID = "123" }
+            };
+
+            var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
+            var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
+
+            var activityRepo = new MockRepository<Activity>();
+            activityRepo.MockGet(activities.AsQueryable());
+
+            var metricRepo = Mock.Of<IRepository<Metric>>();
+            var mockUserTrackedMetricRepo = Mock.Of<IRepository<UserTrackedMetric>>();
+            var gearRepo = Mock.Of<IRepository<Gear>>();
+
+            var userService = new UserService(
+                _mockUserManager.Object,
+                _mockSignInManager.Object,
+                _mockHostEnvironment.Object,
+                mockDailyTargetRepo,
+                mockUserMetricRepo,
+                mockUserTrackedMetricRepo,
+                metricRepo,
+                gearRepo,
+                activityRepo.Object);
+
+            var response = userService.GetUserCustomActivities(user);
+
+            Assert.Equal(3, response.Activities.Count);
+        }
     }
 }

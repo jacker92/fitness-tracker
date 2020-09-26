@@ -18,7 +18,7 @@ namespace FitnessTrackerApi.Services
 
         public Gear GetById(int id)
         {
-            return _gearRepository.Get(m => m.ID == id).FirstOrDefault();
+            return _gearRepository.GetById(id);
         }
 
         public async Task<EditGearResponse> AddGear(User user, AddGearRequest request)

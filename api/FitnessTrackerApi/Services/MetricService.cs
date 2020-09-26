@@ -22,7 +22,7 @@ namespace FitnessTrackerApi.Services
 
         public Metric GetById(int id)
         {
-            return _metricRepository.Get(m => m.ID == id).FirstOrDefault();
+            return _metricRepository.GetById(id);
         }
 
         public async Task<EditMetricResponse> AddMetric(User user, AddMetricRequest request)
