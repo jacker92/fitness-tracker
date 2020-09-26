@@ -86,7 +86,6 @@ namespace FitnessTrackerApi.Services
             {
                 var gear = _gearRepository.GetById(request.ID);
 
-                // for safety, confirm that the user owns the metric and it's not a system metric
                 // for safety, confirm that the user owns the gear
                 if (gear == null || gear.UserID != user.Id)
                 {

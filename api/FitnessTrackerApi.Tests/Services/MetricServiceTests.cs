@@ -1,17 +1,9 @@
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
-using FitnessTrackerApi.Models.Responses;
 using FitnessTrackerApi.Repositories;
 using FitnessTrackerApi.Services;
 using FitnessTrackerApi.Tests.Mocks.Repositories;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
