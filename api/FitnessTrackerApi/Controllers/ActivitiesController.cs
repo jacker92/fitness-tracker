@@ -28,6 +28,7 @@ namespace FitnessTrackerApi.Controllers
             {
                 return Ok(JsonSerializer.Serialize(new GetActivityResponse
                 {
+                    Successful = false,
                     ErrorMessage = "Metric not found"
                 }));
             }
@@ -40,6 +41,7 @@ namespace FitnessTrackerApi.Controllers
             {
                 response = new GetActivityResponse
                 {
+                    Successful = false,
                     ErrorMessage = "Metric not found"
                 };
             }
@@ -47,6 +49,7 @@ namespace FitnessTrackerApi.Controllers
             {
                 response = new GetActivityResponse
                 {
+                    Successful = true,
                     Activity = activity
                 };
             }

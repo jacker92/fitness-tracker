@@ -45,8 +45,8 @@ namespace FitnessTrackerApi.Tests.Controllers
             var response = JsonSerializer.Deserialize<GetMetricResponse>(result.Value.ToString());
 
             Assert.True(response.Successful);
-            Assert.Equal("Metric 1", response.Metric.Name);
-            Assert.Equal("gigawatts", response.Metric.Units);
+            Assert.Equal(metric.Name, response.Metric.Name);
+            Assert.Equal(metric.Units, response.Metric.Units);
         }
 
         [Fact]
