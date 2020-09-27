@@ -28,6 +28,7 @@ namespace FitnessTrackerApi.Controllers
             {
                 return Ok(JsonSerializer.Serialize(new GetMetricResponse
                 {
+                    Successful = false,
                     ErrorMessage = "Metric not found"
                 }));
             }
@@ -40,6 +41,7 @@ namespace FitnessTrackerApi.Controllers
             {
                 response = new GetMetricResponse
                 {
+                    Successful = false,
                     ErrorMessage = "Metric not found"
                 };
             }
@@ -47,6 +49,7 @@ namespace FitnessTrackerApi.Controllers
             {
                 response = new GetMetricResponse
                 {
+                    Successful = true,
                     Metric = metric
                 };
             }
@@ -64,22 +67,23 @@ namespace FitnessTrackerApi.Controllers
 
                 if (user == null)
                 {
-                    return BadRequest(new { message = "Unable to retrieve user" });
+                    throw new Exception("Unable to find user");
                 }
 
                 var response = await _metricService.AddMetric(user, request);
-
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
 
                 // TODO: Figure out why I need to serialize the response
                 return Ok(JsonSerializer.Serialize(response));
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                var response = new EditMetricResponse
+                {
+                    Successful = false,
+                    ErrorMessage = ex.StackTrace
+                };
+
+                return Ok(JsonSerializer.Serialize(response));
             }
         }
 
