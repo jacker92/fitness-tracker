@@ -22,7 +22,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         }
 
         [Fact]
-        public void ActivitiesController_GetActivity_ReturnsMetric()
+        public void ActivitiesController_GetActivity_ReturnsActivity()
         {
             var activity = new Activity
             {
@@ -47,6 +47,21 @@ namespace FitnessTrackerApi.Tests.Controllers
             Assert.Equal(activity.Name, response.Activity.Name);
             Assert.Equal(activity.Type, response.Activity.Type);
             Assert.Equal(activity.EstimatedCaloriesBurnedPerMinute, response.Activity.EstimatedCaloriesBurnedPerMinute);
+        }
+
+        [Fact]
+        public void ActivitiesController_GetActivity_ActivityNotFound()
+        {
+            var activityService = new MockActivityService().MockGetById((Activity)null);
+
+            var activitiesController = new ActivitiesController(activityService.Object);
+
+            var result = (OkObjectResult)activitiesController.GetActivity(1);
+
+            var response = JsonSerializer.Deserialize<GetActivityResponse>(result.Value.ToString());
+
+            Assert.False(response.Successful);
+            Assert.Equal("Activity not found", response.ErrorMessage);
         }
 
         [Fact]
