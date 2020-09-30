@@ -26,11 +26,6 @@ namespace FitnessTrackerApi.Controllers
         {
             var response = await _userService.Authenticate(request);
 
-            if (response.ErrorMessage != "")
-            {
-                return BadRequest(new { message = response.ErrorMessage });
-            }
-
             // TODO: Figure out why I need to serialize the response
             return Ok(JsonSerializer.Serialize(response));
         }
@@ -39,11 +34,6 @@ namespace FitnessTrackerApi.Controllers
         public async Task<IActionResult> Register(RegistrationRequest request)
         {
             var response = await _userService.RegisterUser(request);
-
-            if (response.ErrorMessage != "")
-            {
-                return BadRequest(new { message = response.ErrorMessage });
-            }
 
             // TODO: Figure out why I need to serialize the response
             return Ok(JsonSerializer.Serialize(response));
@@ -63,6 +53,7 @@ namespace FitnessTrackerApi.Controllers
 
             var response = new UserResponse
             {
+                Successful = true,
                 User = user
             };
 

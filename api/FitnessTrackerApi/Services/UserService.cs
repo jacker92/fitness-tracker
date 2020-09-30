@@ -95,6 +95,7 @@ namespace FitnessTrackerApi.Services
 
                     return new RegistrationResponse
                     {
+                        Successful = true,
                         UserID = user.Id,
                         Name = user.Name,
                         Email = user.Email,
@@ -104,6 +105,7 @@ namespace FitnessTrackerApi.Services
 
                 return new RegistrationResponse
                 {
+                    Successful = false,
                     ErrorMessage = "Unable to save user"
                 };
             }
@@ -111,6 +113,7 @@ namespace FitnessTrackerApi.Services
             {
                 return new RegistrationResponse
                 {
+                    Successful = false,
                     ErrorMessage = $"Error registerring user: {ex.Message}"
                 };
             }
@@ -132,6 +135,7 @@ namespace FitnessTrackerApi.Services
 
                         return new AuthenticationResponse
                         {
+                            Successful = true,
                             UserID = user.Id,
                             Name = user.Name,
                             Email = user.Email,
@@ -142,6 +146,7 @@ namespace FitnessTrackerApi.Services
                     {
                         return new AuthenticationResponse
                         {
+                            Successful = false,
                             ErrorMessage = "Invalid email or password"
                         };
                     }
@@ -149,6 +154,7 @@ namespace FitnessTrackerApi.Services
 
                 return new AuthenticationResponse
                 {
+                    Successful = false,
                     ErrorMessage = "Invalid email or password"
                 };
             }
@@ -156,6 +162,7 @@ namespace FitnessTrackerApi.Services
             {
                 return new AuthenticationResponse
                 {
+                    Successful = false,
                     ErrorMessage = $"Error authenticating user: {ex.Message}"
                 };
             }
@@ -194,7 +201,11 @@ namespace FitnessTrackerApi.Services
 
         public async Task<CheckEmailResponse> CheckEmail(string id, string email)
         {
-            var response = new CheckEmailResponse();
+            var response = new CheckEmailResponse
+            {
+                Successful = true,
+                Valid = true
+            };
 
             var user = await _userManager.FindByEmailAsync(email);
 
