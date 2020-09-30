@@ -3,6 +3,7 @@
         "titleBar.activeBackground": "#101085",
         "titleBar.inactiveBackground": "#101085"
     },
+    "workbench.colorTheme": "Night Owl",
     "editor.tabSize": 4,
     "search.exclude": {
         "**/node_modules": true,

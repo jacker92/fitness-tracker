@@ -5,7 +5,6 @@ using FitnessTrackerApi.Models.Responses;
 using FitnessTrackerApi.Tests.Mocks.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using System.Collections.Generic;
 using System.Text.Json;
 using Xunit;
@@ -23,20 +22,21 @@ namespace FitnessTrackerApi.Tests.Controllers
         }
 
         [Fact]
-        public void ActivitiesController_GetActivity_ReturnsActivity()
+        public void ActivitiesController_GetActivity_ReturnsMetric()
         {
             var activity = new Activity
             {
                 ID = 1,
                 Name = "Hockey",
-                Type = ActivityMetricType.None,
-                EstimatedCaloriesBurnedPerMinute = 10,
+                EstimatedCaloriesBurnedPerMinute = 12,
                 IsSystem = false,
+                Type = ActivityMetricType.None,
                 UserID = "123",
                 User = null
             };
 
             var activityService = new MockActivityService().MockGetById(activity);
+
             var activitiesController = new ActivitiesController(activityService.Object);
 
             var result = (OkObjectResult)activitiesController.GetActivity(1);
@@ -45,22 +45,8 @@ namespace FitnessTrackerApi.Tests.Controllers
 
             Assert.True(response.Successful);
             Assert.Equal(activity.Name, response.Activity.Name);
-            Assert.Equal(activity.EstimatedCaloriesBurnedPerMinute, response.Activity.EstimatedCaloriesBurnedPerMinute);
             Assert.Equal(activity.Type, response.Activity.Type);
-        }
-
-        [Fact]
-        public void MetricController_GetMetric_MetricNotFound()
-        {
-            var activityService = new MockActivityService().MockGetById((Activity)null);
-            var activitiesController = new ActivitiesController(activityService.Object);
-
-            var result = (OkObjectResult)activitiesController.GetActivity(1);
-
-            var response = JsonSerializer.Deserialize<GetActivityResponse>(result.Value.ToString());
-
-            Assert.False(response.Successful);
-            Assert.Equal("Metric not found", response.ErrorMessage);
+            Assert.Equal(activity.EstimatedCaloriesBurnedPerMinute, response.Activity.EstimatedCaloriesBurnedPerMinute);
         }
 
         [Fact]
@@ -68,16 +54,16 @@ namespace FitnessTrackerApi.Tests.Controllers
         {
             var request = new AddActivityRequest
             {
-                Name = "Table Tennis",
-                EstimatedCaloriesBurnedPerMinute = 2,
-                Type = ActivityMetricType.None
+                Name = "Hockey",
+                Type = ActivityMetricType.None,
+                EstimatedCaloriesBurnedPerMinute = 12
             };
 
             var activities = new List<Activity>
             {
-                new Activity { ID = 1, Name = "Tennis", Type = ActivityMetricType.None, EstimatedCaloriesBurnedPerMinute = 2, UserID = "123", User = null },
-                new Activity { ID = 2, Name = "Kayaking", Type = ActivityMetricType.Distance, EstimatedCaloriesBurnedPerMinute = 4, UserID = "123", User = null },
-                new Activity { ID = 3, Name = "Table Tennis", Type = ActivityMetricType.None, EstimatedCaloriesBurnedPerMinute = 2, UserID = "123", User = null }
+                new Activity { ID = -2, Name = "Run", EstimatedCaloriesBurnedPerMinute = 10, Type = ActivityMetricType.Distance, IsSystem = true, UserID = null, User = null },
+                new Activity { ID = -1, Name = "Walk", EstimatedCaloriesBurnedPerMinute = 5, Type = ActivityMetricType.Distance, IsSystem = true, UserID = null, User = null },
+                new Activity { ID = 1, Name = "Hockey", EstimatedCaloriesBurnedPerMinute = 12, Type = ActivityMetricType.None, IsSystem = false, UserID = "123", User = null }
             };
 
             var editResponse = new EditActivityResponse
@@ -113,17 +99,17 @@ namespace FitnessTrackerApi.Tests.Controllers
         {
             var request = new UpdateActivityRequest
             {
-                ID = 3,
-                Name = "Table Tennis",
-                EstimatedCaloriesBurnedPerMinute = 6,
-                Type = ActivityMetricType.None
+                ID = 1,
+                Name = "Ice Hockey",
+                Type = ActivityMetricType.None,
+                EstimatedCaloriesBurnedPerMinute = 12
             };
 
             var activities = new List<Activity>
             {
-                new Activity { ID = 1, Name = "Tennis", Type = ActivityMetricType.None, EstimatedCaloriesBurnedPerMinute = 2, UserID = "123", User = null },
-                new Activity { ID = 2, Name = "Kayaking", Type = ActivityMetricType.Distance, EstimatedCaloriesBurnedPerMinute = 4, UserID = "123", User = null },
-                new Activity { ID = 3, Name = "Table Tennis", Type = ActivityMetricType.None, EstimatedCaloriesBurnedPerMinute = 6, UserID = "123", User = null }
+                new Activity { ID = -2, Name = "Run", EstimatedCaloriesBurnedPerMinute = 10, Type = ActivityMetricType.Distance, IsSystem = true, UserID = null, User = null },
+                new Activity { ID = -1, Name = "Walk", EstimatedCaloriesBurnedPerMinute = 5, Type = ActivityMetricType.Distance, IsSystem = true, UserID = null, User = null },
+                new Activity { ID = 1, Name = "Ice Hockey", EstimatedCaloriesBurnedPerMinute = 12, Type = ActivityMetricType.None, IsSystem = false, UserID = "123", User = null }
             };
 
             var editResponse = new EditActivityResponse
@@ -159,13 +145,13 @@ namespace FitnessTrackerApi.Tests.Controllers
         {
             var request = new DeleteActivityRequest
             {
-                ID = 3
+                ID = 1
             };
 
             var activities = new List<Activity>
             {
-                new Activity { ID = 1, Name = "Tennis", Type = ActivityMetricType.None, EstimatedCaloriesBurnedPerMinute = 2, UserID = "123", User = null },
-                new Activity { ID = 2, Name = "Kayaking", Type = ActivityMetricType.Distance, EstimatedCaloriesBurnedPerMinute = 4, UserID = "123", User = null }
+                new Activity { ID = -2, Name = "Run", EstimatedCaloriesBurnedPerMinute = 10, Type = ActivityMetricType.Distance, IsSystem = true, UserID = null, User = null },
+                new Activity { ID = -1, Name = "Walk", EstimatedCaloriesBurnedPerMinute = 5, Type = ActivityMetricType.Distance, IsSystem = true, UserID = null, User = null }
             };
 
             var editResponse = new EditActivityResponse

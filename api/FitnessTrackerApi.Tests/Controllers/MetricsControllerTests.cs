@@ -5,7 +5,6 @@ using FitnessTrackerApi.Models.Responses;
 using FitnessTrackerApi.Tests.Mocks.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using System.Collections.Generic;
 using System.Text.Json;
 using Xunit;
