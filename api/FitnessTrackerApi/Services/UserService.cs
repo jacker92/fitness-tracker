@@ -238,7 +238,10 @@ namespace FitnessTrackerApi.Services
 
                 if (result.Succeeded)
                 {
-                    return new UpdateProfileResponse();
+                    return new UpdateProfileResponse
+                    {
+                        Successful = true
+                    };
                 }
 
                 return new UpdateProfileResponse

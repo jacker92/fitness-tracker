@@ -105,7 +105,7 @@ namespace FitnessTrackerApi.Tests.Mocks.Services
             return this;
         }
 
-        public MockUserService GetUserTrackedMetrics(UserMetricsResponse response)
+        public MockUserService MockGetUserTrackedMetrics(UserMetricsResponse response)
         {
             Setup(x => x.GetUserTrackedMetrics(It.IsAny<User>()))
                 .Returns(response);
