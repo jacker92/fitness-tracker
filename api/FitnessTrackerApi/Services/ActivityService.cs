@@ -20,7 +20,7 @@ namespace FitnessTrackerApi.Services
 
         public Activity GetById(int id)
         {
-            return _activityRepository.Get(m => m.ID == id).FirstOrDefault();
+            return _activityRepository.GetById(id);
         }
 
         public async Task<EditActivityResponse> AddActivity(User user, AddActivityRequest request)

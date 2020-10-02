@@ -2,6 +2,7 @@ using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
 using FitnessTrackerApi.Repositories;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,47 +23,60 @@ namespace FitnessTrackerApi.Services
 
         public Metric GetById(int id)
         {
-            return _metricRepository.Get(m => m.ID == id).FirstOrDefault();
+            return _metricRepository.GetById(id);
         }
 
         public async Task<EditMetricResponse> AddMetric(User user, AddMetricRequest request)
         {
-            if (user != null)
+            try
             {
-                var metric = new Metric
+                if (user != null)
                 {
-                    Name = request.Name,
-                    Units = request.Units,
-                    Type = request.Type,
-                    UserID = user.Id,
-                    IsSystem = false
-                };
+                    var metric = new Metric
+                    {
+                        Name = request.Name,
+                        Units = request.Units,
+                        Type = request.Type,
+                        UserID = user.Id,
+                        IsSystem = false
+                    };
 
-                await _metricRepository.Add(metric);
+                    await _metricRepository.Add(metric);
 
-                var userTrackedMetric = new UserTrackedMetric
-                {
-                    UserID = user.Id,
-                    MetricID = metric.ID,
-                    IsTracked = true
-                };
+                    var userTrackedMetric = new UserTrackedMetric
+                    {
+                        UserID = user.Id,
+                        MetricID = metric.ID,
+                        IsTracked = true
+                    };
 
-                await _userTrackedMetricRepository.Add(userTrackedMetric);
+                    await _userTrackedMetricRepository.Add(userTrackedMetric);
 
-                var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
-                                        .OrderBy(utm => utm.Metric.Name)
-                                        .ToList();
+                    var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
+                                            .OrderBy(utm => utm.Metric.Name)
+                                            .ToList();
+
+                    return new EditMetricResponse
+                    {
+                        Successful = true,
+                        Metrics = trackedMetrics
+                    };
+                }
 
                 return new EditMetricResponse
                 {
-                    Metrics = trackedMetrics
+                    Successful = false,
+                    ErrorMessage = "Cannot find user"
                 };
             }
-
-            return new EditMetricResponse
+            catch (Exception ex)
             {
-                ErrorMessage = "Cannot find user"
-            };
+                return new EditMetricResponse
+                {
+                    Successful = false,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         public async Task<EditMetricResponse> UpdateMetric(User user, UpdateMetricRequest request)

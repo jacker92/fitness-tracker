@@ -18,7 +18,7 @@ namespace FitnessTrackerApi.Services
 
         public Gear GetById(int id)
         {
-            return _gearRepository.Get(m => m.ID == id).FirstOrDefault();
+            return _gearRepository.GetById(id);
         }
 
         public async Task<EditGearResponse> AddGear(User user, AddGearRequest request)
@@ -86,7 +86,6 @@ namespace FitnessTrackerApi.Services
             {
                 var gear = _gearRepository.GetById(request.ID);
 
-                // for safety, confirm that the user owns the metric and it's not a system metric
                 // for safety, confirm that the user owns the gear
                 if (gear == null || gear.UserID != user.Id)
                 {

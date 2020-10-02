@@ -28,6 +28,7 @@ namespace FitnessTrackerApi.Controllers
             {
                 return Ok(JsonSerializer.Serialize(new GetGearResponse
                 {
+                    Successful = false,
                     ErrorMessage = "Gear not found"
                 }));
             }
@@ -40,6 +41,7 @@ namespace FitnessTrackerApi.Controllers
             {
                 response = new GetGearResponse
                 {
+                    Successful = false,
                     ErrorMessage = "Gear not found"
                 };
             }
@@ -47,6 +49,7 @@ namespace FitnessTrackerApi.Controllers
             {
                 response = new GetGearResponse
                 {
+                    Successful = true,
                     Gear = gear
                 };
             }
