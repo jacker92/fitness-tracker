@@ -12,7 +12,7 @@ namespace FitnessTrackerApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
         private readonly IUserService _userService;
 
@@ -26,8 +26,7 @@ namespace FitnessTrackerApi.Controllers
         {
             var response = await _userService.Authenticate(request);
 
-            // TODO: Figure out why I need to serialize the response
-            return Ok(JsonSerializer.Serialize(response));
+            return OkResult(response);
         }
 
         [HttpPost("register")]
@@ -35,53 +34,72 @@ namespace FitnessTrackerApi.Controllers
         {
             var response = await _userService.RegisterUser(request);
 
-            // TODO: Figure out why I need to serialize the response
-            return Ok(JsonSerializer.Serialize(response));
+            return OkResult(response);
         }
 
         [Authorize]
         [HttpGet("getuser")]
         public async Task<IActionResult> GetUser()
         {
-            var contextUser = (User)HttpContext.Items["User"];
-            var user = await _userService.GetUserRecord(contextUser.Id);
-
-            if (user == null)
+            try
             {
-                return BadRequest(new { message = "Unable to retrieve user record" });
+                var contextUser = (User)HttpContext.Items["User"];
+                var user = await _userService.GetUserRecord(contextUser.Id);
+
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user record" });
+                }
+
+                var response = new UserResponse
+                {
+                    Successful = true,
+                    User = user
+                };
+
+                return OkResult(response);
             }
-
-            var response = new UserResponse
+            catch (Exception ex)
             {
-                Successful = true,
-                User = user
-            };
-
-            return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new UserResponse { Successful = false, ErrorMessage = ex.Message });
+            }
         }
 
         [HttpGet("checkemail")]
         public async Task<IActionResult> CheckUserEmail(string userId, string email)
         {
-            var response = await _userService.CheckEmail(userId, email);
-            return Ok(JsonSerializer.Serialize(response));
+            try
+            {
+                var response = await _userService.CheckEmail(userId, email);
+                return OkResult(response);
+            }
+            catch (Exception ex)
+            {
+                return OkResult(new CheckEmailResponse { Valid = false, Successful = false, ErrorMessage = ex.Message });
+            }
         }
 
         [Authorize]
         [HttpPost("updateprofile")]
         public async Task<IActionResult> UpdateUserProfile(UpdateProfileRequest request)
         {
-            var user = (User)HttpContext.Items["User"];
-
-            if (user == null)
+            try
             {
-                return BadRequest(new { message = "Unable to retrieve user" });
+                var user = (User)HttpContext.Items["User"];
+
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user" });
+                }
+
+                var response = await _userService.UpdateUserProfile(user, request);
+
+                return OkResult(response);
             }
-
-            var response = await _userService.UpdateUserProfile(user, request);
-
-            // TODO: Figure out why I need to serialize the response
-            return Ok(JsonSerializer.Serialize(response));
+            catch (Exception ex)
+            {
+                return OkResult(new UpdateProfileResponse { Successful = false, ErrorMessage = ex.Message });
+            }
         }
 
         [Authorize]
@@ -99,18 +117,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _userService.UpdateAvatar(user, request);
 
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                var response = new ImageUploadResponse
-                {
-                    Successful = false,
-                    ErrorMessage = ex.Message
-                };
-
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new ImageUploadResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -118,35 +129,48 @@ namespace FitnessTrackerApi.Controllers
         [HttpGet("getavatar")]
         public IActionResult GetAvatar()
         {
-            var user = (User)HttpContext.Items["User"];
-
-            if (user == null)
+            try
             {
-                return BadRequest(new { message = "Unable to retrieve user" });
+                var user = (User)HttpContext.Items["User"];
+
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user" });
+                }
+
+                var response = new ImageUploadResponse
+                {
+                    Image = _userService.GetUserAvatar(user)
+                };
+
+                return OkResult(response);
             }
-
-            var response = new ImageUploadResponse
+            catch (Exception ex)
             {
-                Image = _userService.GetUserAvatar(user)
-            };
-
-            return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new ImageUploadResponse { Successful = false, ErrorMessage = ex.Message });
+            }
         }
 
         [Authorize]
         [HttpPost("removeavatar")]
         public async Task<IActionResult> RemoveAvatar()
         {
-            var user = (User)HttpContext.Items["User"];
-
-            if (user == null)
+            try
             {
-                return BadRequest(new { message = "Unable to retrieve user" });
+                var user = (User)HttpContext.Items["User"];
+
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user" });
+                }
+
+                var response = await _userService.RemoveAvatar(user);
+                return OkResult(response);
             }
-
-            var response = await _userService.RemoveAvatar(user);
-
-            return Ok(JsonSerializer.Serialize(response));
+            catch (Exception ex)
+            {
+                return OkResult(new BaseResponse { Successful = false, ErrorMessage = ex.Message });
+            }
         }
 
         [Authorize]
@@ -164,18 +188,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _userService.UpdateActivitySettings(user, request);
 
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                var response = new UpdateActivitySettingsResponse
-                {
-                    Successful = false,
-                    ErrorMessage = ex.Message
-                };
-
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new UpdateActivitySettingsResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -194,18 +211,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _userService.UpdateDietSettings(user, request);
 
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                var response = new UpdateDietSettingsResponse
-                {
-                    Successful = false,
-                    ErrorMessage = ex.Message
-                };
-
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new UpdateDietSettingsResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -224,18 +234,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _userService.ChangePassword(user, request);
 
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                var response = new ChangePasswordResponse
-                {
-                    Successful = false,
-                    ErrorMessage = ex.Message
-                };
-
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new ChangePasswordResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -254,18 +257,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = _userService.GetUserTrackedMetrics(user);
 
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                var response = new UserMetricsResponse
-                {
-                    Successful = false,
-                    ErrorMessage = ex.Message
-                };
-
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new UserMetricsResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -284,18 +280,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _userService.UpdateUserMetricTracking(user, request);
 
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                var response = new ToggleUserMetricTrackingResponse
-                {
-                    Successful = false,
-                    ErrorMessage = ex.Message
-                };
-
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new ToggleUserMetricTrackingResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -314,18 +303,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = _userService.GetUserGear(user);
 
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                var response = new UserGearResponse
-                {
-                    Successful = false,
-                    ErrorMessage = ex.Message
-                };
-
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new UserGearResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -344,18 +326,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = _userService.GetUserCustomActivities(user);
 
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                var response = new UserCustomActivityResponse
-                {
-                    Successful = false,
-                    ErrorMessage = ex.Message
-                };
-
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new UserCustomActivityResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
     }

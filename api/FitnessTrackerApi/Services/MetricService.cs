@@ -81,79 +81,104 @@ namespace FitnessTrackerApi.Services
 
         public async Task<EditMetricResponse> UpdateMetric(User user, UpdateMetricRequest request)
         {
-            if (user != null)
+            try
             {
-                var metric = _metricRepository.GetById(request.ID);
-
-                // for safety, confirm that the user owns the metric and it's not a system metric
-                if (metric == null || metric.UserID != user.Id || metric.IsSystem)
+                if (user != null)
                 {
+                    var metric = _metricRepository.GetById(request.ID);
+
+                    // for safety, confirm that the user owns the metric and it's not a system metric
+                    if (metric == null || metric.UserID != user.Id || metric.IsSystem)
+                    {
+                        return new EditMetricResponse
+                        {
+                            ErrorMessage = "Cannot find metric"
+                        };
+                    }
+
+                    metric.Name = request.Name;
+                    metric.Units = request.Units;
+                    metric.Type = request.Type;
+
+                    await _metricRepository.Update(metric);
+
+                    var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
+                                            .OrderBy(utm => utm.Metric.Name)
+                                            .ToList();
+
                     return new EditMetricResponse
                     {
-                        ErrorMessage = "Cannot find metric"
+                        Metrics = trackedMetrics
                     };
                 }
 
-                metric.Name = request.Name;
-                metric.Units = request.Units;
-                metric.Type = request.Type;
-
-                await _metricRepository.Update(metric);
-
-                var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
-                                        .OrderBy(utm => utm.Metric.Name)
-                                        .ToList();
-
                 return new EditMetricResponse
                 {
-                    Metrics = trackedMetrics
+                    Successful = false,
+                    ErrorMessage = "Cannot find user"
                 };
             }
-
-            return new EditMetricResponse
+            catch (Exception ex)
             {
-                ErrorMessage = "Cannot find user"
-            };
+                return new EditMetricResponse
+                {
+                    Successful = false,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         public async Task<EditMetricResponse> DeleteMetric(User user, DeleteMetricRequest request)
         {
-            if (user != null)
+            try
             {
-                var metric = _metricRepository.GetById(request.ID);
-
-                // for safety, confirm that the user owns the metric and it's not a system metric
-                if (metric == null || metric.UserID != user.Id || metric.IsSystem)
+                if (user != null)
                 {
+                    var metric = _metricRepository.GetById(request.ID);
+
+                    // for safety, confirm that the user owns the metric and it's not a system metric
+                    if (metric == null || metric.UserID != user.Id || metric.IsSystem)
+                    {
+                        return new EditMetricResponse
+                        {
+                            Successful = false,
+                            ErrorMessage = "Cannot find metric"
+                        };
+                    }
+
+                    // delete all records from the user metrics table
+                    await _userMetricRepository.DeleteRange(_userMetricRepository.Get(um => um.UserID == user.Id && um.MetricID == metric.ID).ToList());
+
+                    // delete the tracked record
+                    await _userTrackedMetricRepository.DeleteRange(_userTrackedMetricRepository.Get(utm => utm.UserID == user.Id && utm.MetricID == metric.ID).ToList());
+
+                    // finally delete the metric itself
+                    await _metricRepository.Delete(metric);
+
+                    var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
+                                            .OrderBy(utm => utm.Metric.Name)
+                                            .ToList();
+
                     return new EditMetricResponse
                     {
-                        ErrorMessage = "Cannot find metric"
+                        Metrics = trackedMetrics
                     };
                 }
 
-                // delete all records from the user metrics table
-                await _userMetricRepository.DeleteRange(_userMetricRepository.Get(um => um.UserID == user.Id && um.MetricID == metric.ID).ToList());
-
-                // delete the tracked record
-                await _userTrackedMetricRepository.DeleteRange(_userTrackedMetricRepository.Get(utm => utm.UserID == user.Id && utm.MetricID == metric.ID).ToList());
-
-                // finally delete the metric itself
-                await _metricRepository.Delete(metric);
-
-                var trackedMetrics = _userTrackedMetricRepository.Get(utm => utm.UserID == user.Id, utm => utm.Metric)
-                                        .OrderBy(utm => utm.Metric.Name)
-                                        .ToList();
-
                 return new EditMetricResponse
                 {
-                    Metrics = trackedMetrics
+                    Successful = false,
+                    ErrorMessage = "Cannot find user"
                 };
             }
-
-            return new EditMetricResponse
+            catch (Exception ex)
             {
-                ErrorMessage = "Cannot find user"
-            };
+                return new EditMetricResponse
+                {
+                    Successful = false,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
     }
 }

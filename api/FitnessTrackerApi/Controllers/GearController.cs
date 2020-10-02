@@ -11,7 +11,7 @@ namespace FitnessTrackerApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GearController : ControllerBase
+    public class GearController : BaseController
     {
         private readonly IGearService _gearService;
 
@@ -24,37 +24,40 @@ namespace FitnessTrackerApi.Controllers
         [HttpGet("getgear")]
         public IActionResult GetGear(int id)
         {
-            if (id < 0)
+            try
             {
-                return Ok(JsonSerializer.Serialize(new GetGearResponse
+                if (id < 0)
                 {
-                    Successful = false,
-                    ErrorMessage = "Gear not found"
-                }));
+                    return OkResult(new GetGearResponse { Successful = false, ErrorMessage = "Gear not found" });
+                }
+
+                var gear = _gearService.GetById(id);
+
+                GetGearResponse response;
+
+                if (gear == null)
+                {
+                    response = new GetGearResponse
+                    {
+                        Successful = false,
+                        ErrorMessage = "Gear not found"
+                    };
+                }
+                else
+                {
+                    response = new GetGearResponse
+                    {
+                        Successful = true,
+                        Gear = gear
+                    };
+                }
+
+                return OkResult(response);
             }
-
-            var gear = _gearService.GetById(id);
-
-            GetGearResponse response;
-
-            if (gear == null)
+            catch (Exception ex)
             {
-                response = new GetGearResponse
-                {
-                    Successful = false,
-                    ErrorMessage = "Gear not found"
-                };
+                return OkResult(new GetGearResponse { Successful = false, ErrorMessage = ex.Message });
             }
-            else
-            {
-                response = new GetGearResponse
-                {
-                    Successful = true,
-                    Gear = gear
-                };
-            }
-
-            return Ok(JsonSerializer.Serialize(response));
         }
 
         [Authorize]
@@ -72,17 +75,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _gearService.AddGear(user, request);
 
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return OkResult(new EditGearResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -101,17 +98,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _gearService.UpdateGear(user, request);
 
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return OkResult(new EditGearResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -130,17 +121,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _gearService.DeleteGear(user, request);
 
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return OkResult(new EditGearResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -159,17 +144,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _gearService.SetGearActiveFlag(user, request);
 
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return OkResult(new EditGearResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 

@@ -11,7 +11,7 @@ namespace FitnessTrackerApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ActivitiesController : ControllerBase
+    public class ActivitiesController : BaseController
     {
         private readonly IActivityService _activityService;
 
@@ -26,11 +26,11 @@ namespace FitnessTrackerApi.Controllers
         {
             if (id < 0)
             {
-                return Ok(JsonSerializer.Serialize(new GetActivityResponse
+                return OkResult(new GetActivityResponse
                 {
                     Successful = false,
                     ErrorMessage = "Activity not found"
-                }));
+                });
             }
 
             var activity = _activityService.GetById(id);
@@ -54,7 +54,7 @@ namespace FitnessTrackerApi.Controllers
                 };
             }
 
-            return Ok(JsonSerializer.Serialize(response));
+            return OkResult(response);
         }
 
         [Authorize]
@@ -72,17 +72,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _activityService.AddActivity(user, request);
 
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return OkResult(new EditActivityResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -101,17 +95,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _activityService.UpdateActivity(user, request);
 
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return OkResult(new EditActivityResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -130,17 +118,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _activityService.DeleteActivity(user, request);
 
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return OkResult(new EditActivityResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
     }

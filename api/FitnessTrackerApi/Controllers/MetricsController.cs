@@ -11,7 +11,7 @@ namespace FitnessTrackerApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MetricsController : ControllerBase
+    public class MetricsController : BaseController
     {
         private readonly IMetricService _metricService;
 
@@ -24,37 +24,40 @@ namespace FitnessTrackerApi.Controllers
         [HttpGet("getmetric")]
         public IActionResult GetMetric(int id)
         {
-            if (id < 0)
+            try
             {
-                return Ok(JsonSerializer.Serialize(new GetMetricResponse
+                if (id < 0)
                 {
-                    Successful = false,
-                    ErrorMessage = "Metric not found"
-                }));
+                    return OkResult(new GetMetricResponse { Successful = false, ErrorMessage = "Metric not found" });
+                }
+
+                var metric = _metricService.GetById(id);
+
+                GetMetricResponse response;
+
+                if (metric == null)
+                {
+                    response = new GetMetricResponse
+                    {
+                        Successful = false,
+                        ErrorMessage = "Metric not found"
+                    };
+                }
+                else
+                {
+                    response = new GetMetricResponse
+                    {
+                        Successful = true,
+                        Metric = metric
+                    };
+                }
+
+                return OkResult(response);
             }
-
-            var metric = _metricService.GetById(id);
-
-            GetMetricResponse response;
-
-            if (metric == null)
+            catch (Exception ex)
             {
-                response = new GetMetricResponse
-                {
-                    Successful = false,
-                    ErrorMessage = "Metric not found"
-                };
+                return OkResult(new GetMetricResponse { Successful = false, ErrorMessage = ex.Message });
             }
-            else
-            {
-                response = new GetMetricResponse
-                {
-                    Successful = true,
-                    Metric = metric
-                };
-            }
-
-            return Ok(JsonSerializer.Serialize(response));
         }
 
         [Authorize]
@@ -77,13 +80,7 @@ namespace FitnessTrackerApi.Controllers
             }
             catch (Exception ex)
             {
-                var response = new EditMetricResponse
-                {
-                    Successful = false,
-                    ErrorMessage = ex.StackTrace
-                };
-
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(new EditMetricResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -102,17 +99,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _metricService.UpdateMetric(user, request);
 
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return OkResult(new EditMetricResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -131,17 +122,11 @@ namespace FitnessTrackerApi.Controllers
 
                 var response = await _metricService.DeleteMetric(user, request);
 
-                if (response.ErrorMessage != "")
-                {
-                    return BadRequest(new { message = response.ErrorMessage });
-                }
-
-                // TODO: Figure out why I need to serialize the response
-                return Ok(JsonSerializer.Serialize(response));
+                return OkResult(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return OkResult(new EditMetricResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
     }
