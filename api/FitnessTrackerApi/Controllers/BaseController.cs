@@ -1,3 +1,4 @@
+using FitnessTrackerApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -9,6 +10,19 @@ namespace FitnessTrackerApi.Controllers
         {
             string json = JsonSerializer.Serialize(reponse);
             return new OkObjectResult(json);
+        }
+
+        protected User LoadUser()
+        {
+            if (HttpContext.Items.ContainsKey("User"))
+            {
+                if (HttpContext.Items["User"] != null)
+                {
+                    return (User)HttpContext.Items["User"];
+                }
+            }
+
+            return null;
         }
     }
 }
