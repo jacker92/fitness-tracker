@@ -63,7 +63,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -86,7 +86,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -109,7 +109,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {

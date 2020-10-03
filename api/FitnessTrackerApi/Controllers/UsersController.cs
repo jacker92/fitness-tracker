@@ -43,7 +43,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var contextUser = (User)HttpContext.Items["User"];
+                var contextUser = LoadUser();
                 var user = await _userService.GetUserRecord(contextUser.Id);
 
                 if (user == null)
@@ -85,7 +85,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -108,7 +108,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -131,7 +131,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -157,7 +157,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -179,7 +179,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -202,7 +202,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -225,7 +225,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -248,7 +248,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -271,7 +271,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -294,7 +294,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
@@ -317,7 +317,7 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = LoadUser();
 
                 if (user == null)
                 {
