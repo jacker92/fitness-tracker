@@ -220,6 +220,13 @@ form button[type='button'] {
     margin-right: 10px;
 }
 
+form input[type='submit']:focus,
+form button[type='submit']:focus,
+form button[type='button']:focus {
+    outline-color: hsl(0, 0%, 73%);
+    background-color: hsl(0, 0%, 15%);
+}
+
 form input[type='submit']:hover,
 form button[type='submit']:hover,
 form button[type='button']:hover {
@@ -319,11 +326,15 @@ button.green {
 }
 
 button.green:hover,
-button.green:active,
-button.green:focus {
+button.green:active {
     border-color: hsl(120, 61%, 25%);
     background: hsl(120, 61%, 25%);
     outline-color: hsl(120, 61%, 25%);
+}
+
+button.green:focus {
+    border-color: hsl(120, 100%, 63%);
+    outline-color: hsl(120, 100%, 63%);
 }
 
 button.red {
@@ -333,11 +344,15 @@ button.red {
 }
 
 button.red:hover,
-button.red:active,
-button.red:focus {
+button.red:active {
     border-color: hsl(3, 87%, 35%);
     background: hsl(3, 87%, 35%);
     outline-color: hsl(3, 87%, 35%);
+}
+
+button.red:focus {
+    border-color: hsl(3, 100%, 82%);
+    outline-color: hsl(3, 100%, 82%);
 }
 
 button.blue {
@@ -347,11 +362,15 @@ button.blue {
 }
 
 button.blue:hover,
-button.blue:active,
-button.blue:focus {
+button.blue:active {
     border-color: hsl(199, 100%, 34%);
     background: hsl(199, 100%, 34%);
     outline-color: hsl(199, 100%, 34%);
+}
+
+button.blue:focus {
+    border-color: hsl(199, 100%, 74%);
+    outline-color: hsl(199, 100%, 74%);
 }
 
 /* LOADING BOX */
