@@ -11,5 +11,6 @@ export interface SelectFieldProps {
     doesErrorContainHtml?: boolean,
     showSuccessMessage?: boolean,
     valueList: Array<{ value: number | string, text: string}>,
-    includeBlank?: boolean
+    includeBlank?: boolean,
+    hideLabel?: boolean,
 }

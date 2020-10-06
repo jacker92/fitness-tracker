@@ -17,6 +17,7 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
         showSuccessMessage,
         doesErrorContainHtml,
         includeBlank,
+        hideLabel,
     } = props;
 
     const [errorMessage, setErrorMessage] = useState(error);
@@ -31,7 +32,7 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
 
     return (
         <label htmlFor={name} className={errorMessage !== '' ? 'errored' : ''}>
-            {label}
+            <span style={hideLabel ? { display: 'none' } : {}}>{label}</span>
             <select
                 id={name}
                 name={name}
@@ -86,6 +87,7 @@ SelectField.defaultProps = {
     requiredField: false,
     value: '',
     includeBlank: true,
+    hideLabel: false,
 };
 
 SelectField.propTypes = {
@@ -111,6 +113,7 @@ SelectField.propTypes = {
     doesErrorContainHtml: PropTypes.bool,
     showSuccessMessage: PropTypes.bool,
     includeBlank: PropTypes.bool,
+    hideLabel: PropTypes.bool,
 };
 
 export { SelectField };

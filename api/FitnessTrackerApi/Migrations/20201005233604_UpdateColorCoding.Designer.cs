@@ -4,14 +4,16 @@ using FitnessTrackerApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FitnessTrackerApi.Migrations
 {
     [DbContext(typeof(FitnessDbContext))]
-    partial class FitnessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201005233604_UpdateColorCoding")]
+    partial class UpdateColorCoding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,18 +64,6 @@ namespace FitnessTrackerApi.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("CaloriesBurnedTarget")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaloriesGreenEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaloriesGreenStart")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaloriesYellowEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaloriesYellowStart")
                         .HasColumnType("int");
 
                     b.Property<int>("CarbohydratesGreenEnd")

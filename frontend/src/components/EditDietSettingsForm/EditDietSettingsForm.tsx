@@ -12,6 +12,7 @@ import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { AppContext } from '../AppContext/AppContext';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { MacroTargetForm } from '../MacroTargetForm/MacroTargetForm';
+import { ColorCodingForm } from '../ColorCodingForm/ColorCodingForm';
 
 const EditDietSettingsForm: React.FC = () => {
     const [status, setStatus] = useState('initialized');
@@ -44,6 +45,23 @@ const EditDietSettingsForm: React.FC = () => {
     const [manualMacrosError] = useState('');
     const [weight, setWeight] = useState(0);
     const [tdee, setTdee] = useState(0);
+    const [enableColorCoding, setEnableColorCoding] = useState(false);
+    const [caloriesYellowStart, setCaloriesYellowStart] = useState(80);
+    const [caloriesYellowEnd, setCaloriesYellowEnd] = useState(120);
+    const [caloriesGreenStart, setCaloriesGreenStart] = useState(90);
+    const [caloriesGreenEnd, setCaloriesGreenEnd] = useState(110);
+    const [proteinYellowStart, setProteinYellowStart] = useState(80);
+    const [proteinYellowEnd, setProteinYellowEnd] = useState(120);
+    const [proteinGreenStart, setProteinGreenStart] = useState(90);
+    const [proteinGreenEnd, setProteinGreenEnd] = useState(110);
+    const [carbohydratesYellowStart, setCarbohydratesYellowStart] = useState(80);
+    const [carbohydratesYellowEnd, setCarbohydratesYellowEnd] = useState(120);
+    const [carbohydratesGreenStart, setCarbohydratesGreenStart] = useState(90);
+    const [carbohydratesGreenEnd, setCarbohydratesGreenEnd] = useState(110);
+    const [fatYellowStart, setFatYellowStart] = useState(80);
+    const [fatYellowEnd, setFatYellowEnd] = useState(120);
+    const [fatGreenStart, setFatGreenStart] = useState(90);
+    const [fatGreenEnd, setFatGreenEnd] = useState(110);
     const [saveDisabled, setSaveDisabled] = useState(false);
 
     const { currentUser } = useContext(AppContext);
@@ -68,6 +86,24 @@ const EditDietSettingsForm: React.FC = () => {
                     setProteinGrams(data.user.dailyTarget.proteinTarget);
                     setCarbsGrams(data.user.dailyTarget.carbohydratesTarget);
                     setFatGrams(data.user.dailyTarget.fatTarget);
+
+                    setEnableColorCoding(data.user.dailyTarget.enableColorCoding);
+                    setCaloriesYellowStart(data.user.dailyTarget.caloriesYellowStart);
+                    setCaloriesYellowEnd(data.user.dailyTarget.caloriesYellowEnd);
+                    setCaloriesGreenStart(data.user.dailyTarget.caloriesGreenStart);
+                    setCaloriesGreenEnd(data.user.dailyTarget.caloriesGreenEnd);
+                    setProteinYellowStart(data.user.dailyTarget.proteinYellowStart);
+                    setProteinYellowEnd(data.user.dailyTarget.proteinYellowEnd);
+                    setProteinGreenStart(data.user.dailyTarget.proteinGreenStart);
+                    setProteinGreenEnd(data.user.dailyTarget.proteinGreenEnd);
+                    setCarbohydratesYellowStart(data.user.dailyTarget.carbohydratesYellowStart);
+                    setCarbohydratesYellowEnd(data.user.dailyTarget.carbohydratesYellowEnd);
+                    setCarbohydratesGreenStart(data.user.dailyTarget.carbohydratesGreenStart);
+                    setCarbohydratesGreenEnd(data.user.dailyTarget.carbohydratesGreenEnd);
+                    setFatYellowStart(data.user.dailyTarget.fatYellowStart);
+                    setFatYellowEnd(data.user.dailyTarget.fatYellowEnd);
+                    setFatGreenStart(data.user.dailyTarget.fatGreenStart);
+                    setFatGreenEnd(data.user.dailyTarget.fatGreenEnd);
 
                     switch (data.user.dailyTarget.macroTargetMode) {
                         case 1: // percentages
@@ -221,6 +257,23 @@ const EditDietSettingsForm: React.FC = () => {
                     enableFatTarget: enableFatPercentage,
                     fatTarget: fatPercentageGrams,
                     fatPercentage,
+                    enableColorCoding,
+                    caloriesYellowStart,
+                    caloriesYellowEnd,
+                    caloriesGreenStart,
+                    caloriesGreenEnd,
+                    proteinYellowStart,
+                    proteinYellowEnd,
+                    proteinGreenStart,
+                    proteinGreenEnd,
+                    carbohydratesYellowStart,
+                    carbohydratesYellowEnd,
+                    carbohydratesGreenStart,
+                    carbohydratesGreenEnd,
+                    fatYellowStart,
+                    fatYellowEnd,
+                    fatGreenStart,
+                    fatGreenEnd,
                 };
                 break;
             case 2: // manual
@@ -240,6 +293,23 @@ const EditDietSettingsForm: React.FC = () => {
                     enableFatTarget: enableFatGrams,
                     fatTarget: fatGrams,
                     fatPercentage,
+                    enableColorCoding,
+                    caloriesYellowStart,
+                    caloriesYellowEnd,
+                    caloriesGreenStart,
+                    caloriesGreenEnd,
+                    proteinYellowStart,
+                    proteinYellowEnd,
+                    proteinGreenStart,
+                    proteinGreenEnd,
+                    carbohydratesYellowStart,
+                    carbohydratesYellowEnd,
+                    carbohydratesGreenStart,
+                    carbohydratesGreenEnd,
+                    fatYellowStart,
+                    fatYellowEnd,
+                    fatGreenStart,
+                    fatGreenEnd,
                 };
                 break;
 
@@ -260,6 +330,23 @@ const EditDietSettingsForm: React.FC = () => {
                     enableFatTarget: false,
                     fatTarget: fatGrams,
                     fatPercentage,
+                    enableColorCoding,
+                    caloriesYellowStart,
+                    caloriesYellowEnd,
+                    caloriesGreenStart,
+                    caloriesGreenEnd,
+                    proteinYellowStart,
+                    proteinYellowEnd,
+                    proteinGreenStart,
+                    proteinGreenEnd,
+                    carbohydratesYellowStart,
+                    carbohydratesYellowEnd,
+                    carbohydratesGreenStart,
+                    carbohydratesGreenEnd,
+                    fatYellowStart,
+                    fatYellowEnd,
+                    fatGreenStart,
+                    fatGreenEnd,
                 };
                 break;
         }
@@ -560,6 +647,106 @@ const EditDietSettingsForm: React.FC = () => {
                                 />
                             </div>
                         </div>
+
+                        <div className="form-field">
+                            <Checkbox
+                                id="enablecolorcoding"
+                                name="enablecolorcoding"
+                                label="Enable Color Coding"
+                                value={1}
+                                isChecked={enableColorCoding}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    setEnableColorCoding(e.target.checked);
+                                }}
+                            />
+                        </div>
+
+                        <div
+                            className="form-field"
+                            data-testid="colorcoding-div"
+                            style={enableColorCoding ? { display: 'block' } : { display: 'none' }}
+                        >
+                            <ColorCodingForm
+                                mode="Calories"
+                                yellowStart={caloriesYellowStart}
+                                yellowEnd={caloriesYellowEnd}
+                                greenStart={caloriesGreenStart}
+                                greenEnd={caloriesGreenEnd}
+                                onYellowStartChange={(e) => {
+                                    setCaloriesYellowStart(parseInt(e.target.value, 10));
+                                }}
+                                onYellowEndChange={(e) => {
+                                    setCaloriesYellowEnd(parseInt(e.target.value, 10));
+                                }}
+                                onGreenStartChange={(e) => {
+                                    setCaloriesGreenStart(parseInt(e.target.value, 10));
+                                }}
+                                onGreenEndChange={(e) => {
+                                    setCaloriesGreenEnd(parseInt(e.target.value, 10));
+                                }}
+                            />
+
+                            <ColorCodingForm
+                                mode="Protein"
+                                yellowStart={proteinYellowStart}
+                                yellowEnd={proteinYellowEnd}
+                                greenStart={proteinGreenStart}
+                                greenEnd={proteinGreenEnd}
+                                onYellowStartChange={(e) => {
+                                    setProteinYellowStart(parseInt(e.target.value, 10));
+                                }}
+                                onYellowEndChange={(e) => {
+                                    setProteinYellowEnd(parseInt(e.target.value, 10));
+                                }}
+                                onGreenStartChange={(e) => {
+                                    setProteinGreenStart(parseInt(e.target.value, 10));
+                                }}
+                                onGreenEndChange={(e) => {
+                                    setProteinGreenEnd(parseInt(e.target.value, 10));
+                                }}
+                            />
+
+                            <ColorCodingForm
+                                mode="Carbohydrates"
+                                yellowStart={carbohydratesYellowStart}
+                                yellowEnd={carbohydratesYellowEnd}
+                                greenStart={carbohydratesGreenStart}
+                                greenEnd={carbohydratesGreenEnd}
+                                onYellowStartChange={(e) => {
+                                    setCarbohydratesYellowStart(parseInt(e.target.value, 10));
+                                }}
+                                onYellowEndChange={(e) => {
+                                    setCarbohydratesYellowEnd(parseInt(e.target.value, 10));
+                                }}
+                                onGreenStartChange={(e) => {
+                                    setCarbohydratesGreenStart(parseInt(e.target.value, 10));
+                                }}
+                                onGreenEndChange={(e) => {
+                                    setCarbohydratesGreenEnd(parseInt(e.target.value, 10));
+                                }}
+                            />
+
+                            <ColorCodingForm
+                                mode="Fat"
+                                yellowStart={fatYellowStart}
+                                yellowEnd={fatYellowEnd}
+                                greenStart={fatGreenStart}
+                                greenEnd={fatGreenEnd}
+                                onYellowStartChange={(e) => {
+                                    setFatYellowStart(parseInt(e.target.value, 10));
+                                }}
+                                onYellowEndChange={(e) => {
+                                    setFatYellowEnd(parseInt(e.target.value, 10));
+                                }}
+                                onGreenStartChange={(e) => {
+                                    setFatGreenStart(parseInt(e.target.value, 10));
+                                }}
+                                onGreenEndChange={(e) => {
+                                    setFatGreenEnd(parseInt(e.target.value, 10));
+                                }}
+                            />
+                        </div>
+
                         <div className="form-field">
                             <button type="submit" disabled={saveDisabled} aria-disabled={saveDisabled}>
                                 Save Changes
