@@ -55,5 +55,56 @@ namespace FitnessTrackerApi.Models.Requests
 
         [JsonPropertyName("fatPercentage")]
         public decimal FatPercentage { get; set; }
+
+        [JsonPropertyName("enableColorCoding")]
+        public bool EnableColorCoding { get; set; }
+
+        [JsonPropertyName("caloriesYellowStart")]
+        public int CaloriesYellowStart { get; set; }
+
+        [JsonPropertyName("caloriesGreenStart")]
+        public int CaloriesGreenStart { get; set; }
+
+        [JsonPropertyName("caloriesGreenEnd")]
+        public int CaloriesGreenEnd { get; set; }
+
+        [JsonPropertyName("caloriesYellowEnd")]
+        public int CaloriesYellowEnd { get; set; }
+
+        [JsonPropertyName("proteinYellowStart")]
+        public int ProteinYellowStart { get; set; }
+
+        [JsonPropertyName("proteinGreenStart")]
+        public int ProteinGreenStart { get; set; }
+
+        [JsonPropertyName("proteinGreenEnd")]
+        public int ProteinGreenEnd { get; set; }
+
+        [JsonPropertyName("proteinYellowEnd")]
+        public int ProteinYellowEnd { get; set; }
+
+        [JsonPropertyName("carbohydratesYellowStart")]
+        public int CarbohydratesYellowStart { get; set; }
+
+        [JsonPropertyName("carbohydratesGreenStart")]
+        public int CarbohydratesGreenStart { get; set; }
+
+        [JsonPropertyName("carbohydratesGreenEnd")]
+        public int CarbohydratesGreenEnd { get; set; }
+
+        [JsonPropertyName("carbohydratesYellowEnd")]
+        public int CarbohydratesYellowEnd { get; set; }
+
+        [JsonPropertyName("fatYellowStart")]
+        public int FatYellowStart { get; set; }
+
+        [JsonPropertyName("fatGreenStart")]
+        public int FatGreenStart { get; set; }
+
+        [JsonPropertyName("fatGreenEnd")]
+        public int FatGreenEnd { get; set; }
+
+        [JsonPropertyName("fatYellowEnd")]
+        public int FatYellowEnd { get; set; }
     }
 }

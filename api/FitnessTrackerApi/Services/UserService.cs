@@ -408,6 +408,23 @@ namespace FitnessTrackerApi.Services
                     user.DailyTarget.EnableFatTarget = request.EnableFatTarget;
                     user.DailyTarget.FatTarget = request.FatTarget;
                     user.DailyTarget.FatPercentage = request.FatPercentage;
+                    user.DailyTarget.EnableColorCoding = request.EnableColorCoding;
+                    user.DailyTarget.CaloriesYellowStart = request.CaloriesYellowStart;
+                    user.DailyTarget.CaloriesYellowEnd = request.CaloriesYellowEnd;
+                    user.DailyTarget.CaloriesGreenStart = request.CaloriesGreenStart;
+                    user.DailyTarget.CaloriesGreenEnd = request.CaloriesGreenEnd;
+                    user.DailyTarget.ProteinYellowStart = request.ProteinYellowStart;
+                    user.DailyTarget.ProteinYellowEnd = request.ProteinYellowEnd;
+                    user.DailyTarget.ProteinGreenStart = request.ProteinGreenStart;
+                    user.DailyTarget.ProteinGreenEnd = request.ProteinGreenEnd;
+                    user.DailyTarget.CarbohydratesYellowStart = request.CarbohydratesYellowStart;
+                    user.DailyTarget.CarbohydratesYellowEnd = request.CarbohydratesYellowEnd;
+                    user.DailyTarget.CarbohydratesGreenStart = request.CarbohydratesGreenStart;
+                    user.DailyTarget.CarbohydratesGreenEnd = request.CarbohydratesGreenEnd;
+                    user.DailyTarget.FatYellowStart = request.FatYellowStart;
+                    user.DailyTarget.FatYellowEnd = request.FatYellowEnd;
+                    user.DailyTarget.FatGreenStart = request.FatGreenStart;
+                    user.DailyTarget.FatGreenEnd = request.FatGreenEnd;
 
                     await _dailyTargetRepository.Update(user.DailyTarget);
 

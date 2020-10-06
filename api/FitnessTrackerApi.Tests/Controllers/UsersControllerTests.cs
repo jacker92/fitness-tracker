@@ -360,7 +360,24 @@ namespace FitnessTrackerApi.Tests.Controllers
                 EnableCarbohydratesTarget = true,
                 CarbohydratesTarget = 160,
                 EnableFatTarget = true,
-                FatTarget = 62
+                FatTarget = 62,
+                EnableColorCoding = true,
+                CaloriesYellowStart = 80,
+                CaloriesGreenStart = 90,
+                CaloriesGreenEnd = 110,
+                CaloriesYellowEnd = 120,
+                ProteinYellowStart = 80,
+                ProteinGreenStart = 90,
+                ProteinGreenEnd = 110,
+                ProteinYellowEnd = 120,
+                CarbohydratesYellowStart = 80,
+                CarbohydratesGreenStart = 90,
+                CarbohydratesGreenEnd = 110,
+                CarbohydratesYellowEnd = 120,
+                FatYellowStart = 80,
+                FatGreenStart = 90,
+                FatGreenEnd = 110,
+                FatYellowEnd = 120
             };
 
             var userService = new MockUserService().MockUpdateDietSettings(new UpdateDietSettingsResponse());

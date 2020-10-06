@@ -64,6 +64,12 @@ describe('<EditDietSettingsForm />', () => {
 
         const manualFieldsDiv = await screen.findByTestId(/manualfields-div/);
         expect(manualFieldsDiv.style.display).toEqual('none');
+
+        const enableColorCodingCheckbox = await screen.findByTestId(/enablecolorcoding/) as HTMLInputElement;
+        expect(enableColorCodingCheckbox.checked).toEqual(false);
+
+        const colorCodingFieldsDiv = await screen.findByTestId(/colorcoding-div/);
+        expect(colorCodingFieldsDiv.style.display).toEqual('none');
     });
 
     test('it toggles the fields', async () => {
@@ -86,18 +92,31 @@ describe('<EditDietSettingsForm />', () => {
         const caloriesTargetDiv = await screen.findByTestId(/caloriestarget-div/) as HTMLDivElement;
         const enableFatPercentageCheckbox = await screen.findByTestId(/enablefat_PERCENT/) as HTMLInputElement;
         const fatPercentageField = await screen.findByTestId('fat_PERCENT') as HTMLInputElement;
+        const enableColorCodingCheckbox = await screen.findByTestId(/enablecolorcoding/) as HTMLInputElement;
+        const colorCodingFieldsDiv = await screen.findByTestId(/colorcoding-div/);
+        const caloriesYellowStartField = await screen.findByTestId('CALORIES_yellowstart') as HTMLSelectElement;
+        const proteinGreenStartField = await screen.findByTestId('PROTEIN_greenstart') as HTMLSelectElement;
+        const carbsGreenEndField = await screen.findByTestId('CARBOHYDRATES_greenend') as HTMLSelectElement;
+        const fatYellowEndField = await screen.findByTestId('FAT_yellowend') as HTMLSelectElement;
 
         expect(caloriesTargetDiv.style.display).toEqual('block');
         expect(fatPercentageField.style.display).toEqual('none');
+        expect(colorCodingFieldsDiv.style.display).toEqual('none');
 
         await act(async () => {
             await userEvent.click(enableCaloriesTargetCheckbox);
             await userEvent.click(enableFatPercentageCheckbox);
+            await userEvent.click(enableColorCodingCheckbox);
         });
 
         expect(caloriesTargetDiv.style.display).toEqual('none');
         expect(fatPercentageField.style.display).toEqual('inline-block');
         expect(fatPercentageField.value).toBe('30');
+        expect(colorCodingFieldsDiv.style.display).toEqual('block');
+        expect(caloriesYellowStartField.value).toBe('80');
+        expect(proteinGreenStartField.value).toBe('90');
+        expect(carbsGreenEndField.value).toBe('110');
+        expect(fatYellowEndField.value).toBe('120');
     });
 
     test('it updates the diet settings successfully', async () => {

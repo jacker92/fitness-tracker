@@ -4,14 +4,16 @@ using FitnessTrackerApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FitnessTrackerApi.Migrations
 {
     [DbContext(typeof(FitnessDbContext))]
-    partial class FitnessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201005230315_AddColorCoding")]
+    partial class AddColorCoding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,35 +66,11 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<int>("CaloriesBurnedTarget")
                         .HasColumnType("int");
 
-                    b.Property<int>("CaloriesGreenEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaloriesGreenStart")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaloriesYellowEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaloriesYellowStart")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarbohydratesGreenEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarbohydratesGreenStart")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("CarbohydratesPercentage")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("CarbohydratesTarget")
                         .HasColumnType("decimal(18,4)");
-
-                    b.Property<int>("CarbohydratesYellowEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarbohydratesYellowStart")
-                        .HasColumnType("int");
 
                     b.Property<bool>("EnableActiveMinuteTarget")
                         .HasColumnType("bit");
@@ -115,31 +93,19 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<bool>("EnableProteinTarget")
                         .HasColumnType("bit");
 
-                    b.Property<int>("FatGreenEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FatGreenStart")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("FatPercentage")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("FatTarget")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<int>("FatYellowEnd")
+                    b.Property<int>("GreenEnd")
                         .HasColumnType("int");
 
-                    b.Property<int>("FatYellowStart")
+                    b.Property<int>("GreenStart")
                         .HasColumnType("int");
 
                     b.Property<int>("MacroTargetMode")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProteinGreenEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProteinGreenStart")
                         .HasColumnType("int");
 
                     b.Property<decimal>("ProteinPercentage")
@@ -148,14 +114,14 @@ namespace FitnessTrackerApi.Migrations
                     b.Property<decimal>("ProteinTarget")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<int>("ProteinYellowEnd")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProteinYellowStart")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("YellowEnd")
+                        .HasColumnType("int");
+
+                    b.Property<int>("YellowStart")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
