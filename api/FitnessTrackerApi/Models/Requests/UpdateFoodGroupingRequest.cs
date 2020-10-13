@@ -1,18 +1,15 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace FitnessTrackerApi.Models
+namespace FitnessTrackerApi.Models.Requests
 {
-    public class FoodGrouping
+    public class UpdateFoodGroupingRequest
     {
+        [Required]
         [JsonPropertyName("id")]
         public int ID { get; set; }
 
-        [JsonPropertyName("userId")]
-        public string UserID { get; set; }
-
-        [JsonIgnore]
-        public virtual User User { get; set; }
-
+        [Required]
         [JsonPropertyName("name")]
         public string Name { get; set; }
 

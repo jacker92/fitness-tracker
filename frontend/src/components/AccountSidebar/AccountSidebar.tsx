@@ -37,6 +37,13 @@ const AccountSidebar: React.FC<AccountSidebarProps> = (props) => {
                     <a href="/account/diet">Diet Settings</a>
                 )}
             </li>
+            <li className={activePage === 'food' ? 'active' : ''}>
+                {activePage === 'food' ? (
+                    <>Food Settings</>
+                ) : (
+                    <a href="/account/food">Food Settings</a>
+                )}
+            </li>
             <li className={activePage === 'metrics' ? 'active' : ''}>
                 {activePage === 'metrics' ? (
                     <>Metrics</>

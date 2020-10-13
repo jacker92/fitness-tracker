@@ -1,10 +1,8 @@
-using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
 using FitnessTrackerApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FitnessTrackerApi.Controllers

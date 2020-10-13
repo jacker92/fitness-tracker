@@ -63,6 +63,8 @@ namespace FitnessTrackerApi
 
             // Services
             services.AddScoped<IActivityService, ActivityService>();
+            services.AddScoped<IFoodService, FoodService>();
+            services.AddScoped<IFoodGroupingService, FoodGroupingService>();
             services.AddScoped<IGearService, GearService>();
             services.AddScoped<IMetricService, MetricService>();
             services.AddScoped<IUserService, UserService>();
