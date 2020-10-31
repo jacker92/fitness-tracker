@@ -17,6 +17,8 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
     const [isVisible, setIsVisible] = useState(visible);
     const [id, setId] = useState(food.id);
     const [name, setName] = useState(food.name);
+    const [servingSize, setServingSize] = useState(food.servingSize);
+    const [servingSizeError, setServingSizeError] = useState('');
     const [calories, setCalories] = useState(food.calories);
     const [protein, setProtein] = useState(food.protein);
     const [carbohydrates, setCarbohydrates] = useState(food.carbohydrates);
@@ -41,6 +43,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
     useEffect(() => {
         setId(food.id);
         setName(food.name);
+        setServingSize(food.servingSize);
         setCalories(food.calories);
         setProtein(food.protein);
         setCarbohydrates(food.carbohydrates);
@@ -52,6 +55,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
 
     useEffect(() => {
         if (nameError === ''
+            && servingSizeError === ''
             && caloriesError === ''
             && proteinError === ''
             && carbohydratesError === ''
@@ -61,11 +65,13 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
         } else {
             setSaveDisabled(true);
         }
-    }, [nameError, caloriesError, proteinError, carbohydratesError, fatError, sugarError]);
+    }, [nameError, servingSizeError, caloriesError, proteinError, carbohydratesError, fatError, sugarError]);
 
     const resetForm = () => {
         setName('');
         setNameError('');
+        setServingSize('');
+        setServingSizeError('');
         setCalories(0);
         setCaloriesError('');
         setProtein(0);
@@ -86,6 +92,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
         client('foods/addfood', {
             data: {
                 name: newFood.name,
+                servingSize: newFood.servingSize,
                 calories: newFood.calories,
                 protein: newFood.protein,
                 carbohydrates: newFood.carbohydrates,
@@ -120,6 +127,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
             data: {
                 id: updatedFood.id,
                 name: updatedFood.name,
+                servingSize: updatedFood.servingSize,
                 calories: updatedFood.calories,
                 protein: updatedFood.protein,
                 carbohydrates: updatedFood.carbohydrates,
@@ -155,6 +163,11 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
         if (!FormValidator.validateNotEmpty(name)) {
             isValid = false;
             setNameError('Name is required');
+        }
+
+        if (!FormValidator.validateNotEmpty(servingSize)) {
+            isValid = false;
+            setServingSizeError('Serving size is required');
         }
 
         if (!FormValidator.validateNumeric(calories)) {
@@ -207,6 +220,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
                             const editedFood: CustomFood = {
                                 id,
                                 name,
+                                servingSize,
                                 calories,
                                 protein,
                                 carbohydrates,
@@ -238,6 +252,23 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
                                 }}
                                 onErrorChange={(error: string) => {
                                     setNameError(error);
+                                }}
+                            />
+                        </div>
+
+                        <div className="form-field">
+                            <TextBox
+                                id="servingSize"
+                                name="servingSize"
+                                label="Serving Size"
+                                value={servingSize}
+                                error={servingSizeError}
+                                validationRule="notempty"
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    setServingSize(e.target.value);
+                                }}
+                                onErrorChange={(error: string) => {
+                                    setServingSizeError(error);
                                 }}
                             />
                         </div>
@@ -304,7 +335,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
                                 id="fat"
                                 name="fat"
                                 label="Fat (g)"
-                                value={calories}
+                                value={fat}
                                 error={fatError}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     if (e.target.value !== '') {
@@ -386,11 +417,11 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
 };
 
 CustomFoodForm.propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
     food: PropTypes.exact({
         id: PropTypes.number,
         userId: PropTypes.string,
         name: PropTypes.string.isRequired,
+        servingSize: PropTypes.string.isRequired,
         calories: PropTypes.number,
         protein: PropTypes.number,
         carbohydrates: PropTypes.number,

@@ -17,6 +17,9 @@ namespace FitnessTrackerApi.Models
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("servingSize")]
+        public string ServingSize { get; set; }
+
         [Column(TypeName = "decimal(18,4)")]
         [JsonPropertyName("calories")]
         public decimal Calories { get; set; }

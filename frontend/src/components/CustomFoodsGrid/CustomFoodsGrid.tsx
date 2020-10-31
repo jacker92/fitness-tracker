@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {
+    useState, useEffect, useContext, useCallback,
+} from 'react';
 import { GridColumn } from '../../types/GridColumn';
 import { CustomFoodDataRow } from '../../types/CustomFoodDataRow';
 import { CustomFood } from '../../types/CustomFood';
@@ -18,6 +20,7 @@ const CustomFoodsGrid: React.FC = () => {
         id: 0,
         userId: currentUser.id,
         name: '',
+        servingSize: '',
         calories: 0,
         protein: 0,
         carbohydrates: 0,
@@ -37,7 +40,7 @@ const CustomFoodsGrid: React.FC = () => {
     const [confirmText, setConfirmText] = useState('Are you sure you want to delete this food?');
     const [foodToDeleteId, setFoodToDeleteId] = useState(null);
 
-    const transformData = (foods: Array<CustomFood>) => {
+    const transformData = useCallback((foods: Array<CustomFood>) => {
         const customFoods: Array<CustomFoodDataRow> = [];
 
         foods.forEach((f: CustomFood) => {
@@ -50,7 +53,7 @@ const CustomFoodsGrid: React.FC = () => {
         });
 
         return customFoods;
-    };
+    }, [currentUser.id]);
 
     useEffect(() => {
         client('foods/getusercustomfoods').then(
@@ -76,7 +79,7 @@ const CustomFoodsGrid: React.FC = () => {
                 setStatus('errored');
             },
         );
-    }, [currentUser.id]);
+    }, [currentUser.id, transformData]);
 
     const getFoodById = async (id: number) => {
         await client(`foods/getfood?id=${id}`).then(
@@ -86,6 +89,7 @@ const CustomFoodsGrid: React.FC = () => {
                         id: data.food.id,
                         userId: data.food.userId,
                         name: data.food.name,
+                        servingSize: data.food.servingSize,
                         calories: data.food.calories,
                         protein: data.food.protein,
                         carbohydrates: data.food.carbohydrates,

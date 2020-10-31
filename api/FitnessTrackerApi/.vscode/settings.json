@@ -3,4 +3,5 @@
         "titleBar.activeBackground": "#005b77",
         "titleBar.inactiveBackground": "#005b77"
     },
+    "workbench.colorTheme": "Visual Studio 2019 Dark"
 }
