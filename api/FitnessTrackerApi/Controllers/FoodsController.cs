@@ -122,7 +122,7 @@ namespace FitnessTrackerApi.Controllers
 
         [Authorize]
         [HttpPost("updatefood")]
-        public async Task<IActionResult> UpdateFoodGrouping(UpdateFoodRequest request)
+        public async Task<IActionResult> UpdateFood(UpdateFoodRequest request)
         {
             try
             {
@@ -143,7 +143,7 @@ namespace FitnessTrackerApi.Controllers
 
         [Authorize]
         [HttpPost("deletefood")]
-        public async Task<IActionResult> DeleteFoodGrouping(DeleteFoodRequest request)
+        public async Task<IActionResult> DeleteFood(DeleteFoodRequest request)
         {
             try
             {

@@ -8,7 +8,7 @@ import '../../styles/account.css';
 import './FoodSettings.css';
 
 const FoodSettings: React.FC = () => {
-    const [activeTab, setActiveTab] = useState('foods');
+    const [activeTab, setActiveTab] = useState('groupings');
 
     return (
         <AuthGateway redirectUrl="/account/food">
@@ -19,10 +19,18 @@ const FoodSettings: React.FC = () => {
                 <div className="content">
                     <h1>Food Settings</h1>
 
-                    <h2>Food Groupings</h2>
-                    <FoodGroupingsGrid />
-
                     <ul className="tab-bar">
+                        <li id="groupings-tab" className={activeTab === 'groupings' ? 'active' : ''}>
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setActiveTab('groupings');
+                                }}
+                            >
+                                Groupings
+                            </button>
+                        </li>
                         <li id="foods-tab" className={activeTab === 'foods' ? 'active' : ''}>
                             <button
                                 type="button"
@@ -47,6 +55,9 @@ const FoodSettings: React.FC = () => {
                         </li>
                     </ul>
                     <div className="tab-content">
+                        <div className={activeTab === 'groupings' ? 'parent-content active' : 'parent-content'}>
+                            <FoodGroupingsGrid />
+                        </div>
                         <div className={activeTab === 'foods' ? 'parent-content active' : 'parent-content'}>
                             <CustomFoodsGrid />
                         </div>
