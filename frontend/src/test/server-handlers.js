@@ -239,6 +239,53 @@ const handlers = [
         email: 'test@testing.com',
         token: '1234567890',
     }))),
+
+    rest.get('*/foods/getusercustomfoods', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        foods: [
+            {
+                id: 1,
+                name: 'Yogurt',
+                servingSize: '5 oz.',
+                calories: 120,
+                protein: 10,
+                carbohydrates: 20,
+                fat: 2,
+                sugar: 10,
+                isAlcoholic: false,
+                isPublic: false,
+                userId: '123',
+            },
+            {
+                id: 2,
+                name: 'Honeycrisp Apple',
+                servingSize: '1 Apple',
+                calories: 90,
+                protein: 1,
+                carbohydrates: 24,
+                fat: 2,
+                sugar: 13,
+                isAlcoholic: false,
+                isPublic: false,
+                userId: '123',
+            },
+            {
+                id: 3,
+                name: 'Beer',
+                servingSize: '12 oz.',
+                calories: 145,
+                protein: 1,
+                carbohydrates: 35,
+                fat: 0,
+                sugar: 1,
+                isAlcoholic: true,
+                isPublic: false,
+                userId: '123',
+            },
+        ],
+    }))),
+
 ];
 
 export { handlers };
