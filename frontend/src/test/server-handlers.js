@@ -286,6 +286,36 @@ const handlers = [
         ],
     }))),
 
+    rest.get('*/foodgroupings/getuserfoodgroupings', (req, res, ctx) => res(ctx.json({
+        successful: true,
+        error: '',
+        foodGroupings: [
+            {
+                id: 1,
+                name: 'Breakfast',
+                sortOrder: 1,
+                userId: '123',
+            },
+            {
+                id: 2,
+                name: 'Lunch',
+                sortOrder: 2,
+                userId: '123',
+            },
+            {
+                id: 3,
+                name: 'Dinner',
+                sortOrder: 3,
+                userId: '123',
+            },
+            {
+                id: 4,
+                name: 'Snacks',
+                sortOrder: 4,
+                userId: '123',
+            },
+        ],
+    }))),
 ];
 
 export { handlers };
