@@ -5,7 +5,6 @@ import { FoodGroupingsGrid } from '../FoodGroupingsGrid/FoodGroupingsGrid';
 import { CustomFoodsGrid } from '../CustomFoodsGrid/CustomFoodsGrid';
 
 import '../../styles/account.css';
-import './FoodSettings.css';
 
 const FoodSettings: React.FC = () => {
     const [activeTab, setActiveTab] = useState('groupings');

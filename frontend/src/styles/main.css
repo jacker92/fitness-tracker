@@ -452,6 +452,57 @@ div.modal-window {
     left: 50%;
 }
 
+/* TAB BAR */
+ul.tab-bar {
+    margin: 25px 0 0 0;
+    padding: 0 15px;
+    border-bottom: 1px solid #000000;
+}
+
+ul.tab-bar li {
+    list-style-type: none;
+    display: inline-block;
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    margin-bottom: -1px;
+}
+
+ul.tab-bar li:last-child {
+    border-right: 1px solid #000000;
+}
+
+ul.tab-bar li.active {
+    border-bottom: 1px solid #ffffff;
+}
+
+ul.tab-bar li:hover {
+    background-color: #000000;
+    border-bottom-color: #000000;
+}
+
+ul.tab-bar li:hover button {
+    color: #ffffff;
+}
+
+ul.tab-bar li button {
+    border: none;
+    background-color: transparent;
+    font-size: 1rem;
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 7px 20px;
+}
+
+.tab-content .parent-content {
+    padding: 0px 15px;
+    display: none;
+}
+
+.tab-content .parent-content.active {
+    display: block;
+}
+
 /* UTILITIES */
 .centered {
     text-align: center;
