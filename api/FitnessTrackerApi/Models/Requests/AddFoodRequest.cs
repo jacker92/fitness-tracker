@@ -10,6 +10,9 @@ namespace FitnessTrackerApi.Models.Requests
         [JsonPropertyName("servingSize")]
         public string ServingSize { get; set; }
 
+        [JsonPropertyName("brand")]
+        public string Brand { get; set; }
+
         [JsonPropertyName("calories")]
         public decimal Calories { get; set; }
 

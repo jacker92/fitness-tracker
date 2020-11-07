@@ -2,6 +2,7 @@ export interface CustomFood {
     id: number,
     userId?: string,
     name: string,
+    brand?: string,
     servingSize: string,
     calories?: number,
     protein?: number,

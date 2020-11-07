@@ -29,6 +29,7 @@ namespace FitnessTrackerApi.Tests.Controllers
             {
                 ID = 1,
                 ServingSize = "16 oz.",
+                Brand = "Wegmans",
                 Calories = 300,
                 Carbohydrates = 25,
                 Fat = 12,
@@ -74,9 +75,9 @@ namespace FitnessTrackerApi.Tests.Controllers
         {
             var userFoods = new List<Food>
             {
-                new Food { ID = 1, ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+                new Food { ID = 1, Brand = "Wegmans", ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
             var user = new User
@@ -105,6 +106,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         {
             var request = new AddFoodRequest
             {
+                Brand = "Wegmans",
                 ServingSize = "16 oz.",
                 Calories = 300,
                 Carbohydrates = 25,
@@ -118,9 +120,9 @@ namespace FitnessTrackerApi.Tests.Controllers
 
             var foodList = new List<Food>
             {
-                new Food { ID = 1, ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+                new Food { ID = 1, Brand = "Wegmans", ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
             var addResponse = new EditFoodResponse
@@ -158,6 +160,7 @@ namespace FitnessTrackerApi.Tests.Controllers
             {
                 ID = 1,
                 ServingSize = "14 oz.",
+                Brand = "Wegmans",
                 Calories = 300,
                 Carbohydrates = 25,
                 Fat = 12,
@@ -170,9 +173,9 @@ namespace FitnessTrackerApi.Tests.Controllers
 
             var foodList = new List<Food>
             {
-                new Food { ID = 1, ServingSize = "14 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+                new Food { ID = 1, Brand = "Wegmans", ServingSize = "14 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
             var updateResponse = new EditFoodResponse
@@ -213,8 +216,8 @@ namespace FitnessTrackerApi.Tests.Controllers
 
             var foodList = new List<Food>
             {
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
             var deleteResponse = new EditFoodResponse

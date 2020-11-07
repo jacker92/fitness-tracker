@@ -49,6 +49,7 @@ namespace FitnessTrackerApi.Services
                     {
                         UserID = user.Id,
                         Name = request.Name,
+                        Brand = request.Brand,
                         ServingSize = request.ServingSize,
                         Calories = request.Calories,
                         Protein = request.Protein,
@@ -99,6 +100,7 @@ namespace FitnessTrackerApi.Services
                     }
 
                     food.Name = request.Name;
+                    food.Brand = request.Brand;
                     food.ServingSize = request.ServingSize;
                     food.Calories = request.Calories;
                     food.Protein = request.Protein;

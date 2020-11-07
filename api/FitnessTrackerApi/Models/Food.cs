@@ -17,6 +17,9 @@ namespace FitnessTrackerApi.Models
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("brand")]
+        public string Brand { get; set; }
+
         [JsonPropertyName("servingSize")]
         public string ServingSize { get; set; }
 

@@ -20,6 +20,7 @@ const CustomFoodsGrid: React.FC = () => {
         id: 0,
         userId: currentUser.id,
         name: '',
+        brand: '',
         servingSize: '',
         calories: 0,
         protein: 0,
@@ -47,6 +48,7 @@ const CustomFoodsGrid: React.FC = () => {
             customFoods.push({
                 id: f.id,
                 name: f.name,
+                brand: f.brand,
                 canDelete: f.userId === currentUser.id,
                 canEdit: f.userId === currentUser.id,
             });
@@ -89,6 +91,7 @@ const CustomFoodsGrid: React.FC = () => {
                         id: data.food.id,
                         userId: data.food.userId,
                         name: data.food.name,
+                        brand: data.food.brand,
                         servingSize: data.food.servingSize,
                         calories: data.food.calories,
                         protein: data.food.protein,
@@ -152,9 +155,15 @@ const CustomFoodsGrid: React.FC = () => {
     const columns: Array<GridColumn> = [
         {
             Heading: 'Name',
-            Width: '70%',
+            Width: '50%',
             ColumnId: 'name',
             Key: 'NAME',
+        },
+        {
+            Heading: 'Brand',
+            Width: '20%',
+            ColumnId: 'brand',
+            Key: 'BRAND',
         },
         {
             Heading: ' ',

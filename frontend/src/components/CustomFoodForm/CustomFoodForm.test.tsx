@@ -12,6 +12,7 @@ describe('<CustomFoodForm />', () => {
     const newFood: CustomFood = {
         id: 0,
         name: '',
+        brand: '',
         servingSize: '',
         calories: 0,
         protein: 0,
@@ -25,6 +26,7 @@ describe('<CustomFoodForm />', () => {
     const existingFood: CustomFood = {
         id: 1,
         name: 'Yogurt',
+        brand: 'Chobani',
         servingSize: '5 oz.',
         calories: 120,
         protein: 10,
@@ -55,14 +57,29 @@ describe('<CustomFoodForm />', () => {
         const nameField = await screen.findByLabelText(/Name/) as HTMLInputElement;
         expect(nameField.value).toBe('');
 
+        const brandField = await screen.findByLabelText(/Brand/) as HTMLInputElement;
+        expect(brandField.value).toBe('');
+
         const caloriesField = await screen.findByLabelText(/Calories/) as HTMLInputElement;
         expect(caloriesField.value).toBe('0');
+
+        const proteinField = await screen.findByLabelText(/Protein/) as HTMLInputElement;
+        expect(proteinField.value).toBe('0');
 
         const carbsField = await screen.findByLabelText(/Carbohydrates/) as HTMLSelectElement;
         expect(carbsField.value).toBe('0');
 
+        const fatField = await screen.findByLabelText(/Fat/) as HTMLInputElement;
+        expect(fatField.value).toBe('0');
+
+        const sugarField = await screen.findByLabelText(/Sugar/) as HTMLInputElement;
+        expect(sugarField.value).toBe('0');
+
         const isPublicCheckbox = await screen.findByLabelText(/Public/) as HTMLInputElement;
         expect(isPublicCheckbox.checked).toBeFalsy();
+
+        const isAlcoholicCheckbox = await screen.findByLabelText(/Alcoholic/) as HTMLInputElement;
+        expect(isAlcoholicCheckbox.checked).toBeFalsy();
 
         await screen.findByRole('button', { name: /Add/i });
     });
@@ -86,14 +103,29 @@ describe('<CustomFoodForm />', () => {
         const nameField = await screen.findByLabelText(/Name/) as HTMLInputElement;
         expect(nameField.value).toBe('Yogurt');
 
+        const brandField = await screen.findByLabelText(/Brand/) as HTMLInputElement;
+        expect(brandField.value).toBe('Chobani');
+
         const caloriesField = await screen.findByLabelText(/Calories/) as HTMLInputElement;
         expect(caloriesField.value).toBe('120');
+
+        const proteinField = await screen.findByLabelText(/Protein/) as HTMLInputElement;
+        expect(proteinField.value).toBe('10');
 
         const carbsField = await screen.findByLabelText(/Carbohydrates/) as HTMLSelectElement;
         expect(carbsField.value).toBe('20');
 
+        const fatField = await screen.findByLabelText(/Fat/) as HTMLInputElement;
+        expect(fatField.value).toBe('2');
+
+        const sugarField = await screen.findByLabelText(/Sugar/) as HTMLInputElement;
+        expect(sugarField.value).toBe('10');
+
         const isPublicCheckbox = await screen.findByLabelText(/Public/) as HTMLInputElement;
         expect(isPublicCheckbox.checked).toBeTruthy();
+
+        const isAlcoholicCheckbox = await screen.findByLabelText(/Alcoholic/) as HTMLInputElement;
+        expect(isAlcoholicCheckbox.checked).toBeFalsy();
 
         await screen.findByRole('button', { name: /Update/i });
     });

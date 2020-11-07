@@ -32,6 +32,6 @@ table.grid tbody tr:nth-child(even) {
 
 div.grid-form {
     margin: 25px auto;
-    width: 400px;
+    /* width: 400px; */
     padding: 0 30px;
 }

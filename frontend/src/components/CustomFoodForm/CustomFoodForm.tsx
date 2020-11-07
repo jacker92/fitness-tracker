@@ -17,6 +17,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
     const [isVisible, setIsVisible] = useState(visible);
     const [id, setId] = useState(food.id);
     const [name, setName] = useState(food.name);
+    const [brand, setBrand] = useState(food.brand);
     const [servingSize, setServingSize] = useState(food.servingSize);
     const [servingSizeError, setServingSizeError] = useState('');
     const [calories, setCalories] = useState(food.calories);
@@ -43,6 +44,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
     useEffect(() => {
         setId(food.id);
         setName(food.name);
+        setBrand(food.brand);
         setServingSize(food.servingSize);
         setCalories(food.calories);
         setProtein(food.protein);
@@ -70,6 +72,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
     const resetForm = () => {
         setName('');
         setNameError('');
+        setBrand('');
         setServingSize('');
         setServingSizeError('');
         setCalories(0);
@@ -92,6 +95,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
         client('foods/addfood', {
             data: {
                 name: newFood.name,
+                brand: newFood.brand,
                 servingSize: newFood.servingSize,
                 calories: newFood.calories,
                 protein: newFood.protein,
@@ -127,6 +131,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
             data: {
                 id: updatedFood.id,
                 name: updatedFood.name,
+                brand: updatedFood.brand,
                 servingSize: updatedFood.servingSize,
                 calories: updatedFood.calories,
                 protein: updatedFood.protein,
@@ -199,7 +204,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
     };
 
     return (
-        <ModalWindow width={376} visible={isVisible}>
+        <ModalWindow width={800} visible={isVisible}>
             <div className="grid-form">
                 <h2>
                     {id > 0 ? 'Update' : 'Add New' }
@@ -220,6 +225,7 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
                             const editedFood: CustomFood = {
                                 id,
                                 name,
+                                brand,
                                 servingSize,
                                 calories,
                                 protein,
@@ -239,159 +245,176 @@ const CustomFoodForm: React.FC<CustomFoodFormProps> = (props) => {
                     }}
                 >
                     <fieldset>
-                        <div className="form-field">
-                            <TextBox
-                                id="name"
-                                name="name"
-                                label="Name"
-                                value={name}
-                                error={nameError}
-                                validationRule="notempty"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    setName(e.target.value);
-                                }}
-                                onErrorChange={(error: string) => {
-                                    setNameError(error);
-                                }}
-                            />
-                        </div>
+                        <div className="two-columns">
+                            <div className="column-one">
+                                <div className="form-field">
+                                    <TextBox
+                                        id="name"
+                                        name="name"
+                                        label="Name"
+                                        value={name}
+                                        error={nameError}
+                                        validationRule="notempty"
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            setName(e.target.value);
+                                        }}
+                                        onErrorChange={(error: string) => {
+                                            setNameError(error);
+                                        }}
+                                    />
+                                </div>
+                                <div className="form-field">
+                                    <TextBox
+                                        id="brand"
+                                        name="brand"
+                                        label="Brand"
+                                        value={brand}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            setBrand(e.target.value);
+                                        }}
+                                    />
+                                </div>
 
-                        <div className="form-field">
-                            <TextBox
-                                id="servingSize"
-                                name="servingSize"
-                                label="Serving Size"
-                                value={servingSize}
-                                error={servingSizeError}
-                                validationRule="notempty"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    setServingSize(e.target.value);
-                                }}
-                                onErrorChange={(error: string) => {
-                                    setServingSizeError(error);
-                                }}
-                            />
-                        </div>
+                                <div className="form-field">
+                                    <TextBox
+                                        id="servingSize"
+                                        name="servingSize"
+                                        label="Serving Size"
+                                        value={servingSize}
+                                        error={servingSizeError}
+                                        validationRule="notempty"
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            setServingSize(e.target.value);
+                                        }}
+                                        onErrorChange={(error: string) => {
+                                            setServingSizeError(error);
+                                        }}
+                                    />
+                                </div>
 
-                        <div className="form-field">
-                            <TextBox
-                                id="calories"
-                                name="calories"
-                                label="Calories"
-                                value={calories}
-                                error={caloriesError}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    if (e.target.value !== '') {
-                                        if (!Number.isNaN(e.target.value)) {
-                                            setCalories(parseInt(e.target.value, 10));
-                                        }
-                                    } else {
-                                        setCalories(0);
-                                    }
-                                }}
-                            />
-                        </div>
+                                <div className="form-field">
+                                    <Checkbox
+                                        id="alcoholic"
+                                        name="alcoholic"
+                                        label="Alcoholic"
+                                        value={1}
+                                        isChecked={isAlcoholic}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            setIsAlcoholic(e.target.checked);
+                                        }}
+                                    />
+                                </div>
 
-                        <div className="form-field">
-                            <TextBox
-                                id="protein"
-                                name="protein"
-                                label="Protein (g)"
-                                value={protein}
-                                error={proteinError}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    if (e.target.value !== '') {
-                                        if (!Number.isNaN(e.target.value)) {
-                                            setProtein(parseInt(e.target.value, 10));
-                                        }
-                                    } else {
-                                        setProtein(0);
-                                    }
-                                }}
-                            />
-                        </div>
+                                <div className="form-field">
+                                    <Checkbox
+                                        id="public"
+                                        name="public"
+                                        label="Public"
+                                        value={1}
+                                        isChecked={isPublic}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            setIsPublic(e.target.checked);
+                                        }}
+                                    />
+                                </div>
+                            </div>
 
-                        <div className="form-field">
-                            <TextBox
-                                id="carbohydrates"
-                                name="carbohydrates"
-                                label="Carbohydrates (g)"
-                                value={carbohydrates}
-                                error={carbohydratesError}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    if (e.target.value !== '') {
-                                        if (!Number.isNaN(e.target.value)) {
-                                            setCarbohydrates(parseInt(e.target.value, 10));
-                                        }
-                                    } else {
-                                        setCarbohydrates(0);
-                                    }
-                                }}
-                            />
-                        </div>
+                            <div className="column-two">
+                                <div className="form-field">
+                                    <TextBox
+                                        id="calories"
+                                        name="calories"
+                                        label="Calories"
+                                        value={calories}
+                                        error={caloriesError}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            if (e.target.value !== '') {
+                                                if (!Number.isNaN(e.target.value)) {
+                                                    setCalories(parseInt(e.target.value, 10));
+                                                }
+                                            } else {
+                                                setCalories(0);
+                                            }
+                                        }}
+                                    />
+                                </div>
 
-                        <div className="form-field">
-                            <TextBox
-                                id="fat"
-                                name="fat"
-                                label="Fat (g)"
-                                value={fat}
-                                error={fatError}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    if (e.target.value !== '') {
-                                        if (!Number.isNaN(e.target.value)) {
-                                            setFat(parseInt(e.target.value, 10));
-                                        }
-                                    } else {
-                                        setFat(0);
-                                    }
-                                }}
-                            />
-                        </div>
+                                <div className="form-field">
+                                    <TextBox
+                                        id="protein"
+                                        name="protein"
+                                        label="Protein (g)"
+                                        value={protein}
+                                        error={proteinError}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            if (e.target.value !== '') {
+                                                if (!Number.isNaN(e.target.value)) {
+                                                    setProtein(parseInt(e.target.value, 10));
+                                                }
+                                            } else {
+                                                setProtein(0);
+                                            }
+                                        }}
+                                    />
+                                </div>
 
-                        <div className="form-field">
-                            <TextBox
-                                id="sugar"
-                                name="sugar"
-                                label="Sugar (g)"
-                                value={sugar}
-                                error={sugarError}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    if (e.target.value !== '') {
-                                        if (!Number.isNaN(e.target.value)) {
-                                            setSugar(parseInt(e.target.value, 10));
-                                        }
-                                    } else {
-                                        setSugar(0);
-                                    }
-                                }}
-                            />
-                        </div>
+                                <div className="form-field">
+                                    <TextBox
+                                        id="carbohydrates"
+                                        name="carbohydrates"
+                                        label="Carbohydrates (g)"
+                                        value={carbohydrates}
+                                        error={carbohydratesError}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            if (e.target.value !== '') {
+                                                if (!Number.isNaN(e.target.value)) {
+                                                    setCarbohydrates(parseInt(e.target.value, 10));
+                                                }
+                                            } else {
+                                                setCarbohydrates(0);
+                                            }
+                                        }}
+                                    />
+                                </div>
 
-                        <div className="form-field">
-                            <Checkbox
-                                id="alcholic"
-                                name="alcoholic"
-                                label="Alcoholic"
-                                value={1}
-                                isChecked={isAlcoholic}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    setIsAlcoholic(e.target.checked);
-                                }}
-                            />
-                        </div>
+                                <div className="form-field">
+                                    <TextBox
+                                        id="fat"
+                                        name="fat"
+                                        label="Fat (g)"
+                                        value={fat}
+                                        error={fatError}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            if (e.target.value !== '') {
+                                                if (!Number.isNaN(e.target.value)) {
+                                                    setFat(parseInt(e.target.value, 10));
+                                                }
+                                            } else {
+                                                setFat(0);
+                                            }
+                                        }}
+                                    />
+                                </div>
 
-                        <div className="form-field">
-                            <Checkbox
-                                id="public"
-                                name="public"
-                                label="Public"
-                                value={1}
-                                isChecked={isPublic}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    setIsPublic(e.target.checked);
-                                }}
-                            />
+                                <div className="form-field">
+                                    <TextBox
+                                        id="sugar"
+                                        name="sugar"
+                                        label="Sugar (g)"
+                                        value={sugar}
+                                        error={sugarError}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            if (e.target.value !== '') {
+                                                if (!Number.isNaN(e.target.value)) {
+                                                    setSugar(parseInt(e.target.value, 10));
+                                                }
+                                            } else {
+                                                setSugar(0);
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         <div className="form-field">
@@ -421,6 +444,7 @@ CustomFoodForm.propTypes = {
         id: PropTypes.number,
         userId: PropTypes.string,
         name: PropTypes.string.isRequired,
+        brand: PropTypes.string,
         servingSize: PropTypes.string.isRequired,
         calories: PropTypes.number,
         protein: PropTypes.number,

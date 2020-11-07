@@ -247,6 +247,7 @@ const handlers = [
             {
                 id: 1,
                 name: 'Yogurt',
+                brand: 'Chobani',
                 servingSize: '5 oz.',
                 calories: 120,
                 protein: 10,
@@ -260,6 +261,7 @@ const handlers = [
             {
                 id: 2,
                 name: 'Honeycrisp Apple',
+                brand: null,
                 servingSize: '1 Apple',
                 calories: 90,
                 protein: 1,
@@ -273,6 +275,7 @@ const handlers = [
             {
                 id: 3,
                 name: 'Beer',
+                brand: 'Budweiser',
                 servingSize: '12 oz.',
                 calories: 145,
                 protein: 1,

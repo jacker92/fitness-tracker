@@ -31,5 +31,7 @@ describe('<CustomFoodsGrid />', () => {
         await screen.findByText(/Yogurt/);
         await screen.findByText('Honeycrisp Apple');
         await screen.findByText(/Beer/);
+        await screen.findByText(/Budweiser/);
+        await screen.findByText(/Chobani/);
     });
 });

@@ -26,6 +26,7 @@ namespace FitnessTrackerApi.Tests.Services
             var food = new Food
             {
                 ID = 1,
+                Brand = "Wegmans",
                 ServingSize = "16 oz.",
                 Calories = 300,
                 Carbohydrates = 25,
@@ -58,9 +59,9 @@ namespace FitnessTrackerApi.Tests.Services
         {
             var userFoods = new List<Food>
             {
-                new Food { ID = 1, ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+                new Food { ID = 1, Brand = "Wegmans", ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
             var foodRepo = new MockRepository<Food>();
@@ -80,6 +81,7 @@ namespace FitnessTrackerApi.Tests.Services
             var request = new AddFoodRequest
             {
                 ServingSize = "16 oz.",
+                Brand = "Wegmans",
                 Calories = 300,
                 Carbohydrates = 25,
                 Fat = 12,
@@ -100,6 +102,7 @@ namespace FitnessTrackerApi.Tests.Services
             var food = new Food
             {
                 ID = 1,
+                Brand = "Wegmans",
                 ServingSize = "16 oz.",
                 Calories = 300,
                 Carbohydrates = 25,
@@ -115,8 +118,8 @@ namespace FitnessTrackerApi.Tests.Services
 
             var userFoods = new List<Food>
             {
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null },
                 food
             };
 
@@ -138,6 +141,7 @@ namespace FitnessTrackerApi.Tests.Services
             {
                 ID = 1,
                 ServingSize = "17 oz.",
+                Brand = "Wegmans",
                 Calories = 300,
                 Carbohydrates = 25,
                 Fat = 12,
@@ -159,6 +163,7 @@ namespace FitnessTrackerApi.Tests.Services
             {
                 ID = 1,
                 ServingSize = "16 oz.",
+                Brand = "Wegmans",
                 Calories = 300,
                 Carbohydrates = 25,
                 Fat = 12,
@@ -173,9 +178,9 @@ namespace FitnessTrackerApi.Tests.Services
 
             var userFoods = new List<Food>
             {
-                new Food { ID = 1, ServingSize = "17 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+                new Food { ID = 1, Brand = "Wegmans", ServingSize = "17 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
             var foodRepo = new MockRepository<Food>();
@@ -197,6 +202,7 @@ namespace FitnessTrackerApi.Tests.Services
             {
                 ID = 1,
                 ServingSize = "17 oz.",
+                Brand = "Wegmans",
                 Calories = 300,
                 Carbohydrates = 25,
                 Fat = 12,
@@ -218,6 +224,7 @@ namespace FitnessTrackerApi.Tests.Services
             {
                 ID = 1,
                 ServingSize = "16 oz.",
+                Brand = "Wegmans",
                 Calories = 300,
                 Carbohydrates = 25,
                 Fat = 12,
@@ -232,9 +239,9 @@ namespace FitnessTrackerApi.Tests.Services
 
             var userFoods = new List<Food>
             {
-                new Food { ID = 1, ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+                new Food { ID = 1, Brand = "Wegmans", ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
             var foodRepo = new MockRepository<Food>();
@@ -267,6 +274,7 @@ namespace FitnessTrackerApi.Tests.Services
             var food = new Food
             {
                 ID = 1,
+                Brand = "Wegmans",
                 ServingSize = "16 oz.",
                 Calories = 300,
                 Carbohydrates = 25,
@@ -282,8 +290,8 @@ namespace FitnessTrackerApi.Tests.Services
 
             var userFoods = new List<Food>
             {
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
             var foodRepo = new MockRepository<Food>();
@@ -317,6 +325,7 @@ namespace FitnessTrackerApi.Tests.Services
             {
                 ID = 1,
                 ServingSize = "16 oz.",
+                Brand = "Wegmans",
                 Calories = 300,
                 Carbohydrates = 25,
                 Fat = 12,
@@ -331,8 +340,8 @@ namespace FitnessTrackerApi.Tests.Services
 
             var userFoods = new List<Food>
             {
-                new Food { ID = 2, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
             var foodRepo = new MockRepository<Food>();
