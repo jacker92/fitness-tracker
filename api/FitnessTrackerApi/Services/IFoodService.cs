@@ -13,5 +13,6 @@ namespace FitnessTrackerApi.Services
         Task<EditFoodResponse> AddFood(User user, AddFoodRequest request);
         Task<EditFoodResponse> UpdateFood(User user, UpdateFoodRequest request);
         Task<EditFoodResponse> DeleteFood(User user, DeleteFoodRequest request);
+        List<Food> Search(User user, string keywords);
     }
 }

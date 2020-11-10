@@ -172,5 +172,12 @@ namespace FitnessTrackerApi.Services
                 return new EditFoodResponse { Successful = false, ErrorMessage = ex.Message };
             }
         }
+
+        public List<Food> Search(User user, string keywords)
+        {
+            return _foodRepository.Get(f => (f.UserID == user.Id || f.IsPublic) && (f.Name.Contains(keywords) || f.Brand.Contains(keywords)))
+                                                .OrderBy(f => f.Name)
+                                                .ToList();
+        }
     }
 }

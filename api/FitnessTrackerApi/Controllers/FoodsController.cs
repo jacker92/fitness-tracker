@@ -162,5 +162,25 @@ namespace FitnessTrackerApi.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("search")]
+        public IActionResult SearchFoods(string keywords)
+        {
+            try
+            {
+                if (CurrentUser == null)
+                {
+                    return BadRequest(new { message = "Unable to retrieve user" });
+                }
+
+                var foods = _foodService.Search(CurrentUser, keywords);
+
+                return OkResult(new EditFoodResponse { Foods = foods });
+            }
+            catch (Exception ex)
+            {
+                return OkResult(new EditFoodResponse { Successful = false, ErrorMessage = ex.Message });
+            }
+        }
     }
 }

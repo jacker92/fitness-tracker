@@ -5,6 +5,7 @@ import { FoodGroupingsGrid } from '../FoodGroupingsGrid/FoodGroupingsGrid';
 import { CustomFoodsGrid } from '../CustomFoodsGrid/CustomFoodsGrid';
 
 import '../../styles/account.css';
+import { UserRecipesGrid } from '../UserRecipesGrid/UserRecipesGrid';
 
 const FoodSettings: React.FC = () => {
     const [activeTab, setActiveTab] = useState('groupings');
@@ -61,7 +62,7 @@ const FoodSettings: React.FC = () => {
                             <CustomFoodsGrid />
                         </div>
                         <div className={activeTab === 'recipes' ? 'parent-content active' : 'parent-content'}>
-                            <h2>Recipes</h2>
+                            <UserRecipesGrid />
                         </div>
                     </div>
                 </div>

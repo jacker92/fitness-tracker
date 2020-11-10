@@ -68,6 +68,7 @@ namespace FitnessTrackerApi
             services.AddScoped<IGearService, GearService>();
             services.AddScoped<IMetricService, MetricService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRecipeService, RecipeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
