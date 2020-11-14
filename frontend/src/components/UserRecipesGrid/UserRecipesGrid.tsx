@@ -11,6 +11,7 @@ import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../SuccessMessage/SuccessMessage';
 import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { Confirm } from '../Confirm/Confirm';
+import { RecipeForm } from '../RecipeForm/RecipeForm';
 
 const UserRecipesGrid: React.FC = () => {
     const { currentUser } = useContext(AppContext);
@@ -22,6 +23,11 @@ const UserRecipesGrid: React.FC = () => {
         userId: currentUser.id,
         ingredients: [],
         isPublic: false,
+        calories: 0,
+        protein: 0,
+        carbohydrates: 0,
+        fat: 0,
+        sugar: 0,
     };
 
     const [status, setStatus] = useState('initialized');
@@ -41,6 +47,7 @@ const UserRecipesGrid: React.FC = () => {
             recipes.push({
                 id: r.id,
                 name: r.name,
+                calories: r.calories,
                 canDelete: r.userId === currentUser.id,
                 canEdit: r.userId === currentUser.id,
             });
@@ -141,9 +148,15 @@ const UserRecipesGrid: React.FC = () => {
     const columns: Array<GridColumn> = [
         {
             Heading: 'Name',
-            Width: '70%',
+            Width: '55%',
             ColumnId: 'name',
             Key: 'NAME',
+        },
+        {
+            Heading: 'Calories',
+            Width: '15%',
+            ColumnId: 'calories',
+            Key: 'CALORIES',
         },
         {
             Heading: ' ',
@@ -168,18 +181,18 @@ const UserRecipesGrid: React.FC = () => {
 
             {(status === 'loaded' || status === 'saving') && (
                 <>
-                    {/* <CustomFoodForm
-                        food={food}
+                    <RecipeForm
+                        recipe={recipe}
                         visible={formVisible}
-                        onSuccess={(foods: Array<CustomFood>) => {
+                        onSuccess={(recipes: Array<Recipe>) => {
                             setFormVisible(false);
-                            const customFoods: Array<CustomFoodDataRow> = transformData(foods);
-                            setGridData(customFoods);
+                            const userRecipes: Array<RecipeDataRow> = transformData(recipes);
+                            setGridData(userRecipes);
                         }}
                         onCancel={() => {
                             setFormVisible(false);
                         }}
-                    /> */}
+                    />
 
                     <Confirm
                         text={confirmText}

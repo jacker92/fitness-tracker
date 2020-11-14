@@ -1,4 +1,4 @@
-import { Ingredient } from './Ingredient';
+import { RecipeFood } from './RecipeFood';
 
 export interface Recipe {
     id: number,
@@ -6,5 +6,10 @@ export interface Recipe {
     name: string,
     servings: number,
     isPublic: boolean,
-    ingredients: Array<Ingredient>,
+    ingredients: Array<RecipeFood>,
+    calories?: number,
+    protein?: number,
+    carbohydrates?: number,
+    fat?: number,
+    sugar?: number
 }

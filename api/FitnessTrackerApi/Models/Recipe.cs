@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace FitnessTrackerApi.Models
@@ -25,5 +27,55 @@ namespace FitnessTrackerApi.Models
 
         [JsonPropertyName("ingredients")]
         public List<RecipeFood> Ingredients { get; set; }
+
+        [NotMapped]
+        [JsonPropertyName("calories")]
+        public decimal Calories
+        {
+            get
+            {
+                return Ingredients.Sum(i => i.Calories);
+            }
+        }
+
+        [NotMapped]
+        [JsonPropertyName("protein")]
+        public decimal Protein
+        {
+            get
+            {
+                return Ingredients.Sum(i => i.Protein);
+            }
+        }
+
+        [NotMapped]
+        [JsonPropertyName("carbohydrates")]
+        public decimal Carbohydrates
+        {
+            get
+            {
+                return Ingredients.Sum(i => i.Carbohydrates);
+            }
+        }
+
+        [NotMapped]
+        [JsonPropertyName("fat")]
+        public decimal Fat
+        {
+            get
+            {
+                return Ingredients.Sum(i => i.Fat);
+            }
+        }
+
+        [NotMapped]
+        [JsonPropertyName("sugar")]
+        public decimal Sugar
+        {
+            get
+            {
+                return Ingredients.Sum(i => i.Sugar);
+            }
+        }
     }
 }

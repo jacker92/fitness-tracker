@@ -4,6 +4,7 @@ import { GridProps } from '../../types/GridProps';
 import { GridColumn } from '../../types/GridColumn';
 
 import './Grid.css';
+import { CSSProperties } from 'styled-components';
 
 const Grid: React.FC<GridProps> = (props) => {
     const {
@@ -16,6 +17,7 @@ const Grid: React.FC<GridProps> = (props) => {
         onAdd,
         onEdit,
         onDelete,
+        onRowAdd,
         onToggleActive,
         onTrackChange,
     } = props;
@@ -45,9 +47,21 @@ const Grid: React.FC<GridProps> = (props) => {
             <table className="grid" cellSpacing={0}>
                 <thead>
                     <tr>
-                        {columns.map((col: GridColumn) => (
-                            <th style={{ width: col.Width }} key={col.Key}>{col.Heading}</th>
-                        ))}
+                        {columns.map((col: GridColumn) => {
+                            let headerStyle: CSSProperties = {
+                                width: col.Width,
+                            };
+
+                            if (typeof col.HeaderCellStyle !== 'undefined') {
+                                headerStyle = col.HeaderCellStyle;
+                            }
+
+                            return (
+                                <th style={headerStyle} key={col.Key}>
+                                    {col.Heading}
+                                </th>
+                            );
+                        })}
                     </tr>
                 </thead>
 
@@ -74,6 +88,25 @@ const Grid: React.FC<GridProps> = (props) => {
                                                                 }}
                                                             >
                                                                 Edit
+                                                            </button>
+                                                        ) : <></>}
+                                                </td>
+                                            );
+
+                                        case 'ADD':
+                                            return (
+                                                <td key={`row_${col.Key}`} align="center">
+                                                    {typeof onRowAdd === 'function'
+                                                        ? (
+                                                            <button
+                                                                className="blue"
+                                                                type="button"
+                                                                onClick={(e: React.MouseEvent<HTMLElement>) => {
+                                                                    e.preventDefault();
+                                                                    onRowAdd(row[IDColumn]);
+                                                                }}
+                                                            >
+                                                                Add
                                                             </button>
                                                         ) : <></>}
                                                 </td>
@@ -164,6 +197,7 @@ Grid.defaultProps = {
     onAdd: null,
     onEdit: null,
     onDelete: null,
+    onRowAdd: null,
     onTrackChange: null,
     onToggleActive: null,
 };
@@ -180,6 +214,7 @@ Grid.propTypes = {
     onAdd: PropTypes.func,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
+    onRowAdd: PropTypes.func,
     onTrackChange: PropTypes.func,
     onToggleActive: PropTypes.func,
 };

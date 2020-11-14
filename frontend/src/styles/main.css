@@ -452,6 +452,10 @@ div.modal-window {
     left: 50%;
 }
 
+div.modal-window div.modal-window-content {
+    padding: 25px;
+}
+
 /* TAB BAR */
 ul.tab-bar {
     margin: 25px 0 0 0;
