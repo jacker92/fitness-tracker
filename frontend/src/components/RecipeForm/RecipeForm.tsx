@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Recipe } from '../../types/Recipe';
 import { RecipeFood } from '../../types/RecipeFood';
 import { RecipeFormProps } from '../../types/RecipeFormProps';
 import { client } from '../../lib/client';
@@ -25,6 +24,7 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
     const [servings, setServings] = useState(recipe.servings);
     const [servingsError, setServingsError] = useState('');
     const [isPublic, setIsPublic] = useState(recipe.isPublic);
+    const [isAlcoholic, setIsAlcoholic] = useState(recipe.isAlcoholic);
     const [ingredients, setIngredients] = useState([]);
     const [calories, setCalories] = useState(recipe.calories);
     const [protein, setProtein] = useState(recipe.protein);
@@ -49,6 +49,7 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
         setFat(recipe.fat);
         setSugar(recipe.sugar);
         setIsPublic(recipe.isPublic);
+        setIsAlcoholic(recipe.isAlcoholic);
         setIngredients(recipe.ingredients);
     }, [recipe]);
 
@@ -103,6 +104,74 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
         theRecipeForm.current.reset();
     };
 
+    const validate = () => {
+        let isValid = true;
+
+        if (!FormValidator.validateNotEmpty(name)) {
+            setNameError('Name is required');
+            isValid = false;
+        }
+
+        if (!FormValidator.validateRequiredNumericGreaterThanZero(servings)) {
+            setServingsError('There must be more than zero servings');
+            isValid = false;
+        }
+
+        if (ingredients.length === 0) {
+            setErrorMessage('Please enter at least 1 ingredient');
+            isValid = false;
+        }
+
+        return isValid;
+    };
+
+    const saveRecipe = async () => {
+        const recipeFoods: Array<RecipeFood> = [];
+
+        ingredients.forEach((i) => {
+            recipeFoods.push({
+                id: i.id,
+                foodId: i.food.id,
+                quantity: i.quantity,
+                recipeId: i.recipeId,
+            });
+        });
+
+        await client('recipes/save', {
+            data: {
+                id,
+                name,
+                servings,
+                isPublic,
+                ingredients: recipeFoods,
+                calories,
+                protein,
+                carbohydrates,
+                fat,
+                sugar,
+                isAlcoholic,
+            },
+        }).then(
+            (data) => {
+                if (data.successful) {
+                    resetForm();
+                    onSuccess(data.recipes);
+                } else {
+                    setErrorMessage(data.error);
+                }
+            },
+            (error) => {
+                if (typeof error === 'string') {
+                    setErrorMessage(error);
+                } else if (typeof error.message === 'string') {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('An error has occurred');
+                }
+            },
+        );
+    };
+
     return (
         <ModalWindow width={1000} visible={isVisible}>
             <div className="grid-form">
@@ -121,9 +190,9 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
                     onSubmit={async (e) => {
                         e.preventDefault();
 
-                        // if (validate()) {
-
-                        // }
+                        if (validate()) {
+                            await saveRecipe();
+                        }
                     }}
                 >
                     <fieldset>
@@ -238,7 +307,20 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
 
                 <div className="recipe-form-ingredients">
                     <h3>Ingredients</h3>
-                    <IngredientsGrid ingredients={ingredients} onChange={(i: Array<RecipeFood>) => { setIngredients(i); }} />
+                    <IngredientsGrid
+                        ingredients={ingredients}
+                        onChange={(i: Array<RecipeFood>) => {
+                            setIngredients(i);
+
+                            const alcoholicIngredients = i.filter((ing) => ing.isAlcoholic === true);
+
+                            if (alcoholicIngredients.length > 0) {
+                                setIsAlcoholic(true);
+                            } else {
+                                setIsAlcoholic(false);
+                            }
+                        }}
+                    />
                 </div>
             </div>
         </ModalWindow>
@@ -276,12 +358,14 @@ RecipeForm.propTypes = {
             carbohydrates: PropTypes.number,
             fat: PropTypes.number,
             sugar: PropTypes.number,
+            isAlcoholic: PropTypes.bool,
         })),
         calories: PropTypes.number,
         protein: PropTypes.number,
         carbohydrates: PropTypes.number,
         fat: PropTypes.number,
         sugar: PropTypes.number,
+        isAlcoholic: PropTypes.bool,
     }).isRequired,
     visible: PropTypes.bool.isRequired,
     onSuccess: PropTypes.func.isRequired,

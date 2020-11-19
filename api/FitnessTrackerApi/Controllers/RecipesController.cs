@@ -100,8 +100,8 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("addrecipe")]
-        public async Task<IActionResult> AddRecipe(AddRecipeRequest request)
+        [HttpPost("save")]
+        public async Task<IActionResult> Save(EditRecipeRequest request)
         {
             try
             {
@@ -110,28 +110,21 @@ namespace FitnessTrackerApi.Controllers
                     return BadRequest(new { message = "Unable to retrieve user" });
                 }
 
-                var response = await _recipeService.AddRecipe(CurrentUser, request);
+                RecipeListResponse response;
 
-                return OkResult(response);
-            }
-            catch (Exception ex)
-            {
-                return OkResult(new RecipeListResponse { Successful = false, ErrorMessage = ex.Message });
-            }
-        }
-
-        [Authorize]
-        [HttpPost("updaterecipe")]
-        public async Task<IActionResult> UpdateRecipe(UpdateRecipeRequest request)
-        {
-            try
-            {
-                if (CurrentUser == null)
+                if (request.ID > 0)
                 {
-                    return BadRequest(new { message = "Unable to retrieve user" });
+                    response = await _recipeService.UpdateRecipe(CurrentUser, request);
+                }
+                else
+                {
+                    response = await _recipeService.AddRecipe(CurrentUser, request);
                 }
 
-                var response = await _recipeService.UpdateRecipe(CurrentUser, request);
+                if (response == null)
+                {
+                    throw new Exception("Unable to save the recipe");
+                }
 
                 return OkResult(response);
             }

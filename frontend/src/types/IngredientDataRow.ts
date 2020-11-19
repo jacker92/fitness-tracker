@@ -10,4 +10,5 @@ export interface IngredientDataRow extends GridRow {
     fat?: number,
     sugar?: number,
     quantity: number,
+    isAlcoholic?: boolean,
 }

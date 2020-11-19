@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, CSSProperties } from 'react';
 import PropTypes from 'prop-types';
 import { GridProps } from '../../types/GridProps';
 import { GridColumn } from '../../types/GridColumn';
 
 import './Grid.css';
-import { CSSProperties } from 'styled-components';
 
 const Grid: React.FC<GridProps> = (props) => {
     const {

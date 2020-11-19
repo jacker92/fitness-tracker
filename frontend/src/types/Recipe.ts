@@ -11,5 +11,6 @@ export interface Recipe {
     protein?: number,
     carbohydrates?: number,
     fat?: number,
-    sugar?: number
+    sugar?: number,
+    isAlcoholic?: boolean,
 }

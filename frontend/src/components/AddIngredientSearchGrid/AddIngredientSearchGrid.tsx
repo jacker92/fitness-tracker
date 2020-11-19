@@ -21,6 +21,7 @@ const AddIngredientSearchGrid: React.FC<AddIngredientSearchGridProps> = (props) 
     const [gridData, setGridData] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const theForm = useRef(null);
+    // const searchElement = useRef(null);
 
     useEffect(() => {
         setIsVisible(visible);
@@ -65,6 +66,13 @@ const AddIngredientSearchGrid: React.FC<AddIngredientSearchGridProps> = (props) 
         );
     };
 
+    const resetForm = () => {
+        setSearchTerms('');
+        setSearchTermsError('');
+        setGridData([]);
+        theForm.current.reset();
+    };
+
     const getFoodById = async (id: number) => {
         await client(`foods/getfood?id=${id}`).then(
             (data) => {
@@ -95,9 +103,11 @@ const AddIngredientSearchGrid: React.FC<AddIngredientSearchGridProps> = (props) 
                         carbohydrates: selFood.carbohydrates,
                         fat: selFood.fat,
                         sugar: selFood.sugar,
+                        isAlcoholic: selFood.isAlcoholic,
                     };
 
                     onFoodSelected(selIngredient);
+                    resetForm();
                 } else {
                     setErrorMessage(data.error);
                 }
@@ -112,12 +122,6 @@ const AddIngredientSearchGrid: React.FC<AddIngredientSearchGridProps> = (props) 
                 }
             },
         );
-    };
-
-    const resetForm = () => {
-        setSearchTerms('');
-        setSearchTermsError('');
-        theForm.current.reset();
     };
 
     const columns: Array<GridColumn> = [

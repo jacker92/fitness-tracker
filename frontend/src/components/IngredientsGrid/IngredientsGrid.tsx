@@ -11,6 +11,7 @@ import { LoadingBox } from '../LoadingBox/LoadingBox';
 import { AddIngredientSearchGrid } from '../AddIngredientSearchGrid/AddIngredientSearchGrid';
 import { AddIngredientForm } from '../AddIngredientForm/AddIngredientForm';
 import { AppContext } from '../AppContext/AppContext';
+import { Confirm } from '../Confirm/Confirm';
 
 const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
     const { ingredients, onChange } = props;
@@ -49,6 +50,10 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
     const [selectedIngredient, setSelectedIngredient] = useState(newIngredient);
     const [isNewIngredient, setIsNewIngredient] = useState(true);
     const [gridData, setGridData] = useState([]);
+    const [nextRowId, setNextRowId] = useState(-1);
+    const [confirmText, setConfirmText] = useState('Are you sure you want to delete this ingredient?');
+    const [ingredientToDeleteId, setIngredientToDeleteId] = useState(null);
+    const [confirmVisible, setConfirmVisible] = useState(false);
 
     const transformData = useCallback((recipeFoods: Array<RecipeFood>) => {
         const foods: Array<IngredientDataRow> = [];
@@ -57,12 +62,13 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
             foods.push({
                 id: rf.id,
                 foodId: rf.food.id,
-                name: rf.food.name,
+                name: `${rf.food.brand} ${rf.food.name} (${rf.food.servingSize})`,
                 calories: rf.calories,
                 protein: rf.protein,
                 carbohydrates: rf.carbohydrates,
                 fat: rf.fat,
                 sugar: rf.sugar,
+                isAlcoholic: rf.isAlcoholic,
                 quantity: rf.quantity,
                 canDelete: true,
                 canEdit: true,
@@ -138,6 +144,7 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
                         visible={editIngredientFormVisible}
                         isNew={isNewIngredient}
                         recipeFood={selectedIngredient}
+                        nextRowId={nextRowId}
                         onSuccess={(recipeFood: RecipeFood) => {
                             const updatedGridData: Array<IngredientDataRow> = [];
                             const updatedIngredients: Array<RecipeFood> = [];
@@ -154,18 +161,21 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
                                 });
 
                                 const newRow: IngredientDataRow = {
-                                    id: 0,
+                                    id: nextRowId,
                                     foodId: recipeFood.food.id,
-                                    name: recipeFood.food.name,
+                                    name: `${recipeFood.food.brand} ${recipeFood.food.name} (${recipeFood.food.servingSize})`,
                                     quantity: recipeFood.quantity,
                                     calories: recipeFood.calories,
                                     protein: recipeFood.protein,
                                     carbohydrates: recipeFood.carbohydrates,
                                     fat: recipeFood.fat,
                                     sugar: recipeFood.sugar,
+                                    isAlcoholic: recipeFood.isAlcoholic,
                                     canEdit: true,
                                     canDelete: true,
                                 };
+
+                                setNextRowId(recipeFood.id - 1);
 
                                 updatedGridData.push(newRow);
                             } else {
@@ -182,6 +192,7 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
                                             carbohydrates: recipeFood.carbohydrates,
                                             fat: recipeFood.fat,
                                             sugar: recipeFood.sugar,
+                                            isAlcoholic: recipeFood.isAlcoholic,
                                         };
 
                                         updatedIngredients.push(updatedFood);
@@ -195,13 +206,14 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
                                         const updatedRow: IngredientDataRow = {
                                             id: i.id,
                                             foodId: i.foodId,
-                                            name: i.name,
+                                            name: `${recipeFood.food.brand} ${recipeFood.food.name} (${recipeFood.food.servingSize})`,
                                             quantity: recipeFood.quantity,
                                             calories: recipeFood.calories,
                                             protein: recipeFood.protein,
                                             carbohydrates: recipeFood.carbohydrates,
                                             fat: recipeFood.fat,
                                             sugar: recipeFood.sugar,
+                                            isAlcoholic: recipeFood.isAlcoholic,
                                             canEdit: true,
                                             canDelete: true,
                                         };
@@ -226,11 +238,36 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
                         }}
                     />
 
+                    <Confirm
+                        text={confirmText}
+                        visible={confirmVisible}
+                        onCancel={() => {
+                            setIngredientToDeleteId(null);
+                            setConfirmVisible(false);
+                        }}
+                        onConfirm={async () => {
+                            const newIngredients: Array<RecipeFood> = [];
+
+                            ingredients.forEach((i: RecipeFood) => {
+                                if (i.id !== ingredientToDeleteId) {
+                                    newIngredients.push(i);
+                                }
+                            });
+
+                            onChange(newIngredients);
+
+                            const ingredientsData: Array<IngredientDataRow> = transformData(newIngredients);
+                            setGridData(ingredientsData);
+                            setIngredientToDeleteId(null);
+                            setConfirmVisible(false);
+                        }}
+                    />
+
                     <Grid
                         columns={columns}
                         data={gridData}
                         keyColumn="id"
-                        IDColumn="foodId"
+                        IDColumn="id"
                         noRowsMessage="No Ingredients Added"
                         onAdd={() => {
                             setIsNewIngredient(true);
@@ -239,7 +276,7 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
                         onEdit={async (id: number) => {
                             let recipeFood = null;
                             ingredients.forEach((i: RecipeFood) => {
-                                if (i.foodId === id) {
+                                if (i.id === id) {
                                     recipeFood = i;
                                 }
                             });
@@ -251,9 +288,9 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
                             }
                         }}
                         onDelete={(id: number, foodName: string) => {
-                            // setGearToDeleteId(id);
-                            // setConfirmText(`Are you sure you want to delete ${gearName}?`);
-                            // setConfirmVisible(true);
+                            setIngredientToDeleteId(id);
+                            setConfirmText(`Are you sure you want to delete ${foodName}?`);
+                            setConfirmVisible(true);
                         }}
                     />
                 </>
@@ -291,6 +328,7 @@ IngredientsGrid.propTypes = {
         carbohydrates: PropTypes.number,
         fat: PropTypes.number,
         sugar: PropTypes.number,
+        isAlcoholic: PropTypes.bool,
     })),
     onChange: PropTypes.func.isRequired,
 };

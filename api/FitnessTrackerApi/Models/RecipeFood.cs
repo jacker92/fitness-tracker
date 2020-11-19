@@ -27,7 +27,12 @@ namespace FitnessTrackerApi.Models
         {
             get
             {
-                return Food.Calories * Quantity;
+                if (Food != null)
+                {
+                    return Food.Calories * Quantity;
+                }
+
+                return 0;
             }
         }
 
@@ -37,7 +42,12 @@ namespace FitnessTrackerApi.Models
         {
             get
             {
-                return Food.Protein * Quantity;
+                if (Food != null)
+                {
+                    return Food.Protein * Quantity;
+                }
+
+                return 0;
             }
         }
 
@@ -47,7 +57,12 @@ namespace FitnessTrackerApi.Models
         {
             get
             {
-                return Food.Carbohydrates * Quantity;
+                if (Food != null)
+                {
+                    return Food.Carbohydrates * Quantity;
+                }
+
+                return 0;
             }
         }
 
@@ -57,7 +72,12 @@ namespace FitnessTrackerApi.Models
         {
             get
             {
-                return Food.Fat * Quantity;
+                if (Food != null)
+                {
+                    return Food.Fat * Quantity;
+                }
+
+                return 0;
             }
         }
 
@@ -67,7 +87,12 @@ namespace FitnessTrackerApi.Models
         {
             get
             {
-                return Food.Sugar * Quantity;
+                if (Food != null)
+                {
+                    return Food.Sugar * Quantity;
+                }
+
+                return 0;
             }
         }
     }

@@ -28,54 +28,27 @@ namespace FitnessTrackerApi.Models
         [JsonPropertyName("ingredients")]
         public List<RecipeFood> Ingredients { get; set; }
 
-        [NotMapped]
+        [Column(TypeName = "decimal(18,4)")]
         [JsonPropertyName("calories")]
-        public decimal Calories
-        {
-            get
-            {
-                return Ingredients.Sum(i => i.Calories);
-            }
-        }
+        public decimal Calories { get; set; } = 0.0M;
 
-        [NotMapped]
+        [Column(TypeName = "decimal(18,4)")]
         [JsonPropertyName("protein")]
-        public decimal Protein
-        {
-            get
-            {
-                return Ingredients.Sum(i => i.Protein);
-            }
-        }
+        public decimal Protein { get; set; } = 0.0M;
 
-        [NotMapped]
+        [Column(TypeName = "decimal(18,4)")]
         [JsonPropertyName("carbohydrates")]
-        public decimal Carbohydrates
-        {
-            get
-            {
-                return Ingredients.Sum(i => i.Carbohydrates);
-            }
-        }
+        public decimal Carbohydrates { get; set; } = 0.0M;
 
-        [NotMapped]
+        [Column(TypeName = "decimal(18,4)")]
         [JsonPropertyName("fat")]
-        public decimal Fat
-        {
-            get
-            {
-                return Ingredients.Sum(i => i.Fat);
-            }
-        }
+        public decimal Fat { get; set; } = 0.0M;
 
-        [NotMapped]
+        [Column(TypeName = "decimal(18,4)")]
         [JsonPropertyName("sugar")]
-        public decimal Sugar
-        {
-            get
-            {
-                return Ingredients.Sum(i => i.Sugar);
-            }
-        }
+        public decimal Sugar { get; set; } = 0.0M;
+
+        [JsonPropertyName("isAlcoholic")]
+        public bool IsAlcoholic { get; set; } = false;
     }
 }

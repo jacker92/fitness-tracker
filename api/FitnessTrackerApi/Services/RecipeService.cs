@@ -41,7 +41,7 @@ namespace FitnessTrackerApi.Services
             }
         }
 
-        public async Task<RecipeListResponse> AddRecipe(User user, AddRecipeRequest request)
+        public async Task<RecipeListResponse> AddRecipe(User user, EditRecipeRequest request)
         {
             try
             {
@@ -53,10 +53,27 @@ namespace FitnessTrackerApi.Services
                         Name = request.Name,
                         IsPublic = request.IsPublic,
                         Servings = request.Servings,
-                        Ingredients = request.Ingredients,
+                        Calories = request.Calories,
+                        Protein = request.Protein,
+                        Carbohydrates = request.Carbohydrates,
+                        Fat = request.Fat,
+                        Sugar = request.Sugar,
+                        IsAlcoholic = request.IsAlcoholic
                     };
 
                     await _recipeRepository.Add(recipe);
+
+                    foreach (var ingredient in request.Ingredients)
+                    {
+                        var recipeFood = new RecipeFood
+                        {
+                            FoodID = ingredient.FoodID,
+                            Quantity = ingredient.Quantity,
+                            RecipeID = recipe.ID
+                        };
+
+                        await _recipeFoodRepository.Add(recipeFood);
+                    }
 
                     return new RecipeListResponse
                     {
@@ -80,7 +97,7 @@ namespace FitnessTrackerApi.Services
             }
         }
 
-        public async Task<RecipeListResponse> UpdateRecipe(User user, UpdateRecipeRequest request)
+        public async Task<RecipeListResponse> UpdateRecipe(User user, EditRecipeRequest request)
         {
             try
             {
@@ -100,6 +117,12 @@ namespace FitnessTrackerApi.Services
                     recipe.Name = request.Name;
                     recipe.IsPublic = request.IsPublic;
                     recipe.Servings = request.Servings;
+                    recipe.Calories = request.Calories;
+                    recipe.Protein = request.Protein;
+                    recipe.Carbohydrates = request.Carbohydrates;
+                    recipe.Fat = request.Fat;
+                    recipe.Sugar = request.Sugar;
+                    recipe.IsAlcoholic = request.IsAlcoholic;
 
                     await _recipeFoodRepository.DeleteRange(recipe.Ingredients);
 

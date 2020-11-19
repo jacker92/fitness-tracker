@@ -28,6 +28,7 @@ const UserRecipesGrid: React.FC = () => {
         carbohydrates: 0,
         fat: 0,
         sugar: 0,
+        isAlcoholic: false,
     };
 
     const [status, setStatus] = useState('initialized');
@@ -83,7 +84,7 @@ const UserRecipesGrid: React.FC = () => {
     }, [currentUser.id, transformData]);
 
     const getRecipeById = async (id: number) => {
-        await client(`recipes/getrecipes?id=${id}`).then(
+        await client(`recipes/getrecipe?id=${id}`).then(
             (data) => {
                 if (data.successful) {
                     const selRecipe: Recipe = {
@@ -93,6 +94,12 @@ const UserRecipesGrid: React.FC = () => {
                         servings: data.recipe.servings,
                         ingredients: data.recipe.ingredients,
                         isPublic: data.recipe.isPublic,
+                        calories: data.recipe.calories,
+                        protein: data.recipe.protein,
+                        carbohydrates: data.recipe.carbohydrates,
+                        fat: data.recipe.fat,
+                        sugar: data.recipe.sugar,
+                        isAlcoholic: data.recipe.isAlcoholic,
                     };
 
                     setRecipe(selRecipe);

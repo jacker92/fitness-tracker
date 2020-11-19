@@ -8,7 +8,7 @@ import { RecipeFood } from '../../types/RecipeFood';
 
 const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
     const {
-        recipeFood, isNew, visible, onSuccess, onCancel,
+        recipeFood, nextRowId, isNew, visible, onSuccess, onCancel,
     } = props;
 
     const [isVisible, setIsVisible] = useState(visible);
@@ -16,6 +16,7 @@ const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
     const [foodId, setFoodId] = useState(recipeFood.foodId);
     const [food, setFood] = useState(recipeFood.food);
     const [foodName, setFoodName] = useState('');
+    const [servingSize, setServingSize] = useState('');
     const [quantity, setQuantity] = useState(recipeFood.quantity);
     const [quantityError, setQuantityError] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(false);
@@ -27,10 +28,16 @@ const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
     }, [visible]);
 
     useEffect(() => {
-        setId(recipeFood.id);
+        if (recipeFood.id > 0) {
+            setId(recipeFood.id);
+        } else {
+            setId(nextRowId);
+        }
+
         setFoodId(recipeFood.foodId);
         setFood(recipeFood.food);
         setFoodName(`${recipeFood.food.brand} ${recipeFood.food.name}`);
+        setServingSize(recipeFood.food.servingSize);
         setQuantity(recipeFood.quantity);
     }, [recipeFood]);
 
@@ -46,6 +53,7 @@ const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
         setId(0);
         setFoodId(0);
         setFoodName('');
+        setServingSize('');
         setQuantity(1);
         theForm.current.reset();
     };
@@ -79,9 +87,9 @@ const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
 
                         if (validate()) {
                             const selIngredient: RecipeFood = {
-                                id: 0,
+                                id,
                                 recipeId: 0,
-                                foodId: food.id,
+                                foodId,
                                 food,
                                 quantity,
                                 calories: food.calories * quantity,
@@ -89,9 +97,11 @@ const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
                                 carbohydrates: food.carbohydrates * quantity,
                                 fat: food.fat * quantity,
                                 sugar: food.sugar * quantity,
+                                isAlcoholic: food.isAlcoholic,
                             };
 
                             onSuccess(selIngredient);
+                            resetForm();
                         }
                     }}
                 >
@@ -100,6 +110,12 @@ const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
                             <strong>Food:</strong>
                             {' '}
                             {foodName}
+                        </div>
+
+                        <div className="form-field">
+                            <strong>Serving Size:</strong>
+                            {' '}
+                            {servingSize}
                         </div>
 
                         <div className="form-field">
@@ -172,8 +188,10 @@ AddIngredientForm.propTypes = {
         carbohydrates: PropTypes.number,
         fat: PropTypes.number,
         sugar: PropTypes.number,
+        isAlcoholic: PropTypes.bool,
     }).isRequired,
     isNew: PropTypes.bool,
+    nextRowId: PropTypes.number.isRequired,
     visible: PropTypes.bool.isRequired,
     onSuccess: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
