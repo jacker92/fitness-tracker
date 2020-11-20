@@ -1,5 +1,5 @@
 import React, {
-    useState, useEffect, useCallback, useContext,
+    useState, useEffect, useContext,
 } from 'react';
 import PropTypes from 'prop-types';
 import { RecipeFood } from '../../types/RecipeFood';
@@ -55,7 +55,7 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
     const [ingredientToDeleteId, setIngredientToDeleteId] = useState(null);
     const [confirmVisible, setConfirmVisible] = useState(false);
 
-    const transformData = useCallback((recipeFoods: Array<RecipeFood>) => {
+    const transformData = (recipeFoods: Array<RecipeFood>) => {
         const foods: Array<IngredientDataRow> = [];
 
         recipeFoods.forEach((rf: RecipeFood) => {
@@ -76,7 +76,7 @@ const IngredientsGrid: React.FC<IngredientsGridProps> = (props) => {
         });
 
         return foods;
-    }, [ingredients]);
+    };
 
     useEffect(() => {
         const ingredientsData: Array<IngredientDataRow> = transformData(ingredients);

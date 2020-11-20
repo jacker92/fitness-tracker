@@ -39,7 +39,7 @@ const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
         setFoodName(`${recipeFood.food.brand} ${recipeFood.food.name}`);
         setServingSize(recipeFood.food.servingSize);
         setQuantity(recipeFood.quantity);
-    }, [recipeFood]);
+    }, [recipeFood, nextRowId]);
 
     useEffect(() => {
         if (quantityError === '') {
