@@ -126,6 +126,8 @@ namespace FitnessTrackerApi.Services
 
                     await _recipeRepository.Update(recipe);
 
+                    // clear out all the ingredients, we'll just replace them.
+                    // no need to identify when ingredients were removed during edit.
                     await _recipeFoodRepository.DeleteRange(recipe.Ingredients);
 
                     foreach (var ingredient in request.Ingredients)
