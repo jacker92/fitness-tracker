@@ -124,11 +124,21 @@ namespace FitnessTrackerApi.Services
                     recipe.Sugar = request.Sugar;
                     recipe.IsAlcoholic = request.IsAlcoholic;
 
+                    await _recipeRepository.Update(recipe);
+
                     await _recipeFoodRepository.DeleteRange(recipe.Ingredients);
 
-                    recipe.Ingredients = request.Ingredients;
+                    foreach (var ingredient in request.Ingredients)
+                    {
+                        var recipeFood = new RecipeFood
+                        {
+                            FoodID = ingredient.FoodID,
+                            Quantity = ingredient.Quantity,
+                            RecipeID = recipe.ID
+                        };
 
-                    await _recipeRepository.Update(recipe);
+                        await _recipeFoodRepository.Add(recipeFood);
+                    }
 
                     return new RecipeListResponse
                     {
