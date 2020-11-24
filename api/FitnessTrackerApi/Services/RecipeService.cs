@@ -22,7 +22,10 @@ namespace FitnessTrackerApi.Services
 
         public Recipe GetById(int recipeId)
         {
-            return _recipeRepository.GetById(recipeId);
+            var recipe = _recipeRepository.GetById(recipeId);
+            recipe.Ingredients = _recipeFoodRepository.Get(rf => rf.RecipeID == recipe.ID, rf => rf.Food).ToList();
+
+            return recipe;
         }
 
         public List<Recipe> GetForUser(string userId, bool includePublic = true)
@@ -170,7 +173,7 @@ namespace FitnessTrackerApi.Services
             {
                 if (user != null)
                 {
-                    var recipe = _recipeRepository.GetById(request.ID);
+                    var recipe = GetById(request.ID);
 
                     if (recipe == null || recipe.UserID != user.Id)
                     {

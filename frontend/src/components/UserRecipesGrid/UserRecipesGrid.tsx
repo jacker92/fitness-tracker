@@ -120,6 +120,8 @@ const UserRecipesGrid: React.FC = () => {
     };
 
     const deleteRecipe = async (id: number) => {
+        setErrorMessage('');
+
         await client('recipes/deleterecipe', {
             data: {
                 id,
