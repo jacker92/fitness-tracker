@@ -17,5 +17,4 @@ export interface TextBoxProps {
     showSuccessMessage?: boolean,
     onErrorChange?: (error: string) => void,
     autocomplete?: string,
-    ref?: React.Ref<HTMLInputElement>,
 }

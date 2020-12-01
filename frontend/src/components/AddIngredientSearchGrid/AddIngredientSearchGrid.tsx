@@ -1,6 +1,4 @@
-import React, {
-    forwardRef, useState, useEffect, useRef,
-} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { AddIngredientSearchGridProps } from '../../types/AddIngredientSearchGridProps';
 import { GridColumn } from '../../types/GridColumn';
@@ -23,13 +21,9 @@ const AddIngredientSearchGrid: React.FC<AddIngredientSearchGridProps> = (props) 
     const [gridData, setGridData] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const theForm = useRef(null);
-    const searchElement = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setIsVisible(visible);
-        if (visible && searchElement !== null) {
-            searchElement.current.focus();
-        }
     }, [visible]);
 
     const transformData = (foods: Array<CustomFood>) => {
@@ -161,24 +155,6 @@ const AddIngredientSearchGrid: React.FC<AddIngredientSearchGridProps> = (props) 
         return isValid;
     };
 
-    const SearchTextfield = forwardRef<HTMLInputElement>((_forwardProps, ref) => (
-        <TextBox
-            ref={ref}
-            id="searchterms"
-            name="searchterms"
-            label="Search Terms"
-            value={searchTerms}
-            error={searchTermsError}
-            validationRule="notempty"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setSearchTerms(e.target.value);
-            }}
-            onErrorChange={(error: string) => {
-                setSearchTermsError(error);
-            }}
-        />
-    ));
-
     return (
         <ModalWindow width={800} visible={isVisible}>
             <div className="modal-window-content">
@@ -199,7 +175,20 @@ const AddIngredientSearchGrid: React.FC<AddIngredientSearchGridProps> = (props) 
                         }}
                     >
                         <div className="form-field">
-                            <SearchTextfield ref={searchElement} />
+                            <TextBox
+                                id="searchterms"
+                                name="searchterms"
+                                label="Search Terms"
+                                value={searchTerms}
+                                error={searchTermsError}
+                                validationRule="notempty"
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    setSearchTerms(e.target.value);
+                                }}
+                                onErrorChange={(error: string) => {
+                                    setSearchTermsError(error);
+                                }}
+                            />
                         </div>
 
                         <div className="form-field">
