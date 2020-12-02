@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
-import {
-    render, act, screen, fireEvent, waitFor,
-} from '@testing-library/react';
+import { render, act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Recipe } from '../../types/Recipe';
 import { AppContext } from '../AppContext/AppContext';
@@ -158,6 +156,11 @@ describe('<RecipeForm />', () => {
 
         const servingsField = await screen.findByLabelText(/Servings/) as HTMLInputElement;
         expect(servingsField.value).toBe('3');
+
+        await screen.findByText('201');
+        await screen.findByText('34g');
+        await screen.findByText('2g');
+        await screen.findByText('7g');
     });
 
     test('it validates there are ingredients', async () => {
