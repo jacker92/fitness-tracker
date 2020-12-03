@@ -55,6 +55,7 @@ const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
         setFoodName('');
         setServingSize('');
         setQuantity(1);
+        setQuantityError('');
         theForm.current.reset();
     };
 
@@ -133,6 +134,9 @@ const AddIngredientForm: React.FC<RecipeFoodFormProps> = (props) => {
                                     } else {
                                         setQuantity(0);
                                     }
+                                }}
+                                onErrorChange={(error: string) => {
+                                    setQuantityError(error);
                                 }}
                             />
                         </div>

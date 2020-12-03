@@ -181,7 +181,7 @@ describe('<RecipeForm />', () => {
 
         const nameField = await screen.findByLabelText(/Name/) as HTMLInputElement;
         const servingsField = await screen.findByLabelText(/Servings/) as HTMLInputElement;
-        const saveButton = screen.getByRole('button', { name: /Save Recipe/i });
+        const saveButton = screen.getByRole('button', { name: /Save Recipe/i }) as HTMLButtonElement;
 
         await act(async () => {
             await userEvent.type(nameField, 'Brand Spanking New Recipe');
@@ -209,7 +209,7 @@ describe('<RecipeForm />', () => {
         );
 
         const servingsField = await screen.findByLabelText(/Servings/) as HTMLInputElement;
-        const saveButton = screen.getByRole('button', { name: /Save Recipe/i });
+        const saveButton = screen.getByRole('button', { name: /Save Recipe/i }) as HTMLButtonElement;
 
         await act(async () => {
             await userEvent.clear(servingsField);

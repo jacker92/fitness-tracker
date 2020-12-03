@@ -43,7 +43,7 @@ describe('<AddIngredientSearchGrid />', () => {
         );
 
         const searchTermsField = await screen.findByLabelText(/Search Terms/) as HTMLInputElement;
-        const searchButton = screen.getByRole('button', { name: /Search/i });
+        const searchButton = screen.getByRole('button', { name: /Search/i }) as HTMLButtonElement;
 
         await act(async () => {
             await userEvent.type(searchTermsField, 'Garlic');
@@ -71,7 +71,7 @@ describe('<AddIngredientSearchGrid />', () => {
             </AppContext.Provider>,
         );
 
-        const searchButton = screen.getByRole('button', { name: /Search/i });
+        const searchButton = screen.getByRole('button', { name: /Search/i }) as HTMLButtonElement;
 
         await act(async () => {
             await userEvent.click(searchButton);
