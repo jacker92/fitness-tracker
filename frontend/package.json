@@ -27,7 +27,7 @@
     "scripts": {
         "dev": "react-scripts start",
         "build": "react-scripts build",
-        "test": "jest",
+        "test": "jest --runInBand",
         "test:watch": "jest --watch",
         "eject": "react-scripts eject"
     },

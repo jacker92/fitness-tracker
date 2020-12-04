@@ -5,5 +5,6 @@ export interface GridColumn {
     Heading: string,
     Width: string,
     ColumnId: string,
-    CellStyle?: CSSProperties
+    CellStyle?: CSSProperties,
+    HeaderCellStyle?: CSSProperties,
 }

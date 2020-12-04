@@ -149,7 +149,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         }
 
         [Fact]
-        public void GearController_DeleteActivity_Successful()
+        public void GearController_DeleteGear_Successful()
         {
             var request = new DeleteGearRequest
             {

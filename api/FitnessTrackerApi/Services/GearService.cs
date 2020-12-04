@@ -46,7 +46,7 @@ namespace FitnessTrackerApi.Services
 
                 return new EditGearResponse
                 {
-                    Successful = true,
+                    Successful = false,
                     ErrorMessage = "Cannot find user"
                 };
             }

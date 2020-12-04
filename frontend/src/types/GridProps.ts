@@ -9,6 +9,7 @@ export interface GridProps {
     IDColumn?: string,
     nameColumn?: string,
     onAdd?: () => void,
+    onRowAdd?: (id: number) => void,
     onEdit?: (id: number) => void,
     onDelete?: (id: number, name: string) => void,
     onToggleActive?: (id: number, active: boolean) => void,

@@ -15,5 +15,8 @@ namespace FitnessTrackerApi.Models
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
+
+        [JsonPropertyName("sortOrder")]
+        public int SortOrder { get; set; }
     }
 }

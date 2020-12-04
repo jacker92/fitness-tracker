@@ -25,6 +25,11 @@ table.grid tbody tr:nth-child(even) {
     background: hsl(0, 0%, 92%);
 }
 
+table.grid tbody tr:hover,
+table.grid tbody tr:nth-child(even):hover {
+    background: hsl(0, 0%, 71%);
+}
+
 .add-button {
     text-align: right;
     margin: 15px 0 15px 15px;
@@ -32,6 +37,6 @@ table.grid tbody tr:nth-child(even) {
 
 div.grid-form {
     margin: 25px auto;
-    width: 400px;
+    /* width: 400px; */
     padding: 0 30px;
 }

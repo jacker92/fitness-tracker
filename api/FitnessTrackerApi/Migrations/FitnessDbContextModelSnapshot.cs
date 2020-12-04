@@ -173,6 +173,9 @@ namespace FitnessTrackerApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Calories")
                         .HasColumnType("decimal(18,4)");
 
@@ -193,6 +196,9 @@ namespace FitnessTrackerApi.Migrations
 
                     b.Property<decimal>("Protein")
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("ServingSize")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Sugar")
                         .HasColumnType("decimal(18,4)");
@@ -216,6 +222,9 @@ namespace FitnessTrackerApi.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
@@ -326,14 +335,32 @@ namespace FitnessTrackerApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("Calories")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("Carbohydrates")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("Fat")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<bool>("IsAlcoholic")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Protein")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<int>("Servings")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Sugar")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");

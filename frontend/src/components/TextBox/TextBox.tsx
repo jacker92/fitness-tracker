@@ -91,7 +91,7 @@ const TextBox: React.FC<TextBoxProps> = (props) => {
                 id={name}
                 name={name}
                 data-testid={id}
-                defaultValue={fieldValue}
+                value={fieldValue}
                 autoComplete={autocomplete}
                 onChange={(e) => {
                     if (onChange) {
