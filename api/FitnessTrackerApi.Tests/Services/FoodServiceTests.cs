@@ -1,9 +1,7 @@
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
-using FitnessTrackerApi.Repositories;
 using FitnessTrackerApi.Services;
 using FitnessTrackerApi.Tests.Mocks.Repositories;
-using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -356,5 +354,32 @@ namespace FitnessTrackerApi.Tests.Services
             Assert.Equal("Cannot find food", response.ErrorMessage);
         }
 
+        [Fact]
+        public void FoodService_Search_Success()
+        {
+            var searchResults = new List<Food>
+            {
+                new Food { ID = 1, Brand = "Wegmans", ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+            };
+
+            var user = new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "TestUser123@testing.com"
+            };
+
+
+            var foodRepo = new MockRepository<Food>();
+            foodRepo.MockGet(searchResults.AsQueryable());
+
+            var foodService = new FoodService(foodRepo.Object);
+
+            var result = foodService.Search(user, "wegmans");
+
+            Assert.Equal(3, result.Count);
+        }
     }
 }

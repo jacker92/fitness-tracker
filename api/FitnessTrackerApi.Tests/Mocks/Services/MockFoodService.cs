@@ -50,5 +50,13 @@ namespace FitnessTrackerApi.Tests.Mocks.Services
 
             return this;
         }
+
+        public MockFoodService MockSearch(List<Food> foods)
+        {
+            Setup(x => x.Search(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(foods);
+
+            return this;
+        }
     }
 }
