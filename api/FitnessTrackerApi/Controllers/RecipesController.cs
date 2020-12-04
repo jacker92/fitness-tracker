@@ -38,7 +38,7 @@ namespace FitnessTrackerApi.Controllers
                     response = new GetRecipeResponse
                     {
                         Successful = false,
-                        ErrorMessage = "Food not found"
+                        ErrorMessage = "Recipe not found"
                     };
                 }
                 else
