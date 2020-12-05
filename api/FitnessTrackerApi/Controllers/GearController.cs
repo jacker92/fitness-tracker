@@ -85,7 +85,6 @@ namespace FitnessTrackerApi.Controllers
             }
         }
 
-
         [Authorize]
         [HttpPost("save")]
         public async Task<IActionResult> Save(EditGearRequest request)

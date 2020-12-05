@@ -97,7 +97,7 @@ const GearGrid: React.FC = () => {
     };
 
     const toggleGearActive = (id: number, active: boolean) => {
-        client('gear/setgearactiveflag', {
+        client('gear/setactiveflag', {
             data: {
                 id,
                 active,
@@ -125,7 +125,7 @@ const GearGrid: React.FC = () => {
     };
 
     const deleteGear = async (id: number) => {
-        await client('gear/deletegear', {
+        await client('gear/delete', {
             data: {
                 id,
             },
