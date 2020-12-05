@@ -23,7 +23,7 @@ namespace FitnessTrackerApi.Services
             return _gearRepository.GetById(id);
         }
 
-        public List<Gear> GetUserGear(string userId)
+        public List<Gear> ListForUser(string userId)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace FitnessTrackerApi.Services
             }
         }
 
-        public async Task<GearListResponse> AddGear(User user, EditGearRequest request)
+        public async Task<GearListResponse> Add(User user, EditGearRequest request)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace FitnessTrackerApi.Services
             }
         }
 
-        public async Task<GearListResponse> UpdateGear(User user, EditGearRequest request)
+        public async Task<GearListResponse> Update(User user, EditGearRequest request)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace FitnessTrackerApi.Services
             }
         }
 
-        public async Task<GearListResponse> DeleteGear(User user, DeleteRequest request)
+        public async Task<GearListResponse> Delete(User user, DeleteRequest request)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace FitnessTrackerApi.Services
             }
         }
 
-        public async Task<GearListResponse> SetGearActiveFlag(User user, SetGearActiveFlagRequest request)
+        public async Task<GearListResponse> SetActiveFlag(User user, SetGearActiveFlagRequest request)
         {
             try
             {

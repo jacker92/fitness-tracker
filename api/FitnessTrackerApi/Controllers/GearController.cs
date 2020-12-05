@@ -19,7 +19,7 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("getgear")]
+        [HttpGet("get")]
         public IActionResult GetGear(int id)
         {
             try
@@ -70,7 +70,7 @@ namespace FitnessTrackerApi.Controllers
                     return BadRequest(new { message = "Unable to retrieve user" });
                 }
 
-                var gear = _gearService.GetUserGear(CurrentUser.Id);
+                var gear = _gearService.ListForUser(CurrentUser.Id);
 
                 var response = new GearListResponse
                 {
@@ -100,11 +100,11 @@ namespace FitnessTrackerApi.Controllers
                 GearListResponse response;
                 if (request.ID > 0)
                 {
-                    response = await _gearService.UpdateGear(CurrentUser, request);
+                    response = await _gearService.Update(CurrentUser, request);
                 }
                 else
                 {
-                    response = await _gearService.AddGear(CurrentUser, request);
+                    response = await _gearService.Add(CurrentUser, request);
                 }
 
                 return OkResult(response);
@@ -116,7 +116,7 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("deletegear")]
+        [HttpPost("delete")]
         public async Task<IActionResult> DeleteGear(DeleteRequest request)
         {
             try
@@ -126,7 +126,7 @@ namespace FitnessTrackerApi.Controllers
                     return BadRequest(new { message = "Unable to retrieve user" });
                 }
 
-                var response = await _gearService.DeleteGear(CurrentUser, request);
+                var response = await _gearService.Delete(CurrentUser, request);
 
                 return OkResult(response);
             }
@@ -137,7 +137,7 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [Authorize]
-        [HttpPost("setgearactiveflag")]
+        [HttpPost("setactiveflag")]
         public async Task<IActionResult> SetGearActiveFlag(SetGearActiveFlagRequest request)
         {
             try
@@ -147,7 +147,7 @@ namespace FitnessTrackerApi.Controllers
                     return BadRequest(new { message = "Unable to retrieve user" });
                 }
 
-                var response = await _gearService.SetGearActiveFlag(CurrentUser, request);
+                var response = await _gearService.SetActiveFlag(CurrentUser, request);
 
                 return OkResult(response);
             }
@@ -156,6 +156,5 @@ namespace FitnessTrackerApi.Controllers
                 return OkResult(new GearListResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
-
     }
 }

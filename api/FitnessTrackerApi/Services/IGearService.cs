@@ -9,10 +9,10 @@ namespace FitnessTrackerApi.Services
     public interface IGearService
     {
         Gear GetById(int id);
-        List<Gear> GetUserGear(string userId);
-        Task<GearListResponse> AddGear(User user, EditGearRequest request);
-        Task<GearListResponse> UpdateGear(User user, EditGearRequest request);
-        Task<GearListResponse> DeleteGear(User user, DeleteRequest request);
-        Task<GearListResponse> SetGearActiveFlag(User user, SetGearActiveFlagRequest request);
+        List<Gear> ListForUser(string userId);
+        Task<GearListResponse> Add(User user, EditGearRequest request);
+        Task<GearListResponse> Update(User user, EditGearRequest request);
+        Task<GearListResponse> Delete(User user, DeleteRequest request);
+        Task<GearListResponse> SetActiveFlag(User user, SetGearActiveFlagRequest request);
     }
 }

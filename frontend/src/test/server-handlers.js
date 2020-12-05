@@ -156,13 +156,7 @@ const handlers = [
         ],
     }))),
 
-    rest.post('*/gear/addgear', (req, res, ctx) => res(ctx.json({
-        successful: true,
-        error: '',
-        gear: [],
-    }))),
-
-    rest.post('*/gear/updategear', (req, res, ctx) => res(ctx.json({
+    rest.post('*/gear/save', (req, res, ctx) => res(ctx.json({
         successful: true,
         error: '',
         gear: [],

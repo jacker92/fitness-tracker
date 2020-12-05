@@ -72,7 +72,7 @@ const GearGrid: React.FC = () => {
     }, [currentUser.id]);
 
     const getGearById = async (id: number) => {
-        await client(`gear/getgear?id=${id}`).then(
+        await client(`gear/get?id=${id}`).then(
             (data) => {
                 if (data.successful) {
                     const selGear: Gear = {
