@@ -3,11 +3,11 @@ using System.Text.Json.Serialization;
 
 namespace FitnessTrackerApi.Models.Requests
 {
-    public class UpdateGearRequest
+    public class EditGearRequest
     {
         [Required]
         [JsonPropertyName("id")]
-        public int ID { get; set; }
+        public int ID { get; set; } = 0;
 
         [Required]
         [JsonPropertyName("name")]

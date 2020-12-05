@@ -1,6 +1,7 @@
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FitnessTrackerApi.Services
@@ -8,9 +9,10 @@ namespace FitnessTrackerApi.Services
     public interface IGearService
     {
         Gear GetById(int id);
-        Task<EditGearResponse> AddGear(User user, AddGearRequest request);
-        Task<EditGearResponse> UpdateGear(User user, UpdateGearRequest request);
-        Task<EditGearResponse> DeleteGear(User user, DeleteGearRequest request);
-        Task<EditGearResponse> SetGearActiveFlag(User user, SetGearActiveFlagRequest request);
+        List<Gear> GetUserGear(string userId);
+        Task<GearListResponse> AddGear(User user, EditGearRequest request);
+        Task<GearListResponse> UpdateGear(User user, EditGearRequest request);
+        Task<GearListResponse> DeleteGear(User user, DeleteRequest request);
+        Task<GearListResponse> SetGearActiveFlag(User user, SetGearActiveFlagRequest request);
     }
 }

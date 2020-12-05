@@ -47,7 +47,7 @@ const GearForm: React.FC<GearFormProps> = (props) => {
     };
 
     const addGear = (newGear: Gear) => {
-        client('gear/addgear', {
+        client('gear/save', {
             data: {
                 name: newGear.name,
             },
@@ -73,7 +73,7 @@ const GearForm: React.FC<GearFormProps> = (props) => {
     };
 
     const updateGear = (updatedGear: Gear) => {
-        client('gear/updategear', {
+        client('gear/save', {
             data: {
                 id: updatedGear.id,
                 name: updatedGear.name,

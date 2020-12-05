@@ -26,16 +26,16 @@ namespace FitnessTrackerApi.Controllers
             {
                 if (id < 0)
                 {
-                    return OkResult(new GetGearResponse { Successful = false, ErrorMessage = "Gear not found" });
+                    return OkResult(new GearResponse { Successful = false, ErrorMessage = "Gear not found" });
                 }
 
                 var gear = _gearService.GetById(id);
 
-                GetGearResponse response;
+                GearResponse response;
 
                 if (gear == null)
                 {
-                    response = new GetGearResponse
+                    response = new GearResponse
                     {
                         Successful = false,
                         ErrorMessage = "Gear not found"
@@ -43,9 +43,10 @@ namespace FitnessTrackerApi.Controllers
                 }
                 else
                 {
-                    response = new GetGearResponse
+                    response = new GearResponse
                     {
                         Successful = true,
+                        ErrorMessage = "",
                         Gear = gear
                     };
                 }
@@ -54,76 +55,84 @@ namespace FitnessTrackerApi.Controllers
             }
             catch (Exception ex)
             {
-                return OkResult(new GetGearResponse { Successful = false, ErrorMessage = ex.Message });
+                return OkResult(new GearResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
         [Authorize]
-        [HttpPost("addgear")]
-        public async Task<IActionResult> AddGear(AddGearRequest request)
+        [HttpGet("getusergear")]
+        public IActionResult GetUserGear()
         {
             try
             {
-                var user = LoadUser();
-
-                if (user == null)
+                if (CurrentUser == null)
                 {
                     return BadRequest(new { message = "Unable to retrieve user" });
                 }
 
-                var response = await _gearService.AddGear(user, request);
+                var gear = _gearService.GetUserGear(CurrentUser.Id);
+
+                var response = new GearListResponse
+                {
+                    Gear = gear
+                };
 
                 return OkResult(response);
             }
             catch (Exception ex)
             {
-                return OkResult(new EditGearResponse { Successful = false, ErrorMessage = ex.Message });
+                return OkResult(new UserGearResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
+
         [Authorize]
-        [HttpPost("updategear")]
-        public async Task<IActionResult> UpdateGear(UpdateGearRequest request)
+        [HttpPost("save")]
+        public async Task<IActionResult> Save(EditGearRequest request)
         {
             try
             {
-                var user = LoadUser();
-
-                if (user == null)
+                if (CurrentUser == null)
                 {
                     return BadRequest(new { message = "Unable to retrieve user" });
                 }
 
-                var response = await _gearService.UpdateGear(user, request);
+                GearListResponse response;
+                if (request.ID > 0)
+                {
+                    response = await _gearService.UpdateGear(CurrentUser, request);
+                }
+                else
+                {
+                    response = await _gearService.AddGear(CurrentUser, request);
+                }
 
                 return OkResult(response);
             }
             catch (Exception ex)
             {
-                return OkResult(new EditGearResponse { Successful = false, ErrorMessage = ex.Message });
+                return OkResult(new GearListResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
         [Authorize]
         [HttpPost("deletegear")]
-        public async Task<IActionResult> DeleteGear(DeleteGearRequest request)
+        public async Task<IActionResult> DeleteGear(DeleteRequest request)
         {
             try
             {
-                var user = LoadUser();
-
-                if (user == null)
+                if (CurrentUser == null)
                 {
                     return BadRequest(new { message = "Unable to retrieve user" });
                 }
 
-                var response = await _gearService.DeleteGear(user, request);
+                var response = await _gearService.DeleteGear(CurrentUser, request);
 
                 return OkResult(response);
             }
             catch (Exception ex)
             {
-                return OkResult(new EditGearResponse { Successful = false, ErrorMessage = ex.Message });
+                return OkResult(new GearListResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 
@@ -133,20 +142,18 @@ namespace FitnessTrackerApi.Controllers
         {
             try
             {
-                var user = LoadUser();
-
-                if (user == null)
+                if (CurrentUser == null)
                 {
                     return BadRequest(new { message = "Unable to retrieve user" });
                 }
 
-                var response = await _gearService.SetGearActiveFlag(user, request);
+                var response = await _gearService.SetGearActiveFlag(CurrentUser, request);
 
                 return OkResult(response);
             }
             catch (Exception ex)
             {
-                return OkResult(new EditGearResponse { Successful = false, ErrorMessage = ex.Message });
+                return OkResult(new GearListResponse { Successful = false, ErrorMessage = ex.Message });
             }
         }
 

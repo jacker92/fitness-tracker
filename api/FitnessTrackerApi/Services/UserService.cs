@@ -22,7 +22,6 @@ namespace FitnessTrackerApi.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IHostEnvironment _hostEnvironment;
         private readonly IRepository<DailyTarget> _dailyTargetRepository;
-        private readonly IRepository<Gear> _gearRespository;
         private readonly IRepository<Metric> _metricRepository;
         private readonly IRepository<UserMetric> _userMetricRepository;
         private readonly IRepository<UserTrackedMetric> _userTrackedMetricRepository;
@@ -35,7 +34,6 @@ namespace FitnessTrackerApi.Services
                             IRepository<UserMetric> userMetricRepo,
                             IRepository<UserTrackedMetric> userTrackedMetricRepo,
                             IRepository<Metric> metricRepo,
-                            IRepository<Gear> gearRepo,
                             IRepository<Activity> activityRepo)
         {
             _userManager = userManager;
@@ -45,7 +43,6 @@ namespace FitnessTrackerApi.Services
             _userMetricRepository = userMetricRepo;
             _userTrackedMetricRepository = userTrackedMetricRepo;
             _metricRepository = metricRepo;
-            _gearRespository = gearRepo;
             _activityRepository = activityRepo;
         }
 
@@ -541,24 +538,6 @@ namespace FitnessTrackerApi.Services
             }
 
             return new ToggleUserMetricTrackingResponse
-            {
-                ErrorMessage = "Cannot find user"
-            };
-        }
-
-        public UserGearResponse GetUserGear(User user)
-        {
-            if (user != null)
-            {
-                var gear = _gearRespository.Get(g => g.UserID == user.Id).ToList();
-
-                return new UserGearResponse
-                {
-                    Gear = gear
-                };
-            }
-
-            return new UserGearResponse
             {
                 ErrorMessage = "Cannot find user"
             };

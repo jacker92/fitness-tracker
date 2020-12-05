@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace FitnessTrackerApi.Models.Responses
 {
-    public class GetGearResponse : BaseResponse
+    public class GearListResponse : BaseResponse
     {
         [JsonPropertyName("gear")]
-        public Gear Gear { get; set; }
+        public List<Gear> Gear { get; set; }
     }
 }

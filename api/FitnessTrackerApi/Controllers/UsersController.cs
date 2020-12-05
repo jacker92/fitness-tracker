@@ -289,29 +289,6 @@ namespace FitnessTrackerApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("getusergear")]
-        public IActionResult GetUserGear()
-        {
-            try
-            {
-                var user = LoadUser();
-
-                if (user == null)
-                {
-                    return BadRequest(new { message = "Unable to retrieve user" });
-                }
-
-                var response = _userService.GetUserGear(user);
-
-                return OkResult(response);
-            }
-            catch (Exception ex)
-            {
-                return OkResult(new UserGearResponse { Successful = false, ErrorMessage = ex.Message });
-            }
-        }
-
-        [Authorize]
         [HttpGet("getusercustomactivities")]
         public IActionResult GetUserCustomActivities()
         {

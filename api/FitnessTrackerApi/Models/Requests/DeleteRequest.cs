@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace FitnessTrackerApi.Models.Requests
 {
-    public class DeleteGearRequest
+    public class DeleteRequest
     {
         [Required]
         [JsonPropertyName("id")]

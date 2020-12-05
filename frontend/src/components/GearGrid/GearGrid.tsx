@@ -46,7 +46,7 @@ const GearGrid: React.FC = () => {
     };
 
     useEffect(() => {
-        client('users/getusergear').then(
+        client('gear/getusergear').then(
             (data) => {
                 if (data.successful) {
                     const gearData: Array<GearDataRow> = transformData(data.gear);

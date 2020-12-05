@@ -139,7 +139,7 @@ const handlers = [
         ],
     }))),
 
-    rest.get('*/users/getusergear', (req, res, ctx) => res(ctx.json({
+    rest.get('*/gear/getusergear', (req, res, ctx) => res(ctx.json({
         successful: true,
         error: '',
         gear: [

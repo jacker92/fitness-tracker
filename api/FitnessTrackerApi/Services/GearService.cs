@@ -3,6 +3,7 @@ using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
 using FitnessTrackerApi.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,7 +23,21 @@ namespace FitnessTrackerApi.Services
             return _gearRepository.GetById(id);
         }
 
-        public async Task<EditGearResponse> AddGear(User user, AddGearRequest request)
+        public List<Gear> GetUserGear(string userId)
+        {
+            try
+            {
+                return _gearRepository.Get(g => g.UserID == userId)
+                                        .OrderBy(g => g.Name)
+                                        .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<GearListResponse> AddGear(User user, EditGearRequest request)
         {
             try
             {
@@ -38,13 +53,13 @@ namespace FitnessTrackerApi.Services
 
                     var gearList = _gearRepository.Get(g => g.UserID == user.Id).ToList();
 
-                    return new EditGearResponse
+                    return new GearListResponse
                     {
                         Gear = gearList
                     };
                 }
 
-                return new EditGearResponse
+                return new GearListResponse
                 {
                     Successful = false,
                     ErrorMessage = "Cannot find user"
@@ -52,11 +67,11 @@ namespace FitnessTrackerApi.Services
             }
             catch (Exception ex)
             {
-                return new EditGearResponse { Successful = false, ErrorMessage = ex.Message };
+                return new GearListResponse { Successful = false, ErrorMessage = ex.Message };
             }
         }
 
-        public async Task<EditGearResponse> UpdateGear(User user, UpdateGearRequest request)
+        public async Task<GearListResponse> UpdateGear(User user, EditGearRequest request)
         {
             try
             {
@@ -67,7 +82,7 @@ namespace FitnessTrackerApi.Services
                     // for safety, confirm that the user owns the gear
                     if (gear == null || gear.UserID != user.Id)
                     {
-                        return new EditGearResponse
+                        return new GearListResponse
                         {
                             Successful = false,
                             ErrorMessage = "Cannot find gear"
@@ -80,13 +95,13 @@ namespace FitnessTrackerApi.Services
 
                     var gearList = _gearRepository.Get(g => g.UserID == user.Id).ToList();
 
-                    return new EditGearResponse
+                    return new GearListResponse
                     {
                         Gear = gearList
                     };
                 }
 
-                return new EditGearResponse
+                return new GearListResponse
                 {
                     Successful = false,
                     ErrorMessage = "Cannot find user"
@@ -94,11 +109,11 @@ namespace FitnessTrackerApi.Services
             }
             catch (Exception ex)
             {
-                return new EditGearResponse { Successful = false, ErrorMessage = ex.Message };
+                return new GearListResponse { Successful = false, ErrorMessage = ex.Message };
             }
         }
 
-        public async Task<EditGearResponse> DeleteGear(User user, DeleteGearRequest request)
+        public async Task<GearListResponse> DeleteGear(User user, DeleteRequest request)
         {
             try
             {
@@ -109,7 +124,7 @@ namespace FitnessTrackerApi.Services
                     // for safety, confirm that the user owns the gear
                     if (gear == null || gear.UserID != user.Id)
                     {
-                        return new EditGearResponse
+                        return new GearListResponse
                         {
                             Successful = false,
                             ErrorMessage = "Cannot find gear"
@@ -122,13 +137,13 @@ namespace FitnessTrackerApi.Services
 
                     var gearList = _gearRepository.Get(g => g.UserID == user.Id).ToList();
 
-                    return new EditGearResponse
+                    return new GearListResponse
                     {
                         Gear = gearList
                     };
                 }
 
-                return new EditGearResponse
+                return new GearListResponse
                 {
                     Successful = false,
                     ErrorMessage = "Cannot find user"
@@ -136,11 +151,11 @@ namespace FitnessTrackerApi.Services
             }
             catch (Exception ex)
             {
-                return new EditGearResponse { Successful = false, ErrorMessage = ex.Message };
+                return new GearListResponse { Successful = false, ErrorMessage = ex.Message };
             }
         }
 
-        public async Task<EditGearResponse> SetGearActiveFlag(User user, SetGearActiveFlagRequest request)
+        public async Task<GearListResponse> SetGearActiveFlag(User user, SetGearActiveFlagRequest request)
         {
             try
             {
@@ -151,7 +166,7 @@ namespace FitnessTrackerApi.Services
                     // for safety, confirm that the user owns the gear
                     if (gear == null || gear.UserID != user.Id)
                     {
-                        return new EditGearResponse
+                        return new GearListResponse
                         {
                             Successful = false,
                             ErrorMessage = "Cannot find gear"
@@ -164,13 +179,13 @@ namespace FitnessTrackerApi.Services
 
                     var gearList = _gearRepository.Get(g => g.UserID == user.Id).ToList();
 
-                    return new EditGearResponse
+                    return new GearListResponse
                     {
                         Gear = gearList
                     };
                 }
 
-                return new EditGearResponse
+                return new GearListResponse
                 {
                     Successful = false,
                     ErrorMessage = "Cannot find user"
@@ -178,7 +193,7 @@ namespace FitnessTrackerApi.Services
             }
             catch (Exception ex)
             {
-                return new EditGearResponse { Successful = false, ErrorMessage = ex.Message };
+                return new GearListResponse { Successful = false, ErrorMessage = ex.Message };
             }
         }
     }
