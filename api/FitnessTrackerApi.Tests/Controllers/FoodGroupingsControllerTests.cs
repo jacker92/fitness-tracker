@@ -2,6 +2,7 @@ using FitnessTrackerApi.Controllers;
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
+using FitnessTrackerApi.Tests.Mocks.Repositories;
 using FitnessTrackerApi.Tests.Mocks.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -71,18 +72,11 @@ namespace FitnessTrackerApi.Tests.Controllers
                 new FoodGrouping { ID = 3, Name = "Dinner", SortOrder = 3, UserID = "123", User = null },
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
-
             var foodGroupingService = new MockFoodGroupingService().MockGetForUser(foodGroupings);
 
             var foodGroupingsController = new FoodGroupingsController(foodGroupingService.Object);
             foodGroupingsController.ControllerContext.HttpContext = new DefaultHttpContext();
-            foodGroupingsController.ControllerContext.HttpContext.Items["User"] = user;
+            foodGroupingsController.ControllerContext.HttpContext.Items["User"] = TestDataRepository.CreateUser();
 
             var result = (OkObjectResult)foodGroupingsController.GetUserFoodGroupings();
 
@@ -116,12 +110,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 FoodGroupings = foodGroupings
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var foodGroupingService = new MockFoodGroupingService().MockAddFoodGrouping(addResponse);
 
@@ -162,12 +151,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 FoodGroupings = foodGroupings
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var foodGroupingService = new MockFoodGroupingService().MockUpdateFoodGrouping(updateResponse);
 
@@ -207,12 +191,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 FoodGroupings = foodGroupings
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var foodGroupingService = new MockFoodGroupingService().MockDeleteFoodGrouping(deleteResponse);
 

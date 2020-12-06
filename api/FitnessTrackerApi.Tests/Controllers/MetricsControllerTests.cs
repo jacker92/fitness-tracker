@@ -2,6 +2,7 @@ using FitnessTrackerApi.Controllers;
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
+using FitnessTrackerApi.Tests.Mocks.Repositories;
 using FitnessTrackerApi.Tests.Mocks.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -86,18 +87,11 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Metrics = trackedMetrics
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
-
             var metricService = new MockMetricService().MockAddMetric(editResponse);
 
             var metricController = new MetricsController(metricService.Object);
             metricController.ControllerContext.HttpContext = new DefaultHttpContext();
-            metricController.ControllerContext.HttpContext.Items["User"] = user;
+            metricController.ControllerContext.HttpContext.Items["User"] = TestDataRepository.CreateUser();
 
             var result = (OkObjectResult)metricController.AddCustomMetric(request).Result;
 
@@ -131,18 +125,11 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Metrics = trackedMetrics
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
-
             var metricService = new MockMetricService().MockUpdateMetric(editResponse);
 
             var metricController = new MetricsController(metricService.Object);
             metricController.ControllerContext.HttpContext = new DefaultHttpContext();
-            metricController.ControllerContext.HttpContext.Items["User"] = user;
+            metricController.ControllerContext.HttpContext.Items["User"] = TestDataRepository.CreateUser(); ;
 
             var result = (OkObjectResult)metricController.UpdateCustomMetric(request).Result;
 
@@ -173,12 +160,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Metrics = trackedMetrics
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var metricService = new MockMetricService().MockDeleteMetric(editResponse);
 

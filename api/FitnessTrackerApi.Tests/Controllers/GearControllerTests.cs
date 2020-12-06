@@ -2,6 +2,7 @@ using FitnessTrackerApi.Controllers;
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
+using FitnessTrackerApi.Tests.Mocks.Repositories;
 using FitnessTrackerApi.Tests.Mocks.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -84,18 +85,11 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Gear = gearList
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
-
             var gearService = new MockGearService().MockAddGear(editResponse);
 
             var gearController = new GearController(gearService.Object);
             gearController.ControllerContext.HttpContext = new DefaultHttpContext();
-            gearController.ControllerContext.HttpContext.Items["User"] = user;
+            gearController.ControllerContext.HttpContext.Items["User"] = TestDataRepository.CreateUser();
 
             var result = (OkObjectResult)gearController.AddGear(request).Result;
 
@@ -127,12 +121,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Gear = gearList
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var gearService = new MockGearService().MockUpdateGear(editResponse);
 
@@ -168,12 +157,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Gear = gearList
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var gearService = new MockGearService().MockDeleteGear(editResponse);
 
@@ -211,12 +195,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Gear = gearList
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var gearService = new MockGearService().MockSetGearActiveFlag(editResponse);
 

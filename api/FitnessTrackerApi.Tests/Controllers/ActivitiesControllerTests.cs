@@ -2,6 +2,7 @@ using FitnessTrackerApi.Controllers;
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
+using FitnessTrackerApi.Tests.Mocks.Repositories;
 using FitnessTrackerApi.Tests.Mocks.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -88,12 +89,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Activities = activities
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+           var user = TestDataRepository.CreateUser();
 
             var activityService = new MockActivityService().MockAddActivity(editResponse);
 
@@ -134,12 +130,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Activities = activities
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var activityService = new MockActivityService().MockUpdateActivity(editResponse);
 
@@ -176,18 +167,11 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Activities = activities
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
-
             var activityService = new MockActivityService().MockDeleteActivity(editResponse);
 
             var activitiesController = new ActivitiesController(activityService.Object);
             activitiesController.ControllerContext.HttpContext = new DefaultHttpContext();
-            activitiesController.ControllerContext.HttpContext.Items["User"] = user;
+            activitiesController.ControllerContext.HttpContext.Items["User"] = TestDataRepository.CreateUser();
 
             var result = (OkObjectResult)activitiesController.DeleteActivity(request).Result;
 

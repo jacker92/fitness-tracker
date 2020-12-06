@@ -90,12 +90,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Sugar = 1
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var food = new Food
             {
@@ -150,12 +145,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Sugar = 1
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var food = new Food
             {
@@ -211,12 +201,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Sugar = 1
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var food = new Food
             {
@@ -262,12 +247,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 1
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var food = new Food
             {
@@ -312,12 +292,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 1
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var food = new Food
             {
@@ -364,12 +339,7 @@ namespace FitnessTrackerApi.Tests.Services
                 new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
 
             var foodRepo = new MockRepository<Food>();

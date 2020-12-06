@@ -52,12 +52,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void MetricService_AddMetric_Success()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var newMetric = new Metric
             {
@@ -95,12 +90,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void MetricService_UpdateMetric_Success()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var updatedMetric = new Metric
             {
@@ -147,12 +137,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Units = "jiggawatts",
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var updatedMetric = new Metric
             {
@@ -199,12 +184,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Units = "jiggawatts",
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var updatedMetric = new Metric
             {
@@ -243,12 +223,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void MetricService_DeleteMetric_Success()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var deletedMetric = new Metric
             {
@@ -293,12 +268,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void MetricService_DeleteMetric_UserDoesNotOwnMetric()
         {
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var deletedMetric = new Metric
             {
@@ -343,12 +313,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void MetricService_DeleteMetric_IsSystemMetric()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var deletedMetric = new Metric
             {

@@ -58,12 +58,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Type = ActivityMetricType.None
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var activity = new Activity
             {
@@ -115,12 +110,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Type = ActivityMetricType.None
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var activity = new Activity
             {
@@ -173,12 +163,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Type = ActivityMetricType.None
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var activity = new Activity
             {
@@ -231,12 +216,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Type = ActivityMetricType.None
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var activity = new Activity
             {
@@ -286,12 +266,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 2
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var activity = new Activity
             {
@@ -340,12 +315,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 2
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var activity = new Activity
             {
@@ -394,12 +364,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 2
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var activity = new Activity
             {

@@ -2,6 +2,7 @@ using FitnessTrackerApi.Controllers;
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
+using FitnessTrackerApi.Tests.Mocks.Repositories;
 using FitnessTrackerApi.Tests.Mocks.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -126,18 +127,11 @@ namespace FitnessTrackerApi.Tests.Controllers
                 }
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
-
             var recipeService = new MockRecipeService().MockGetForUser(userRecipes);
 
             var recipesController = new RecipesController(recipeService.Object);
             recipesController.ControllerContext.HttpContext = new DefaultHttpContext();
-            recipesController.ControllerContext.HttpContext.Items["User"] = user;
+            recipesController.ControllerContext.HttpContext.Items["User"] = TestDataRepository.CreateUser(); ;
 
             var result = (OkObjectResult)recipesController.GetAvailableRecipes();
 
@@ -203,12 +197,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 }
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var recipeService = new MockRecipeService().MockGetForUser(userRecipes);
 
@@ -304,12 +293,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 }
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var recipeService = new MockRecipeService().MockAddRecipe(addResponse);
 
@@ -406,12 +390,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 }
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var recipeService = new MockRecipeService().MockUpdateRecipe(updateResponse);
 
@@ -479,12 +458,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Recipes = recipeList
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var recipeService = new MockRecipeService().MockDeleteRecipe(deleteResponse);
 

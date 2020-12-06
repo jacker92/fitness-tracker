@@ -154,12 +154,7 @@ namespace FitnessTrackerApi.Tests.Services
                 }
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var newlyAddedRecipe = new Recipe
             {
@@ -273,12 +268,7 @@ namespace FitnessTrackerApi.Tests.Services
                 }
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var updatedRecipe = new Recipe
             {
@@ -375,12 +365,7 @@ namespace FitnessTrackerApi.Tests.Services
                 }
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var updatedRecipe = new Recipe
             {
@@ -460,12 +445,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 2
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var recipeToDelete = new Recipe
             {
@@ -551,12 +531,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 2
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var recipeToDelete = new Recipe
             {

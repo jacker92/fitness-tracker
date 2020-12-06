@@ -2,6 +2,7 @@ using FitnessTrackerApi.Controllers;
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Models.Requests;
 using FitnessTrackerApi.Models.Responses;
+using FitnessTrackerApi.Tests.Mocks.Repositories;
 using FitnessTrackerApi.Tests.Mocks.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -120,26 +121,19 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_GetUser_ReturnsUser()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
-
-            var userService = new MockUserService().MockGetUserRecord(user);
+            var userService = new MockUserService().MockGetUserRecord(TestDataRepository.CreateUser());
 
             var usersController = new UsersController(userService.Object);
             usersController.ControllerContext.HttpContext = new DefaultHttpContext();
-            usersController.ControllerContext.HttpContext.Items["User"] = user;
+            usersController.ControllerContext.HttpContext.Items["User"] = TestDataRepository.CreateUser();
 
             var result = (OkObjectResult)usersController.GetUser().Result;
 
             var response = JsonSerializer.Deserialize<UserResponse>(result.Value.ToString());
 
             Assert.True(response.Successful);
-            Assert.Equal(user.Name, response.User.Name);
-            Assert.Equal(user.Email, response.User.Email);
+            Assert.Equal(TestDataRepository.CreateUser().Name, response.User.Name);
+            Assert.Equal(TestDataRepository.CreateUser().Email, response.User.Email);
         }
 
         [Fact]
@@ -183,12 +177,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_UpdateUserProfile_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var request = new UpdateProfileRequest
             {
@@ -223,12 +212,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_UploadAvatar_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var request = new AvatarUploadRequest
             {
@@ -258,12 +242,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_GetAvatar_ReturnsAvatar()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var userService = new MockUserService().MockGetUserAvatar("avatar.jpg");
 
@@ -283,12 +262,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_RemoveAvatar_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var userService = new MockUserService().MockRemoveAvatar(new BaseResponse());
 
@@ -307,12 +281,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_UpdateActivitySettings_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var request = new UpdateActivitySettingsRequest
             {
@@ -340,12 +309,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_UpdateDietSettings_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var request = new UpdateDietSettingsRequest
             {
@@ -397,12 +361,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_ChangePassword_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var request = new ChangePasswordRequest
             {
@@ -428,12 +387,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_GetUserTrackedMetrics_ReturnsMetrics()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var metricsResponse = new UserMetricsResponse
             {
@@ -463,12 +417,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_ToggleUserTrackedMetric_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var request = new ToggleUserMetricTrackingRequest
             {
@@ -503,12 +452,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_GetUserGear_ReturnsGear()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var gearResponse = new UserGearResponse
             {
@@ -538,12 +482,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void UsersController_GetUserCustomActivities_ReturnsGear()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var activitiesResponse = new UserCustomActivityResponse
             {

@@ -117,17 +117,12 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void UserService_Authenticate_Successful()
         {
+            var user = TestDataRepository.CreateUser();
+
             var request = new AuthenticationRequest
             {
-                Email = "testing@testing.com",
+                Email = user.Email,
                 Password = "validPassword123!"
-            };
-
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com",
             };
 
             var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
@@ -169,12 +164,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Password = "validPassword123!"
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com",
-            };
+            var user = TestDataRepository.CreateUser();
 
             var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
             var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
@@ -214,12 +204,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Password = "validPassword123!"
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com",
-            };
+            var user = TestDataRepository.CreateUser();
 
             var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
             var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
@@ -278,18 +263,7 @@ namespace FitnessTrackerApi.Tests.Services
 
             dailyTargets.Add(dailyTarget);
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com",
-                MeasurementSystem = MeasurementSystem.US,
-                Birthday = new DateTime(1980, 01, 01),
-                Height = 60,
-                Gender = 'M',
-                ActivityLevel = ActivityLevel.Moderate,
-                DailyTargetID = 1
-            };
+            var user = TestDataRepository.CreateUser();
 
             var userMetrics = new List<UserMetric>();
 
@@ -314,8 +288,6 @@ namespace FitnessTrackerApi.Tests.Services
                 gearRepo,
                 activityRepo);
 
-
-
             var response = userService.GetUserRecord("123").Result;
 
             Assert.Equal(user.Name, response.Name);
@@ -327,18 +299,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void UserService_CheckEmail_ReturnsExistingEmail()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com",
-                MeasurementSystem = MeasurementSystem.US,
-                Birthday = new DateTime(1980, 01, 01),
-                Height = 60,
-                Gender = 'M',
-                ActivityLevel = ActivityLevel.Moderate,
-                DailyTargetID = 1
-            };
+            var user = TestDataRepository.CreateUser();
 
             var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
             var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
@@ -369,18 +330,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void UserService_CheckEmail_ReturnsAvailableEmail()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com",
-                MeasurementSystem = MeasurementSystem.US,
-                Birthday = new DateTime(1980, 01, 01),
-                Height = 60,
-                Gender = 'M',
-                ActivityLevel = ActivityLevel.Moderate,
-                DailyTargetID = 1
-            };
+            var user = TestDataRepository.CreateUser();
 
             var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
             var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
@@ -421,17 +371,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ActivityLevel = ActivityLevel.Moderate
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Email = "TestUser123@testing.com",
-                UserName = "TestUser123@testing.com",
-                Name = "Test User",
-                Height = 70,
-                Birthday = new DateTime(1985, 01, 01),
-                Gender = 'M',
-                ActivityLevel = ActivityLevel.Moderate
-            };
+            var user = TestDataRepository.CreateUser();
 
             var mockDailyTargetRepo = Mock.Of<IRepository<DailyTarget>>();
             var mockUserMetricRepo = Mock.Of<IRepository<UserMetric>>();
@@ -658,18 +598,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ConfirmNewPassword = "newPassword123!"
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com",
-                MeasurementSystem = MeasurementSystem.US,
-                Birthday = new DateTime(1980, 01, 01),
-                Height = 60,
-                Gender = 'M',
-                ActivityLevel = ActivityLevel.Moderate,
-                DailyTargetID = 1
-            };
+            var user = TestDataRepository.CreateUser();
 
             _mockUserManager.Setup(um => um.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword))
                 .ReturnsAsync(IdentityResult.Success);
@@ -710,18 +639,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ConfirmNewPassword = "newPassword123!"
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com",
-                MeasurementSystem = MeasurementSystem.US,
-                Birthday = new DateTime(1980, 01, 01),
-                Height = 60,
-                Gender = 'M',
-                ActivityLevel = ActivityLevel.Moderate,
-                DailyTargetID = 1
-            };
+            var user = TestDataRepository.CreateUser();
 
             _mockUserManager.Setup(um => um.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword))
                 .ReturnsAsync(IdentityResult.Failed());
@@ -763,18 +681,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ConfirmNewPassword = "newPassword123456!"
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com",
-                MeasurementSystem = MeasurementSystem.US,
-                Birthday = new DateTime(1980, 01, 01),
-                Height = 60,
-                Gender = 'M',
-                ActivityLevel = ActivityLevel.Moderate,
-                DailyTargetID = 1
-            };
+            var user = TestDataRepository.CreateUser();
 
             _mockUserManager.Setup(um => um.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword))
                 .ReturnsAsync(IdentityResult.Failed());
@@ -816,18 +723,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ConfirmNewPassword = "paswd"
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com",
-                MeasurementSystem = MeasurementSystem.US,
-                Birthday = new DateTime(1980, 01, 01),
-                Height = 60,
-                Gender = 'M',
-                ActivityLevel = ActivityLevel.Moderate,
-                DailyTargetID = 1
-            };
+            var user = TestDataRepository.CreateUser();
 
             _mockUserManager.Setup(um => um.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword))
                 .ReturnsAsync(IdentityResult.Failed());
@@ -862,12 +758,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void UserService_GetUserTrackedMetrics_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var userTrackedMetrics = new List<UserTrackedMetric>
             {
@@ -910,12 +801,7 @@ namespace FitnessTrackerApi.Tests.Services
                 MetricID = -2
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var userTrackedMetrics = new List<UserTrackedMetric>
             {
@@ -954,12 +840,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void UserService_GetUserGear_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var gear = new List<Gear>
             {
@@ -997,12 +878,7 @@ namespace FitnessTrackerApi.Tests.Services
         [Fact]
         public void UserService_GetUserCustomActivities_Successful()
         {
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var activities = new List<Activity>
             {

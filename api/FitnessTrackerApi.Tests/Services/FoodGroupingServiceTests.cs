@@ -72,12 +72,7 @@ namespace FitnessTrackerApi.Tests.Services
                 SortOrder = 4
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var foodGrouping = new FoodGrouping
             {
@@ -117,12 +112,7 @@ namespace FitnessTrackerApi.Tests.Services
                 SortOrder = 4
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var foodGrouping = new FoodGrouping
             {
@@ -163,12 +153,7 @@ namespace FitnessTrackerApi.Tests.Services
                 SortOrder = 4
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var foodGrouping = new FoodGrouping
             {
@@ -207,12 +192,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 4
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var foodGrouping = new FoodGrouping
             {
@@ -250,12 +230,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 4
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var foodGrouping = new FoodGrouping
             {

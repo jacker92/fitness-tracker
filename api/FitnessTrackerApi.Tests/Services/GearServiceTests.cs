@@ -51,12 +51,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Name = "Mountain Bike"
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var gear = new Gear
             {
@@ -100,12 +95,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Name = "Road Bike"
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var gear = new Gear
             {
@@ -150,12 +140,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Name = "Road Bike"
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var gear = new Gear
             {
@@ -199,12 +184,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 2
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var gear = new Gear
             {
@@ -247,12 +227,7 @@ namespace FitnessTrackerApi.Tests.Services
                 ID = 2
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var gear = new Gear
             {
@@ -296,12 +271,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Active = false
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser();
 
             var gear = new Gear
             {
@@ -346,12 +316,7 @@ namespace FitnessTrackerApi.Tests.Services
                 Active = false
             };
 
-            var user = new User
-            {
-                Id = "456",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
+            var user = TestDataRepository.CreateUser("456");
 
             var gear = new Gear
             {
