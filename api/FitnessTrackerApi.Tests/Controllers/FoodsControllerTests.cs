@@ -5,6 +5,7 @@ using FitnessTrackerApi.Models.Responses;
 using FitnessTrackerApi.Tests.Mocks.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -25,22 +26,7 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void FoodsController_GetFoodById_ReturnsFood()
         {
-            var food = new Food
-            {
-                ID = 1,
-                ServingSize = "16 oz.",
-                Brand = "Wegmans",
-                Calories = 300,
-                Carbohydrates = 25,
-                Fat = 12,
-                IsAlcoholic = false,
-                IsPublic = false,
-                Name = "Ribeye",
-                Protein = 30,
-                Sugar = 1,
-                UserID = "123",
-                User = null
-            };
+            Food food = CreateFood(1);
 
             var foodService = new MockFoodService().MockGetById(food);
 
@@ -53,6 +39,22 @@ namespace FitnessTrackerApi.Tests.Controllers
             Assert.True(response.Successful);
             Assert.Equal(food.Name, response.Food.Name);
             Assert.Equal(food.Carbohydrates, response.Food.Carbohydrates);
+        }
+
+        [Fact]
+        public void FoodsController_GetFoodById_ReturnsNotFound_WhenIdIsBelowZero()
+        {
+            var foodService = new MockFoodService().MockGetById(CreateFood(-1));
+
+            var foodsController = new FoodsController(foodService.Object);
+
+            var result = (OkObjectResult)foodsController.GetFoodById(-1);
+
+            var response = JsonSerializer.Deserialize<GetFoodResponse>(result.Value.ToString());
+
+            Assert.False(response.Successful);
+            Assert.Equal("Food not found", response.ErrorMessage);
+            foodService.Verify(x => x.GetById(-1), Times.Never);
         }
 
         [Fact]
@@ -73,25 +75,13 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void FoodsController_GetUserCustomFoods_Successful()
         {
-            var userFoods = new List<Food>
-            {
-                new Food { ID = 1, Brand = "Wegmans", ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
-            };
-
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var userFoods = CreateFoodList();
 
             var foodService = new MockFoodService().MockGetForUser(userFoods);
 
             var foodsController = new FoodsController(foodService.Object);
             foodsController.ControllerContext.HttpContext = new DefaultHttpContext();
-            foodsController.ControllerContext.HttpContext.Items["User"] = user;
+            foodsController.ControllerContext.HttpContext.Items["User"] = CreateUser();
 
             var result = (OkObjectResult)foodsController.GetUserCustomFoods();
 
@@ -104,46 +94,20 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void FoodsController_AddFood_Successful()
         {
-            var request = new AddFoodRequest
-            {
-                Brand = "Wegmans",
-                ServingSize = "16 oz.",
-                Calories = 300,
-                Carbohydrates = 25,
-                Fat = 12,
-                IsAlcoholic = false,
-                IsPublic = false,
-                Name = "Ribeye",
-                Protein = 30,
-                Sugar = 1
-            };
-
-            var foodList = new List<Food>
-            {
-                new Food { ID = 1, Brand = "Wegmans", ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
-            };
+            AddFoodRequest request = CreateAddFoodRequest();
 
             var addResponse = new EditFoodResponse
             {
                 Successful = true,
                 ErrorMessage = "",
-                Foods = foodList
-            };
-
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
+                Foods = CreateFoodList()
             };
 
             var foodService = new MockFoodService().MockAddFood(addResponse);
 
             var foodsController = new FoodsController(foodService.Object);
             foodsController.ControllerContext.HttpContext = new DefaultHttpContext();
-            foodsController.ControllerContext.HttpContext.Items["User"] = user;
+            foodsController.ControllerContext.HttpContext.Items["User"] = CreateUser();
 
             var result = (OkObjectResult)foodsController.AddFood(request).Result;
 
@@ -156,27 +120,9 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void FoodsController_UpdateFood_Successful()
         {
-            var request = new UpdateFoodRequest
-            {
-                ID = 1,
-                ServingSize = "14 oz.",
-                Brand = "Wegmans",
-                Calories = 300,
-                Carbohydrates = 25,
-                Fat = 12,
-                IsAlcoholic = false,
-                IsPublic = false,
-                Name = "Ribeye",
-                Protein = 30,
-                Sugar = 1
-            };
+            UpdateFoodRequest request = CreateUpdateFoodRequest();
 
-            var foodList = new List<Food>
-            {
-                new Food { ID = 1, Brand = "Wegmans", ServingSize = "14 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
-            };
+            var foodList = CreateFoodList();
 
             var updateResponse = new EditFoodResponse
             {
@@ -185,12 +131,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Foods = foodList
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = CreateUser();
 
             var foodService = new MockFoodService().MockUpdateFood(updateResponse);
 
@@ -227,12 +168,7 @@ namespace FitnessTrackerApi.Tests.Controllers
                 Foods = foodList
             };
 
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "testing@testing.com"
-            };
+            var user = CreateUser();
 
             var foodService = new MockFoodService().MockDeleteFood(deleteResponse);
 
@@ -252,32 +188,94 @@ namespace FitnessTrackerApi.Tests.Controllers
         [Fact]
         public void FoodsController_Search_Success()
         {
-            var searchResults = new List<Food>
-            {
-                new Food { ID = 1, Brand = "Wegmans", ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 2, Brand = "Wegmans", ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = true, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
-                new Food { ID = 3, Brand = "Wegmans", ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
-            };
-
-            var user = new User
-            {
-                Id = "123",
-                Name = "Test User",
-                Email = "TestUser123@testing.com"
-            };
-
+            var searchResults = CreateFoodList("Wegmans");
 
             var foodService = new MockFoodService().MockSearch(searchResults);
 
             var foodsController = new FoodsController(foodService.Object);
             foodsController.ControllerContext.HttpContext = new DefaultHttpContext();
-            foodsController.ControllerContext.HttpContext.Items["User"] = user;
+            foodsController.ControllerContext.HttpContext.Items["User"] = CreateUser();
 
             var result = (OkObjectResult)foodsController.SearchFoods("wegmans");
 
             var response = JsonSerializer.Deserialize<EditFoodResponse>(result.Value.ToString());
 
             Assert.Equal(3, response.Foods.Count);
+        }
+
+        private static UpdateFoodRequest CreateUpdateFoodRequest()
+        {
+            return new UpdateFoodRequest
+            {
+                ID = 1,
+                ServingSize = "14 oz.",
+                Brand = "Wegmans",
+                Calories = 300,
+                Carbohydrates = 25,
+                Fat = 12,
+                IsAlcoholic = false,
+                IsPublic = false,
+                Name = "Ribeye",
+                Protein = 30,
+                Sugar = 1
+            };
+        }
+
+        private static Food CreateFood(int id)
+        {
+            return new Food
+            {
+                ID = id,
+                ServingSize = "16 oz.",
+                Brand = "Wegmans",
+                Calories = 300,
+                Carbohydrates = 25,
+                Fat = 12,
+                IsAlcoholic = false,
+                IsPublic = false,
+                Name = "Ribeye",
+                Protein = 30,
+                Sugar = 1,
+                UserID = "123",
+                User = null
+            };
+        }
+
+        private static User CreateUser()
+        {
+            return new User
+            {
+                Id = "123",
+                Name = "Test User",
+                Email = "testing@testing.com"
+            };
+        }
+
+        private static List<Food> CreateFoodList(string brand = "Wegmans")
+        {
+            return new List<Food>
+            {
+                new Food { ID = 1, Brand = brand, ServingSize = "16 oz.", Calories = 300, Carbohydrates = 25, Fat = 12, IsAlcoholic = false, IsPublic = false, Name = "Ribeye", Protein = 30, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 2, Brand = brand, ServingSize = "12 oz.", Calories = 300, Carbohydrates = 20, Fat = 10, IsAlcoholic = false, IsPublic = false, Name = "NY Strip", Protein = 20, Sugar = 1, UserID = "123", User = null },
+                new Food { ID = 3, Brand = brand, ServingSize = "8 oz.", Calories = 300, Carbohydrates = 15, Fat = 8, IsAlcoholic = false, IsPublic = false, Name = "Delmonico", Protein = 10, Sugar = 1, UserID = "123", User = null }
+            };
+        }
+
+        private static AddFoodRequest CreateAddFoodRequest()
+        {
+            return new AddFoodRequest
+            {
+                Brand = "Wegmans",
+                ServingSize = "16 oz.",
+                Calories = 300,
+                Carbohydrates = 25,
+                Fat = 12,
+                IsAlcoholic = false,
+                IsPublic = false,
+                Name = "Ribeye",
+                Protein = 30,
+                Sugar = 1
+            };
         }
     }
 }
